@@ -1,0 +1,20 @@
+# Oude S3-keys van scrolls_app en schade aan de bucket (VR0EM, 15:22)
+
+Alle keys komen uit de Helm-geschiedenis van `kube-monitoring` (de waarden van elke release).
+Enkel de eerste 8 tekens staan hier. Getest met een S3-request (SigV4, `ListObjectsV2`).
+
+| Key | In gebruik sinds | OVH-API (15:23) | Bucket `scrolls` | State-bucket |
+|---|---|---|---|---|
+| `99e911c5…` | 10:09 (origineel, stond in de gestolen state) | **verwijderd** | **200** (nog aanvaard) | 403 |
+| `e9fb7aa3…` | 14:59 (rotatie-2) | **verwijderd** | **200** (nog aanvaard) | 403 |
+| `01df9ea4…` | 15:08 (per ongeluk, 4 min) | verwijderd | 403 | 403 |
+| `750545b1…` | 15:12 (huidig) | bestaat | 200 | **403** |
+
+- **Het lek van golf 1/4 is dicht:** geen enkele key van `scrolls_app` kan nog de state-bucket lezen (policy terug enkel op `scrolls`).
+- **Revocatie bij OVH is traag:** keys die al gebruikt waren, blijven werken lang nadat de API ze verwijderde. Een key die nooit gebruikt werd, valt meteen weg. Vermoedelijk een cache in de S3-dienst.
+- **Reactie:** de rotatie vervangt nu de hele gebruiker (`core/iam.tf`, `rotatie-4-nieuwe-user`). De oude keys verliezen zo hun eigenaar en hun policy.
+
+## Schade aan de bucket `scrolls`
+
+OVH-API: `objectsCount 0`, `objectsSize 0`, 0 objecten, ook met `withVersions=true`. Versioning `enabled`, encryptie `AES256`.
+De bucket was leeg en is leeg: er is geen data gelezen, gewijzigd of gewist.

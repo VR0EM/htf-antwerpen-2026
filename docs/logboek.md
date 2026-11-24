@@ -17,6 +17,15 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 15:30 · VR0EM · L2 overgenomen: oude S3-keys, schade aan de bucket, nieuwe identiteit
+- **Context:** wimmevdv doet niets meer. VR0EM neemt #63, #44, #5 en #6 over.
+- **Wat (gevonden):**
+  - Alle S3-keys van `scrolls_app` uit de Helm-geschiedenis getest (15:22). `99e911c5…` (origineel) en `e9fb7aa3…` geven nog **200** op `scrolls`, terwijl de OVH-API ze verwijderd heeft. `01df9ea4…` (nooit gebruikt) wordt meteen geweigerd. Geen enkele key kan nog de state-bucket lezen (403), dus het lek dat wimmevdv vond is dicht.
+  - De bucket `scrolls` is leeg en was altijd leeg (ook geen versies). Geen schade aan data.
+- **Wat (fix):** een rotatie (`scrolls_key_version` → `rotatie-4-nieuwe-user`) vervangt nu de **hele gebruiker** `scrolls_app`, niet alleen de key. Eerst komt de nieuwe gebruiker, dan verdwijnt de oude, en daarmee de eigenaar en de policy van de oude keys.
+- **Waarom:** "maak de gecompromitteerde credentials direct ongeldig". Als de dienst verwijderde keys nog aanvaardt, moet je de identiteit zelf intrekken.
+- **Waar:** #63, deze PR. Bewijs: `docs/bewijs/level-2/20261124-1522-oude-s3-keys/`.
+
 ### 15:15 · wimmevdv · Level 2: stand van de rotaties + belangrijke bevinding over S3
 - **Gedaan (via de pipeline):** S3-key `scrolls_app` (#64, #68, #70), websitewachtwoord (#65), registry-user `scribe` (#70: user-id 3 → 4, nieuw pull-secret, Oracle draait).
 - **Bevinding:** de oude S3-key `99e911c5…` werd **14 min na de rotatie nog altijd aanvaard** door de S3-dienst (HTTP 200), terwijl de OVH-API alleen nog de nieuwe key toont. Een key verwijderen via de API maakt hem dus niet meteen ongeldig. Zo kan een aanvaller met een gestolen key binnen blijven.
