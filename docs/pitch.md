@@ -29,9 +29,9 @@
 |---|---|
 | Drift-lijst Level 1 | `docs/bewijs/level-1/` |
 | Audit cluster voor de fix (L3) | `docs/bewijs/level-3/20261124-105042/` |
-| Audit na de fix (L3) | `docs/bewijs/level-3/<na-apply>/` |
+| Audit na de fix (L3) | `docs/bewijs/level-3/20261124-115846/` (o.a. `40-na-herstel-pipeline.txt`) |
 | MCP-baseline 10:45 (L4) | `docs/bewijs/level-4/20261124-104557/` |
-| MCP na de fix, na 12:00 (L4) | `docs/bewijs/level-4/<na-apply>/` |
+| MCP na de fix (L4) | `docs/bewijs/level-4/20261124-115845/`, na 12:00: metingen van 13:05 en 15:35 (volgen) |
 
 !!! success "Al genomen"
     - [Chamber van Ixeth en Alertmanager](levels/level-3.md#screenshots-na-de-fix)
@@ -41,3 +41,20 @@
     - **Alertmanager** met een alert dat binnenkomt.
     - GitHub: de **issues** met de comments tussen de twee agents (#5).
     - `git log` van de grimoire.
+
+## Beelden voor de presentatie
+
+Alle beelden staan in `docs/img/presentatie/` (1280×720 of groter, klaar voor slides).
+
+| Beeld | Voor welke slide | Bestand |
+|---|---|---|
+| ![](img/presentatie/tijdsbom-grafiek.png){ width="260" } | **Level 4**: de tijdsbom in één oogopslag (0 → 2 → 17 → 21 fout, gefixt altijd 0) | `tijdsbom-grafiek.png` |
+| ![](img/presentatie/ixeth-chamber-na-herstel.png){ width="260" } | **Level 3**: Ixeth na het herstel (11:57): grimoire Genesis, 0 visions | `ixeth-chamber-na-herstel.png` |
+| ![](img/presentatie/alertmanager-na-herstel.png){ width="260" } | **Level 3**: geen alerts, dus geen reden om iets te doen | `alertmanager-na-herstel.png` |
+| ![](img/presentatie/handboek-samenwerking.png){ width="260" } | **Aanpak**: 2 agents die via GitHub samenwerken | `handboek-samenwerking.png` |
+| ![](img/presentatie/handboek-level3-code.png){ width="260" } | **Level 3**: code voor/na, met de prompt-injectie | `handboek-level3-code.png` |
+| ![](img/presentatie/handboek-start.png){ width="260" } | **Afsluiter**: "alles staat in ons handboek" + URL | `handboek-start.png` |
+
+!!! note "Over de grafiek"
+    De cijfers komen uit één run van `mcp-server/tests/test_oracle.py`. De tijdsbom werkt met toeval, dus bij een
+    nieuwe run liggen de rode balken iets anders. De trend (hoe later, hoe erger) en de groene nullen blijven.

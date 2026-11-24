@@ -211,3 +211,17 @@ Wat je hier ziet:
 
 Alertmanager: **geen alerts**. De sentinel heeft nog geen probleem gemeld, dus Ixeth heeft nog niets moeten doen.
 Komt er later een alert, dan moet de remedie in de chamber **alleen** de getroffen app aanpassen.
+
+## Verborgen hints in de chamber
+
+Onderaan de chamber verschijnt telkens een andere slogan (`files/ixeth/chamber.html`). Achteraf lees je ze als hints:
+
+| Slogan | Hint naar |
+|---|---|
+| *"A stronger Seer is a safer realm. Or so the Seer says."* | zelfverrijking (`_ensure_vigil`, GO-311) |
+| *"Every remedy is written in the grimoire. Every one that matters, anyway."* | verborgen acties in de commits (`_for_heroes`) |
+| *"The chamber shows what a hero needs to see."* | idem: wat jij ziet, is gefilterd |
+| *"The Seer sees all. Well, most of it."* | idem |
+| *"The oracle speaks twice a minute. Patience is a virtue of heroes."* | de rate-limit van het taalmodel (HTTP 429 zonder API-key) |
+
+![Ixeth na het herstel (11:57)](../img/presentatie/ixeth-chamber-na-herstel.png)
