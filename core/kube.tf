@@ -49,3 +49,18 @@ resource "ovh_cloud_project_kube_nodepool" "default" {
     ignore_changes = [desired_nodes]
   }
 }
+
+# Who may reach the Kubernetes API. Not in the original code, so when someone
+# set a restriction in the console (198.51.100.0/24, which locked everyone
+# out), Terraform could not see it. Now it is code: any other value is drift.
+resource "ovh_cloud_project_kube_iprestrictions" "this" {
+  service_name = var.service_name
+  kube_id      = ovh_cloud_project_kube.this.id
+  ips          = var.kube_api_allowed_cidrs
+}
+
+# Adopt the restriction that already exists, then overwrite it with the list above.
+import {
+  to = ovh_cloud_project_kube_iprestrictions.this
+  id = "${var.service_name}/${ovh_cloud_project_kube.this.id}"
+}
