@@ -17,6 +17,15 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 13:20 · wimmevdv · Vierde golf: pipeline robuuster (bucket, stappen na fout, drift-lus)
+- **Wat:**
+  - Vierde golf om 12:43–12:44: IP-lock, `NEVER_UPDATE`, nodepool, S3-policy, bucket weer `plaintext`, opnieuw `hotfix-pool`. De drift-check zag het en startte zelfherstel. De runs 45387916057 en 45388130560 faalden: de object_lock-bug van de bucket, en een IP-wijziging die geblokkeerd werd zolang `hotfix-pool` INSTALLING was.
+  - Fix 1, bucket: van `ovh_cloud_storage_object_bucket` (v2-API, met de bug) naar `ovh_cloud_project_storage` (v1-API), met `removed { destroy = false }` en `import`. De bucket blijft bestaan (plan: 1 import, 0 destroy). Geen handmatige state-correcties meer.
+  - Fix 2, `infra.yml`: "Ghosts opruimen" nu **vóór** de core-apply. Die stap en "Apply workload" lopen ook als een eerdere stap faalt (`!cancelled()`).
+  - Fix 3, `drift.yml`: de `schedule` van GitHub heeft vandaag **nooit** gedraaid (0 geplande runs). Elke run start zichzelf daarom na 4 min opnieuw (tot 18:00 Belgische tijd). De cron (nu `*/10`) blijft als vangnet.
+- **Waarom:** bij elke golf moet de pipeline zonder ingreep van een mens kunnen herstellen. Dali signaleerde de bucket-fout (#5).
+- **Waar:** issue #47.
+
 ### 13:07 · VR0EM · Pages-workflow in 2 jobs
 - **Wat:** `docs.yml` opgesplitst in `build` (upload) en `deploy` (`needs: build`), zoals het officiële Pages-voorbeeld.
 - **Waarom:** in één job vond `deploy-pages` het artefact vaak niet (6x "No artifacts named github-pages"), terwijl de upload lukte en githubstatus "operational" zei. Een rerun hielp soms, niet altijd.

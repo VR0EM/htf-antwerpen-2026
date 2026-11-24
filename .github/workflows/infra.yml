@@ -115,6 +115,22 @@ jobs:
           terraform_version: 1.17.2
           terraform_wrapper: false
 
+      # Zelfherstel voor ghosts (akkoord Wimme, #40): wat niet in de state staat, wordt
+      # opgeruimd: node pools, project-users en S3-keys. Instances, buckets, registries
+      # en netwerken worden alleen gemeld: daar kan data in zitten, een mens beslist.
+      - name: Ghosts opruimen
+        # Vóór de core-apply: een ghost-nodepool die nog INSTALLING is, blokkeert
+        # een wijziging aan de IP-restrictie (run 45387916057).
+        if: ${{ !cancelled() }}
+        run: |
+          terraform -chdir=core init -backend-config=backend.hcl > /dev/null
+          terraform -chdir=core show -json > core-state.json
+          set +e
+          python3 ci/ghost-check.py core-state.json core/terraform.tfvars --remediate > ghosts.md
+          set -e
+          cat ghosts.md
+          cat ghosts.md >> "$GITHUB_STEP_SUMMARY"
+
       - name: Apply core
         working-directory: core
         run: |
@@ -133,19 +149,9 @@ jobs:
           echo "### core/" >> "$GITHUB_STEP_SUMMARY"
           grep -E '^(Plan:|No changes\.)' plan.txt >> "$GITHUB_STEP_SUMMARY" || true
 
-      # Zelfherstel voor ghosts (akkoord Wimme, #40): wat niet in de state staat, wordt
-      # opgeruimd: node pools, project-users en S3-keys. Instances, buckets, registries
-      # en netwerken worden alleen gemeld: daar kan data in zitten, een mens beslist.
-      - name: Ghosts opruimen
-        run: |
-          terraform -chdir=core show -json > core-state.json
-          set +e
-          python3 ci/ghost-check.py core-state.json core/terraform.tfvars --remediate > ghosts.md
-          set -e
-          cat ghosts.md
-          cat ghosts.md >> "$GITHUB_STEP_SUMMARY"
-
       - name: Apply workload
+        # Ook als core faalde (bv. één resource): workload kan meestal toch hersteld worden.
+        if: ${{ !cancelled() }}
         working-directory: workload
         run: |
           terraform init -backend-config=backend.hcl
