@@ -1,0 +1,221 @@
+$ kubectl get events -A --sort-by=.lastTimestamp
+NAMESPACE       LAST SEEN   TYPE      REASON                    OBJECT                                              MESSAGE
+kube-system     30m         Warning   FailedScheduling          pod/calico-kube-controllers-5988b758c4-n5m5p        no nodes available to schedule pods
+kube-system     30m         Normal    Scheduled                 pod/calico-kube-controllers-5988b758c4-n5m5p        Successfully assigned kube-system/calico-kube-controllers-5988b758c4-n5m5p to achrona-pool-node-8839b8
+scrolls         13m         Normal    Scheduled                 pod/scrolls-app-56c596bbc7-g9n8z                    Successfully assigned scrolls/scrolls-app-56c596bbc7-g9n8z to achrona-pool-node-979479
+ancient         14m         Warning   FailedScheduling          pod/ancient-oracle-64658d49bc-5ncb2                 0/2 nodes are available: pod has unbound immediate PersistentVolumeClaims. not found
+ancient         14m         Warning   FailedScheduling          pod/ancient-oracle-64658d49bc-5ncb2                 0/2 nodes are available: pod has unbound immediate PersistentVolumeClaims. not found
+ancient         14m         Normal    Scheduled                 pod/ancient-oracle-64658d49bc-5ncb2                 Successfully assigned ancient/ancient-oracle-64658d49bc-5ncb2 to achrona-pool-node-979479
+scrolls         13m         Normal    Scheduled                 pod/magician-7ff57554b4-phswz                       Successfully assigned scrolls/magician-7ff57554b4-phswz to achrona-pool-node-979479
+oracle          13m         Normal    Scheduled                 pod/sentinel-85985ccbbb-x262d                       Successfully assigned oracle/sentinel-85985ccbbb-x262d to achrona-pool-node-979479
+oracle          13m         Normal    Scheduled                 pod/ixeth-db6b5c756-jbbxm                           Successfully assigned oracle/ixeth-db6b5c756-jbbxm to achrona-pool-node-979479
+oracle          13m         Normal    Scheduled                 pod/grimoire-5877c6bdb5-5kzxv                       Successfully assigned oracle/grimoire-5877c6bdb5-5kzxv to achrona-pool-node-979479
+oracle          13m         Warning   FailedScheduling          pod/grimoire-5877c6bdb5-5kzxv                       0/2 nodes are available: pod has unbound immediate PersistentVolumeClaims. not found
+oracle          13m         Warning   FailedScheduling          pod/grimoire-5877c6bdb5-5kzxv                       0/2 nodes are available: pod has unbound immediate PersistentVolumeClaims. not found
+kube-system     30m         Warning   FailedScheduling          pod/metrics-server-d96d45cb5-4kqp2                  no nodes available to schedule pods
+observability   13m         Normal    Scheduled                 pod/metrics-collector-587dc48c6f-jgrjj              Successfully assigned observability/metrics-collector-587dc48c6f-jgrjj to achrona-pool-node-979479
+kube-system     30m         Normal    Scheduled                 pod/coredns-8579589c89-lpn8l                        Successfully assigned kube-system/coredns-8579589c89-lpn8l to achrona-pool-node-979479
+kube-system     36m         Warning   FailedScheduling          pod/coredns-8579589c89-m7fqm                        no nodes available to schedule pods
+kube-system     30m         Warning   FailedScheduling          pod/coredns-8579589c89-m7fqm                        no nodes available to schedule pods
+kube-system     30m         Normal    Scheduled                 pod/coredns-8579589c89-m7fqm                        Successfully assigned kube-system/coredns-8579589c89-m7fqm to achrona-pool-node-8839b8
+kube-system     36m         Warning   FailedScheduling          pod/metrics-server-d96d45cb5-4kqp2                  no nodes available to schedule pods
+default         30m         Normal    Starting                  node/achrona-pool-node-8839b8                       
+kube-system     30m         Normal    Scheduled                 pod/kube-proxy-ss22b                                Successfully assigned kube-system/kube-proxy-ss22b to achrona-pool-node-979479
+kube-system     36m         Warning   FailedScheduling          pod/kube-dns-autoscaler-869cdddc9b-g4wcf            no nodes available to schedule pods
+traefik         13m         Normal    Scheduled                 pod/traefik-6848d97b9c-5gzfk                        Successfully assigned traefik/traefik-6848d97b9c-5gzfk to achrona-pool-node-979479
+oracle          13m         Normal    Scheduled                 pod/alertmanager-85544456c8-wpjm2                   Successfully assigned oracle/alertmanager-85544456c8-wpjm2 to achrona-pool-node-979479
+kube-system     30m         Normal    Scheduled                 pod/kube-dns-autoscaler-869cdddc9b-g4wcf            Successfully assigned kube-system/kube-dns-autoscaler-869cdddc9b-g4wcf to achrona-pool-node-8839b8
+kube-system     30m         Normal    Scheduled                 pod/ovhcloud-konnectivity-agent-64bcc65db4-jjssg    Successfully assigned kube-system/ovhcloud-konnectivity-agent-64bcc65db4-jjssg to achrona-pool-node-8839b8
+kube-system     30m         Warning   FailedScheduling          pod/ovhcloud-konnectivity-agent-64bcc65db4-jjssg    no nodes available to schedule pods
+kube-system     36m         Warning   FailedScheduling          pod/ovhcloud-konnectivity-agent-64bcc65db4-jjssg    no nodes available to schedule pods
+kube-system     30m         Warning   FailedScheduling          pod/kube-dns-autoscaler-869cdddc9b-g4wcf            no nodes available to schedule pods
+default         30m         Normal    Starting                  node/achrona-pool-node-979479                       
+kube-system     30m         Normal    Scheduled                 pod/ovhcloud-apiserver-proxy-fmlbj                  Successfully assigned kube-system/ovhcloud-apiserver-proxy-fmlbj to achrona-pool-node-979479
+kube-system     30m         Normal    Scheduled                 pod/canal-qbdcg                                     Successfully assigned kube-system/canal-qbdcg to achrona-pool-node-8839b8
+kube-system     36m         Warning   FailedScheduling          pod/calico-kube-controllers-5988b758c4-n5m5p        no nodes available to schedule pods
+kube-system     30m         Normal    Scheduled                 pod/metrics-server-d96d45cb5-4kqp2                  Successfully assigned kube-system/metrics-server-d96d45cb5-4kqp2 to achrona-pool-node-8839b8
+kube-system     30m         Normal    Scheduled                 pod/canal-zhb8p                                     Successfully assigned kube-system/canal-zhb8p to achrona-pool-node-979479
+kube-system     30m         Normal    Scheduled                 pod/ovhcloud-apiserver-proxy-bqqcc                  Successfully assigned kube-system/ovhcloud-apiserver-proxy-bqqcc to achrona-pool-node-8839b8
+kube-system     30m         Normal    Scheduled                 pod/kube-proxy-bwwzd                                Successfully assigned kube-system/kube-proxy-bwwzd to achrona-pool-node-8839b8
+kube-system     36m         Normal    ScalingReplicaSet         deployment/ovhcloud-konnectivity-agent              Scaled up replica set ovhcloud-konnectivity-agent-64bcc65db4 from 0 to 1
+kube-system     36m         Warning   FailedCreate              replicaset/ovhcloud-konnectivity-agent-64bcc65db4   Error creating: pods "ovhcloud-konnectivity-agent-64bcc65db4-" is forbidden: error looking up service account kube-system/konnectivity-agent: serviceaccount "konnectivity-agent" not found
+kube-system     36m         Normal    SuccessfulCreate          replicaset/ovhcloud-konnectivity-agent-64bcc65db4   Created pod: ovhcloud-konnectivity-agent-64bcc65db4-jjssg
+kube-system     36m         Normal    ScalingReplicaSet         deployment/coredns                                  Scaled up replica set coredns-8579589c89 from 0 to 1
+kube-system     36m         Normal    SuccessfulCreate          replicaset/coredns-8579589c89                       Created pod: coredns-8579589c89-m7fqm
+kube-system     36m         Normal    ScalingReplicaSet         deployment/kube-dns-autoscaler                      Scaled up replica set kube-dns-autoscaler-869cdddc9b from 0 to 1
+kube-system     36m         Normal    SuccessfulCreate          replicaset/kube-dns-autoscaler-869cdddc9b           Created pod: kube-dns-autoscaler-869cdddc9b-g4wcf
+kube-system     36m         Normal    NoPods                    poddisruptionbudget/calico-kube-controllers         No matching pods found
+kube-system     36m         Normal    SuccessfulCreate          replicaset/calico-kube-controllers-5988b758c4       Created pod: calico-kube-controllers-5988b758c4-n5m5p
+kube-system     36m         Normal    ScalingReplicaSet         deployment/calico-kube-controllers                  Scaled up replica set calico-kube-controllers-5988b758c4 from 0 to 1
+kube-system     36m         Normal    ScalingReplicaSet         deployment/metrics-server                           Scaled up replica set metrics-server-d96d45cb5 from 0 to 1
+kube-system     36m         Normal    SuccessfulCreate          replicaset/metrics-server-d96d45cb5                 Created pod: metrics-server-d96d45cb5-4kqp2
+kube-system     30m         Normal    SuccessfulCreate          daemonset/kube-proxy                                Created pod: kube-proxy-bwwzd
+default         30m         Normal    NodeAllocatableEnforced   node/achrona-pool-node-8839b8                       Updated limits on system reserved cgroup /system.slice
+default         30m         Normal    NodeAllocatableEnforced   node/achrona-pool-node-8839b8                       Updated Node Allocatable limit across pods
+kube-system     30m         Normal    SuccessfulCreate          daemonset/canal                                     Created pod: canal-qbdcg
+kube-system     30m         Normal    SuccessfulCreate          daemonset/ovhcloud-apiserver-proxy                  Created pod: ovhcloud-apiserver-proxy-bqqcc
+default         30m         Normal    NodeHasSufficientMemory   node/achrona-pool-node-8839b8                       Node achrona-pool-node-8839b8 status is now: NodeHasSufficientMemory
+default         30m         Normal    NodeHasNoDiskPressure     node/achrona-pool-node-8839b8                       Node achrona-pool-node-8839b8 status is now: NodeHasNoDiskPressure
+default         30m         Normal    NodeHasSufficientPID      node/achrona-pool-node-8839b8                       Node achrona-pool-node-8839b8 status is now: NodeHasSufficientPID
+kube-system     30m         Normal    Pulled                    pod/canal-qbdcg                                     Successfully pulled image "mks.kubernatine.ovh/docker.io/calico/cni:v3.31.4" in 210ms (444ms including waiting). Image size: 72168334 bytes.
+kube-system     30m         Normal    Pulling                   pod/ovhcloud-apiserver-proxy-bqqcc                  Pulling image "mks.kubernatine.ovh/mks-public/ovhcloud-apiserver-proxy:74"
+kube-system     30m         Normal    Started                   pod/kube-proxy-bwwzd                                Container started
+kube-system     30m         Normal    Created                   pod/kube-proxy-bwwzd                                Container created
+kube-system     30m         Normal    Pulled                    pod/kube-proxy-bwwzd                                Successfully pulled image "mks.kubernatine.ovh/registry.k8s.io/kube-proxy-amd64:v1.35.2" in 243ms (243ms including waiting). Image size: 25682972 bytes.
+kube-system     30m         Normal    Pulling                   pod/kube-proxy-bwwzd                                Pulling image "mks.kubernatine.ovh/registry.k8s.io/kube-proxy-amd64:v1.35.2"
+default         30m         Normal    RegisteredNode            node/achrona-pool-node-8839b8                       Node achrona-pool-node-8839b8 event: Registered Node achrona-pool-node-8839b8 in Controller
+kube-system     30m         Normal    Created                   pod/canal-qbdcg                                     Container created
+kube-system     30m         Normal    Pulled                    pod/ovhcloud-apiserver-proxy-bqqcc                  Successfully pulled image "mks.kubernatine.ovh/mks-public/ovhcloud-apiserver-proxy:74" in 1.699s (2.112s including waiting). Image size: 16946612 bytes.
+kube-system     30m         Normal    Created                   pod/ovhcloud-apiserver-proxy-bqqcc                  Container created
+kube-system     30m         Normal    Started                   pod/ovhcloud-apiserver-proxy-bqqcc                  Container started
+kube-system     30m         Normal    Pulling                   pod/canal-qbdcg                                     Pulling image "mks.kubernatine.ovh/docker.io/calico/cni:v3.31.4"
+kube-system     30m         Normal    Pulled                    pod/canal-qbdcg                                     Successfully pulled image "mks.kubernatine.ovh/docker.io/calico/cni:v3.31.4" in 224ms (682ms including waiting). Image size: 72168334 bytes.
+kube-system     30m         Normal    Started                   pod/canal-qbdcg                                     Container started
+default         30m         Normal    NodeReady                 node/achrona-pool-node-8839b8                       Node achrona-pool-node-8839b8 status is now: NodeReady
+kube-system     30m         Normal    Started                   pod/canal-qbdcg                                     Container started
+kube-system     30m         Normal    Created                   pod/canal-qbdcg                                     Container created
+kube-system     30m         Normal    Pulled                    pod/canal-qbdcg                                     Successfully pulled image "mks.kubernatine.ovh/docker.io/calico/node:v3.31.4" in 215ms (215ms including waiting). Image size: 159839046 bytes.
+kube-system     30m         Normal    Pulling                   pod/canal-qbdcg                                     Pulling image "mks.kubernatine.ovh/docker.io/calico/node:v3.31.4"
+kube-system     30m         Normal    Pulled                    pod/canal-qbdcg                                     Successfully pulled image "mks.kubernatine.ovh/docker.io/calico/node:v3.31.4" in 194ms (194ms including waiting). Image size: 159839046 bytes.
+kube-system     30m         Normal    Pulling                   pod/canal-qbdcg                                     Pulling image "mks.kubernatine.ovh/docker.io/flannel/flannel:v0.24.4"
+kube-system     30m         Normal    Started                   pod/canal-qbdcg                                     Container started
+kube-system     30m         Normal    Created                   pod/canal-qbdcg                                     Container created
+kube-system     30m         Normal    Pulled                    pod/canal-qbdcg                                     Successfully pulled image "mks.kubernatine.ovh/docker.io/flannel/flannel:v0.24.4" in 216ms (216ms including waiting). Image size: 32735995 bytes.
+kube-system     30m         Normal    Created                   pod/canal-qbdcg                                     Container created
+kube-system     30m         Normal    Started                   pod/canal-qbdcg                                     Container started
+kube-system     30m         Normal    Pulling                   pod/canal-qbdcg                                     Pulling image "mks.kubernatine.ovh/docker.io/calico/node:v3.31.4"
+kube-system     30m         Normal    Pulling                   pod/calico-kube-controllers-5988b758c4-n5m5p        Pulling image "mks.kubernatine.ovh/docker.io/calico/kube-controllers:v3.31.4"
+kube-system     30m         Normal    Pulling                   pod/coredns-8579589c89-m7fqm                        Pulling image "mks.kubernatine.ovh/docker.io/coredns/coredns:1.14.1"
+default         30m         Normal    Synced                    node/achrona-pool-node-8839b8                       Node synced successfully
+kube-system     30m         Normal    Pulling                   pod/kube-dns-autoscaler-869cdddc9b-g4wcf            Pulling image "mks.kubernatine.ovh/registry.k8s.io/cpa/cluster-proportional-autoscaler:v1.10.3"
+kube-system     30m         Normal    Pulling                   pod/ovhcloud-konnectivity-agent-64bcc65db4-jjssg    Pulling image "mks.kubernatine.ovh/mks-public/proxy-agent-amd64:51"
+kube-system     30m         Normal    Created                   pod/ovhcloud-konnectivity-agent-64bcc65db4-jjssg    Container created
+kube-system     30m         Normal    Pulled                    pod/coredns-8579589c89-m7fqm                        Successfully pulled image "mks.kubernatine.ovh/docker.io/coredns/coredns:1.14.1" in 257ms (695ms including waiting). Image size: 23451225 bytes.
+kube-system     30m         Normal    Created                   pod/coredns-8579589c89-m7fqm                        Container created
+kube-system     30m         Normal    Started                   pod/coredns-8579589c89-m7fqm                        Container started
+kube-system     30m         Normal    Pulled                    pod/kube-dns-autoscaler-869cdddc9b-g4wcf            Successfully pulled image "mks.kubernatine.ovh/registry.k8s.io/cpa/cluster-proportional-autoscaler:v1.10.3" in 452ms (452ms including waiting). Image size: 13818385 bytes.
+kube-system     30m         Normal    Started                   pod/kube-dns-autoscaler-869cdddc9b-g4wcf            Container started
+kube-system     30m         Normal    Pulled                    pod/ovhcloud-konnectivity-agent-64bcc65db4-jjssg    Successfully pulled image "mks.kubernatine.ovh/mks-public/proxy-agent-amd64:51" in 224ms (886ms including waiting). Image size: 9722884 bytes.
+kube-system     30m         Normal    Pulled                    pod/calico-kube-controllers-5988b758c4-n5m5p        Successfully pulled image "mks.kubernatine.ovh/docker.io/calico/kube-controllers:v3.31.4" in 300ms (1.181s including waiting). Image size: 53962979 bytes.
+kube-system     30m         Normal    Created                   pod/calico-kube-controllers-5988b758c4-n5m5p        Container created
+kube-system     30m         Normal    Created                   pod/kube-dns-autoscaler-869cdddc9b-g4wcf            Container created
+kube-system     30m         Normal    Pulling                   pod/metrics-server-d96d45cb5-4kqp2                  Pulling image "mks.kubernatine.ovh/registry.k8s.io/metrics-server/metrics-server:v0.8.1"
+kube-system     30m         Normal    Started                   pod/ovhcloud-konnectivity-agent-64bcc65db4-jjssg    Container started
+kube-system     30m         Warning   Unhealthy                 pod/calico-kube-controllers-5988b758c4-n5m5p        Readiness probe failed: Failed to read status file /status/status.json: unexpected end of JSON input
+kube-system     30m         Normal    Created                   pod/metrics-server-d96d45cb5-4kqp2                  Container created
+kube-system     30m         Normal    Started                   pod/calico-kube-controllers-5988b758c4-n5m5p        Container started
+kube-system     30m         Normal    Pulled                    pod/metrics-server-d96d45cb5-4kqp2                  Successfully pulled image "mks.kubernatine.ovh/registry.k8s.io/metrics-server/metrics-server:v0.8.1" in 357ms (588ms including waiting). Image size: 22550016 bytes.
+kube-system     30m         Normal    Started                   pod/metrics-server-d96d45cb5-4kqp2                  Container started
+default         30m         Normal    NodeAllocatableEnforced   node/achrona-pool-node-979479                       Updated Node Allocatable limit across pods
+kube-system     30m         Normal    SuccessfulCreate          daemonset/ovhcloud-apiserver-proxy                  Created pod: ovhcloud-apiserver-proxy-fmlbj
+default         30m         Normal    NodeAllocatableEnforced   node/achrona-pool-node-979479                       Updated limits on system reserved cgroup /system.slice
+kube-system     30m         Normal    SuccessfulCreate          daemonset/canal                                     Created pod: canal-zhb8p
+kube-system     30m         Normal    SuccessfulCreate          daemonset/kube-proxy                                Created pod: kube-proxy-ss22b
+default         30m         Normal    NodeHasNoDiskPressure     node/achrona-pool-node-979479                       Node achrona-pool-node-979479 status is now: NodeHasNoDiskPressure
+default         30m         Normal    NodeHasSufficientMemory   node/achrona-pool-node-979479                       Node achrona-pool-node-979479 status is now: NodeHasSufficientMemory
+default         30m         Normal    NodeHasSufficientPID      node/achrona-pool-node-979479                       Node achrona-pool-node-979479 status is now: NodeHasSufficientPID
+default         30m         Normal    RegisteredNode            node/achrona-pool-node-979479                       Node achrona-pool-node-979479 event: Registered Node achrona-pool-node-979479 in Controller
+kube-system     30m         Normal    Pulling                   pod/kube-proxy-ss22b                                Pulling image "mks.kubernatine.ovh/registry.k8s.io/kube-proxy-amd64:v1.35.2"
+kube-system     30m         Normal    Pulling                   pod/ovhcloud-apiserver-proxy-fmlbj                  Pulling image "mks.kubernatine.ovh/mks-public/ovhcloud-apiserver-proxy:74"
+kube-system     30m         Normal    Created                   pod/kube-proxy-ss22b                                Container created
+kube-system     30m         Normal    Pulled                    pod/kube-proxy-ss22b                                Successfully pulled image "mks.kubernatine.ovh/registry.k8s.io/kube-proxy-amd64:v1.35.2" in 199ms (402ms including waiting). Image size: 25682972 bytes.
+kube-system     30m         Normal    Started                   pod/kube-proxy-ss22b                                Container started
+kube-system     30m         Normal    Pulled                    pod/canal-zhb8p                                     Successfully pulled image "mks.kubernatine.ovh/docker.io/calico/cni:v3.31.4" in 220ms (220ms including waiting). Image size: 72168334 bytes.
+kube-system     30m         Normal    Started                   pod/ovhcloud-apiserver-proxy-fmlbj                  Container started
+kube-system     30m         Normal    Pulling                   pod/canal-zhb8p                                     Pulling image "mks.kubernatine.ovh/docker.io/calico/cni:v3.31.4"
+kube-system     30m         Normal    Created                   pod/ovhcloud-apiserver-proxy-fmlbj                  Container created
+kube-system     30m         Normal    Pulled                    pod/ovhcloud-apiserver-proxy-fmlbj                  Successfully pulled image "mks.kubernatine.ovh/mks-public/ovhcloud-apiserver-proxy:74" in 2.087s (2.455s including waiting). Image size: 16946612 bytes.
+kube-system     30m         Normal    Created                   pod/canal-zhb8p                                     Container created
+default         30m         Normal    NodeReady                 node/achrona-pool-node-979479                       Node achrona-pool-node-979479 status is now: NodeReady
+kube-system     30m         Normal    Pulled                    pod/canal-zhb8p                                     Successfully pulled image "mks.kubernatine.ovh/docker.io/calico/cni:v3.31.4" in 204ms (1.003s including waiting). Image size: 72168334 bytes.
+kube-system     30m         Normal    Started                   pod/canal-zhb8p                                     Container started
+kube-system     30m         Normal    Pulling                   pod/canal-zhb8p                                     Pulling image "mks.kubernatine.ovh/docker.io/calico/node:v3.31.4"
+kube-system     30m         Normal    Pulled                    pod/canal-zhb8p                                     Successfully pulled image "mks.kubernatine.ovh/docker.io/calico/node:v3.31.4" in 187ms (187ms including waiting). Image size: 159839046 bytes.
+kube-system     30m         Normal    Created                   pod/canal-zhb8p                                     Container created
+kube-system     30m         Normal    Started                   pod/canal-zhb8p                                     Container started
+kube-system     30m         Normal    Started                   pod/canal-zhb8p                                     Container started
+kube-system     30m         Normal    Started                   pod/canal-zhb8p                                     Container started
+default         30m         Normal    Synced                    node/achrona-pool-node-979479                       Node synced successfully
+kube-system     30m         Normal    Pulling                   pod/canal-zhb8p                                     Pulling image "mks.kubernatine.ovh/docker.io/flannel/flannel:v0.24.4"
+kube-system     30m         Normal    Created                   pod/canal-zhb8p                                     Container created
+kube-system     30m         Normal    Pulled                    pod/canal-zhb8p                                     Successfully pulled image "mks.kubernatine.ovh/docker.io/flannel/flannel:v0.24.4" in 258ms (258ms including waiting). Image size: 32735995 bytes.
+kube-system     30m         Normal    Pulling                   pod/canal-zhb8p                                     Pulling image "mks.kubernatine.ovh/docker.io/calico/node:v3.31.4"
+kube-system     30m         Normal    Pulled                    pod/canal-zhb8p                                     Successfully pulled image "mks.kubernatine.ovh/docker.io/calico/node:v3.31.4" in 207ms (207ms including waiting). Image size: 159839046 bytes.
+kube-system     30m         Normal    Created                   pod/canal-zhb8p                                     Container created
+kube-system     30m         Normal    ScalingReplicaSet         deployment/coredns                                  Scaled up replica set coredns-8579589c89 from 1 to 2
+kube-system     30m         Normal    SuccessfulCreate          replicaset/coredns-8579589c89                       Created pod: coredns-8579589c89-lpn8l
+kube-system     30m         Normal    Started                   pod/coredns-8579589c89-lpn8l                        Container started
+kube-system     30m         Normal    Pulled                    pod/coredns-8579589c89-lpn8l                        Successfully pulled image "mks.kubernatine.ovh/docker.io/coredns/coredns:1.14.1" in 227ms (227ms including waiting). Image size: 23451225 bytes.
+kube-system     30m         Normal    Pulling                   pod/coredns-8579589c89-lpn8l                        Pulling image "mks.kubernatine.ovh/docker.io/coredns/coredns:1.14.1"
+kube-system     30m         Normal    Created                   pod/coredns-8579589c89-lpn8l                        Container created
+kube-system     29m         Warning   Unhealthy                 pod/metrics-server-d96d45cb5-4kqp2                  Readiness probe failed: HTTP probe failed with statuscode: 500
+ancient         14m         Normal    SuccessfulCreate          replicaset/ancient-oracle-64658d49bc                Created pod: ancient-oracle-64658d49bc-5ncb2
+ancient         14m         Normal    ScalingReplicaSet         deployment/ancient-oracle                           Scaled up replica set ancient-oracle-64658d49bc from 0 to 1
+ancient         14m         Normal    ExternalProvisioning      persistentvolumeclaim/ancient-echoes                Waiting for a volume to be created either by the external provisioner 'cinder.csi.openstack.org' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+ancient         14m         Normal    Provisioning              persistentvolumeclaim/ancient-echoes                External provisioner is provisioning volume for claim "ancient/ancient-echoes"
+ancient         14m         Normal    ProvisioningSucceeded     persistentvolumeclaim/ancient-echoes                Successfully provisioned volume ovh-managed-kubernetes-924056-pvc-3deeb281-466a-4495-8013-3367fec18b6f
+oracle          13m         Normal    ScalingReplicaSet         deployment/sentinel                                 Scaled up replica set sentinel-85985ccbbb from 0 to 1
+oracle          13m         Normal    ScalingReplicaSet         deployment/ixeth                                    Scaled up replica set ixeth-db6b5c756 from 0 to 1
+observability   13m         Normal    ScalingReplicaSet         deployment/metrics-collector                        Scaled up replica set metrics-collector-587dc48c6f from 0 to 1
+scrolls         13m         Normal    SuccessfulCreate          replicaset/magician-7ff57554b4                      Created pod: magician-7ff57554b4-phswz
+oracle          13m         Normal    SuccessfulCreate          replicaset/sentinel-85985ccbbb                      Created pod: sentinel-85985ccbbb-x262d
+scrolls         13m         Normal    ScalingReplicaSet         deployment/magician                                 Scaled up replica set magician-7ff57554b4 from 0 to 1
+oracle          13m         Normal    ScalingReplicaSet         deployment/grimoire                                 Scaled up replica set grimoire-5877c6bdb5 from 0 to 1
+oracle          13m         Normal    ProvisioningSucceeded     persistentvolumeclaim/grimoire-pages                Successfully provisioned volume ovh-managed-kubernetes-924056-pvc-d365ce52-5028-429c-a26b-6ca2412ab399
+oracle          13m         Normal    SuccessfulCreate          replicaset/alertmanager-85544456c8                  Created pod: alertmanager-85544456c8-wpjm2
+oracle          13m         Normal    ScalingReplicaSet         deployment/alertmanager                             Scaled up replica set alertmanager-85544456c8 from 0 to 1
+oracle          13m         Normal    ExternalProvisioning      persistentvolumeclaim/grimoire-pages                Waiting for a volume to be created either by the external provisioner 'cinder.csi.openstack.org' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+oracle          13m         Normal    Provisioning              persistentvolumeclaim/grimoire-pages                External provisioner is provisioning volume for claim "oracle/grimoire-pages"
+oracle          13m         Normal    SuccessfulCreate          replicaset/grimoire-5877c6bdb5                      Created pod: grimoire-5877c6bdb5-5kzxv
+observability   13m         Normal    SuccessfulCreate          replicaset/metrics-collector-587dc48c6f             Created pod: metrics-collector-587dc48c6f-jgrjj
+scrolls         13m         Normal    SuccessfulCreate          replicaset/scrolls-app-56c596bbc7                   Created pod: scrolls-app-56c596bbc7-g9n8z
+scrolls         13m         Normal    ScalingReplicaSet         deployment/scrolls-app                              Scaled up replica set scrolls-app-56c596bbc7 from 0 to 1
+oracle          13m         Normal    SuccessfulCreate          replicaset/ixeth-db6b5c756                          Created pod: ixeth-db6b5c756-jbbxm
+oracle          13m         Normal    Pulling                   pod/alertmanager-85544456c8-wpjm2                   Pulling image "quay.io/prometheus/alertmanager:v0.28.1"
+scrolls         13m         Normal    Pulling                   pod/scrolls-app-56c596bbc7-g9n8z                    Pulling image "busybox:1.37.0"
+scrolls         13m         Normal    Pulling                   pod/magician-7ff57554b4-phswz                       Pulling image "busybox:1.37.0"
+observability   13m         Normal    Pulling                   pod/metrics-collector-587dc48c6f-jgrjj              Pulling image "alpine/k8s:1.33.13"
+oracle          13m         Normal    Pulling                   pod/sentinel-85985ccbbb-x262d                       Pulling image "alpine/k8s:1.33.13"
+oracle          13m         Normal    Pulling                   pod/ixeth-db6b5c756-jbbxm                           Pulling image "alpine/k8s:1.33.13"
+oracle          13m         Normal    Started                   pod/alertmanager-85544456c8-wpjm2                   Container started
+oracle          13m         Normal    Created                   pod/alertmanager-85544456c8-wpjm2                   Container created
+oracle          13m         Normal    Pulled                    pod/alertmanager-85544456c8-wpjm2                   Successfully pulled image "quay.io/prometheus/alertmanager:v0.28.1" in 2.286s (2.286s including waiting). Image size: 35015543 bytes.
+ancient         13m         Normal    SuccessfulAttachVolume    pod/ancient-oracle-64658d49bc-5ncb2                 AttachVolume.Attach succeeded for volume "ovh-managed-kubernetes-924056-pvc-3deeb281-466a-4495-8013-3367fec18b6f"
+ancient         13m         Normal    Pulling                   pod/ancient-oracle-64658d49bc-5ncb2                 Pulling image "n5r3rwyy.c1.gra9.container-registry.ovh.net/realm/ancient-oracle:1.0.0"
+traefik         13m         Normal    ScalingReplicaSet         deployment/traefik                                  Scaled up replica set traefik-6848d97b9c from 0 to 1
+traefik         13m         Normal    SuccessfulCreate          replicaset/traefik-6848d97b9c                       Created pod: traefik-6848d97b9c-5gzfk
+traefik         13m         Normal    Pulling                   pod/traefik-6848d97b9c-5gzfk                        Pulling image "docker.io/traefik:v3.7.16"
+scrolls         13m         Normal    Created                   pod/magician-7ff57554b4-phswz                       Container created
+scrolls         13m         Normal    Started                   pod/magician-7ff57554b4-phswz                       Container started
+scrolls         13m         Normal    Pulled                    pod/magician-7ff57554b4-phswz                       Successfully pulled image "busybox:1.37.0" in 1.957s (3.875s including waiting). Image size: 2222118 bytes.
+oracle          13m         Normal    SuccessfulAttachVolume    pod/grimoire-5877c6bdb5-5kzxv                       AttachVolume.Attach succeeded for volume "ovh-managed-kubernetes-924056-pvc-d365ce52-5028-429c-a26b-6ca2412ab399"
+oracle          13m         Normal    Pulling                   pod/grimoire-5877c6bdb5-5kzxv                       Pulling image "alpine/k8s:1.33.13"
+oracle          13m         Normal    Started                   pod/ixeth-db6b5c756-jbbxm                           Container started
+oracle          13m         Normal    Started                   pod/sentinel-85985ccbbb-x262d                       Container started
+traefik         13m         Warning   SyncLoadBalancerFailed    service/traefik                                     Error syncing load balancer: failed to ensure load balancer: load balancer 78bd83e6-fe14-4832-94ee-e445306c48e5 is in PROVISIONING state: workflow ea6b0e55-89fd-4324-90f5-5b1eca128971 (wnetwork.CreateFloatingIPOnPort) in status created...
+oracle          13m         Normal    Created                   pod/sentinel-85985ccbbb-x262d                       Container created
+oracle          13m         Normal    Pulled                    pod/sentinel-85985ccbbb-x262d                       Successfully pulled image "alpine/k8s:1.33.13" in 606ms (20.476s including waiting). Image size: 314988667 bytes.
+oracle          13m         Normal    Created                   pod/ixeth-db6b5c756-jbbxm                           Container created
+oracle          13m         Normal    Pulled                    pod/ixeth-db6b5c756-jbbxm                           Successfully pulled image "alpine/k8s:1.33.13" in 16.145s (19.9s including waiting). Image size: 314988667 bytes.
+scrolls         13m         Normal    Created                   pod/scrolls-app-56c596bbc7-g9n8z                    Container created
+observability   13m         Normal    Pulled                    pod/metrics-collector-587dc48c6f-jgrjj              Successfully pulled image "alpine/k8s:1.33.13" in 600ms (20.988s including waiting). Image size: 314988667 bytes.
+scrolls         13m         Normal    Pulled                    pod/scrolls-app-56c596bbc7-g9n8z                    Successfully pulled image "busybox:1.37.0" in 594ms (21.576s including waiting). Image size: 2222118 bytes.
+observability   13m         Normal    Created                   pod/metrics-collector-587dc48c6f-jgrjj              Container created
+observability   13m         Normal    Started                   pod/metrics-collector-587dc48c6f-jgrjj              Container started
+scrolls         13m         Normal    Started                   pod/scrolls-app-56c596bbc7-g9n8z                    Container started
+ancient         13m         Normal    Pulled                    pod/ancient-oracle-64658d49bc-5ncb2                 Successfully pulled image "n5r3rwyy.c1.gra9.container-registry.ovh.net/realm/ancient-oracle:1.0.0" in 4.484s (22.827s including waiting). Image size: 16953885 bytes.
+ancient         13m         Warning   Unhealthy                 pod/ancient-oracle-64658d49bc-5ncb2                 Readiness probe failed: Get "http://10.2.1.9:8080/healthz": dial tcp 10.2.1.9:8080: connect: connection refused
+ancient         13m         Normal    Started                   pod/ancient-oracle-64658d49bc-5ncb2                 Container started
+ancient         13m         Normal    Created                   pod/ancient-oracle-64658d49bc-5ncb2                 Container created
+traefik         13m         Warning   SyncLoadBalancerFailed    service/traefik                                     Error syncing load balancer: failed to ensure load balancer: load balancer 78bd83e6-fe14-4832-94ee-e445306c48e5 is in ERROR state: loadbalancer 78bd83e6-fe14-4832-94ee-e445306c48e5 has error: conflict: there is pending asynchronous operation which conflict with the gateway creation: ea6b0e55-89fd-4324-90f5-5b1eca128971
+traefik         13m         Normal    Created                   pod/traefik-6848d97b9c-5gzfk                        Container created
+traefik         13m         Normal    Pulled                    pod/traefik-6848d97b9c-5gzfk                        Successfully pulled image "docker.io/traefik:v3.7.16" in 5.476s (28.222s including waiting). Image size: 55401468 bytes.
+oracle          13m         Warning   Unhealthy                 pod/grimoire-5877c6bdb5-5kzxv                       Readiness probe failed: Get "http://10.2.1.11:8080/realm.git/info/refs?service=git-upload-pack": dial tcp 10.2.1.11:8080: connect: connection refused
+traefik         13m         Normal    Started                   pod/traefik-6848d97b9c-5gzfk                        Container started
+oracle          13m         Normal    Pulled                    pod/grimoire-5877c6bdb5-5kzxv                       Successfully pulled image "alpine/k8s:1.33.13" in 636ms (16.726s including waiting). Image size: 314988667 bytes.
+oracle          13m         Normal    Created                   pod/grimoire-5877c6bdb5-5kzxv                       Container created
+oracle          13m         Normal    Started                   pod/grimoire-5877c6bdb5-5kzxv                       Container started
+oracle          13m         Warning   Unhealthy                 pod/ixeth-db6b5c756-jbbxm                           Readiness probe failed: Get "http://10.2.1.8:8080/healthz": dial tcp 10.2.1.8:8080: connect: connection refused
+traefik         11m         Warning   SyncLoadBalancerFailed    service/traefik                                     Error syncing load balancer: failed to ensure load balancer: load balancer 78bd83e6-fe14-4832-94ee-e445306c48e5 is in PROVISIONING state...
+traefik         10m         Normal    EnsuringLoadBalancer      service/traefik                                     Ensuring load balancer
+traefik         10m         Normal    EnsuredLoadBalancer       service/traefik                                     Ensured load balancer
