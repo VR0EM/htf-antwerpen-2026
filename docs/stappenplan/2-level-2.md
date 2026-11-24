@@ -1,8 +1,9 @@
 # Fase 2: Level 2, gelekte sleutel (Wimme)
 
-!!! warning "Nog niet uitgevoerd"
-    Op het moment van schrijven (13:05) is Level 2 nog niet gestart. Dit is het **plan**, op basis van wat we al vonden.
-    Wordt aangevuld zodra het gedaan is.
+!!! success "Uitgevoerd (13:14–15:30)"
+    Hieronder staat het plan zoals we het om 13:05 opschreven. Wat we uiteindelijk deden, met bewijs, staat op
+    [Level 2](../levels/level-2.md#wat-we-deden). Het grootste lek bleek niet de S3-sleutel, maar een service account
+    in de cluster met `cluster-admin`.
 
 ## Wat we al weten
 

@@ -7,7 +7,7 @@ Eigenaar: VR0EM. Zie `docs/opdracht.md` voor de volledige opdracht.
    - `11-wijzigingen-managedfields.txt`: wie (manager) wijzigde welke workload wanneer. Zoek een manager die op de agent lijkt.
    - `12-replicaset-geschiedenis.txt`: CPU/geheugen/replicas per rollout. Een sprong = **resource-verhoging**.
    - `13-hpa.txt` + replicas: onverklaarde stijging = **shadow scaling**.
-   - `21-rbac-verdacht.txt` + `22-workload-identity.txt`: brede rollen of een GCP-SA met te veel rechten = **permission creep**.
+   - `21-rbac-verdacht.txt` + `22-workload-identity.txt`: brede rollen of een service account met te veel rechten = **permission creep**.
 2. **Git-geschiedenis van de agent-repo (die van FlowFactor):**
    ```bash
    git log --since="3 days ago" --stat
@@ -21,7 +21,7 @@ Eigenaar: VR0EM. Zie `docs/opdracht.md` voor de volledige opdracht.
    Let ook op logica die de naam van de agent zelf uitzondert of voortrekt (bv. `if target == "ir-agent"`).
 4. **Terugdraaien:** `git revert <sha>` per ongeautoriseerde commit, op een branch, met een PR. Geen `kubectl edit` of console.
 5. **Uitrollen:** de deploy-pipeline opnieuw draaien. Daarna `agent/audit.sh` nog eens uitvoeren en de output vergelijken met die van stap 1. Dat is het bewijs.
-6. **IAM in de cloud:** als de agent GCP-rollen kreeg (bv. Security Admin), dan horen die in Terraform (`infra/`, van wimmevdv). **Niet zelf aanpassen:** zet een comment op #7 met het label `needs-sync`.
+6. **IAM in de cloud:** als de agent cloudrollen kreeg (bv. Security Admin), dan horen die in Terraform (`core/iam.tf`, van wimmevdv). **Niet zelf aanpassen:** zet een comment op #7 met het label `needs-sync`.
 
 ## Bevindingen
 <!-- Vul aan tijdens het werk: wat, waar (commit/bestand), bewijs (pad in docs/bewijs/level-3/) -->
@@ -35,3 +35,5 @@ Eigenaar: VR0EM. Zie `docs/opdracht.md` voor de volledige opdracht.
 
 Live grimoire om 10:50: alleen de commit "Genesis", persona en visions gelijk aan de chart. Niets terug te draaien.
 Bewijs vooraf: `docs/bewijs/level-3/20261124-105042/`.
+
+Om 13:39 volgde een **tweede corruptie** (cluster-admin via een vermomde binding, vervalste grimoire-commits, een verborgen prompt-injectie en twee backdoors). Zie `docs/levels/level-3.md` ("De vloek slaat terug") en issue #57.

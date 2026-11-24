@@ -16,20 +16,22 @@ De secrets (`OVH_*`, `AWS_*`) staan in GitHub Secrets, nooit in de repo.
 
 ## Stap 5.2: Drift-check `drift.yml` (Wimme)
 
-Elke 30 minuten: `plan -detailed-exitcode` op beide stacks plus `ci/ghost-check.py` (de OVH-API tegenover de state).
-Bij drift: een issue met label `drift`, en een apply-run (zelfherstel).
+Elke ±5 minuten (elke run start de volgende): `plan -detailed-exitcode` op beide stacks, `ci/ghost-check.py`
+(de OVH-API tegenover de state) en `ci/k8s-ghost-check.py` (objecten in de cluster buiten Helm, en Helm-objecten die
+met de hand gewijzigd zijn). Bij drift: een issue met label `drift`, en een apply-run (zelfherstel).
 
 ## Stap 5.3: Tests voor L3/L4 `l3-l4-tests.yml` (Dali)
 
 Bij elke PR die charts, images, `agent/` of `mcp-server/` raakt: de tests + `helm lint`. Komt de corruptie terug, dan wordt de PR rood.
 
-## Wat we leerden van 3 golven van night-shift
+## Wat we leerden van de golven van night-shift
 
 | Golf | Wat | Les |
 |---|---|---|
 | 10:57 | IP-lock, nodepool, ghosts, bucket, policy | `plan` ziet ghosts niet, dus een inventaris via de API is nodig |
 | 11:34–11:41 | **Originele zip-code opnieuw geapplyd** (onze fixes weg), IP-lock, ghost | Detectie alleen is niet genoeg, herstel moet automatisch |
 | 12:43–12:44 | IP-lock, ghost `hotfix-pool` (blijft lang `INSTALLING`), bucket | zie de valkuilen hieronder |
+| 13:39 | Aanval **in** de cluster (Level 3 opnieuw), niet in OVH | De drift-check moet ook de Kubernetes-laag zien: `ci/k8s-ghost-check.py` |
 
 :warning: **Valkuil: de geplande drift-check startte nooit.** GitHub start `schedule`-workflows met vertraging,
 of de eerste keer helemaal niet. Vertrouw er niet blind op. Controleer met `gh run list --workflow drift.yml`.

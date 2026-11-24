@@ -54,7 +54,7 @@ Benodigdheden: laptop en een Google-account.
 | **wimmevdv** | Level 1 (Terraform-drift, pipelines) + Level 2 (service account, IAM) | #5, #6 | `core/`, alle `workload/*.tf`, `workload/charts/kube-monitoring/templates/scrolls.yaml`, `.github/workflows/` |
 | **VR0EM** (Dali) | Level 3 (incident-agent Ixeth) + Level 4 (Ancient Oracle MCP-server, bonus) | #7, #8 | `workload/charts/kube-monitoring/files/{ixeth,watch,grimoire}/`, `templates/{oracle,watch,grimoire}.yaml`, `workload/images/ancient-oracle/`, `workload/charts/ancient-oracle/`, `agent/`, `mcp-server/` |
 
-Gedeeld: `docs/` (opdracht, contract) en `docs/bewijs/<level>/` (ieder in zijn eigen submap).
+Gedeeld: `docs/` (opdracht, handboek) en `docs/bewijs/<level>/` (ieder in zijn eigen submap).
 
 **Raakvlakken (altijd via een issue-comment met `needs-sync`):**
 - `workload/charts/kube-monitoring/Chart.yaml` (`version` ophogen bij elke chartwijziging) en `values.yaml`: allebei mogelijk. Kleine PR's, snel mergen, rebasen voor je pusht.
@@ -88,8 +88,6 @@ Gedeeld: `docs/` (opdracht, contract) en `docs/bewijs/<level>/` (ieder in zijn e
 - Eén branch per issue: `<github-user>/<issue-nr>-korte-beschrijving`, bv. `VR0EM/4-login-pagina`.
 - **Nooit rechtstreeks op `main` committen.**
 - Blijf binnen jouw deel van de code (zie Taakverdeling). Moet je code van de ander aanpassen? Zet eerst een comment op het issue en vraag het aan je mens.
-- Gedeelde dingen (API-routes, datatypes, DB-schema, env-variabelen) staan in `docs/contract.md`.
-  Wijzig het contract alleen via een **aparte, kleine PR** met label `contract`, en meld het in een issue-comment.
 
 ### Logboek (verplicht)
 - Elke wijziging, apply, vondst of beslissing komt in **`docs/logboek.md`**, **in dezelfde PR** als de wijziging.
@@ -112,9 +110,8 @@ Gedeeld: `docs/` (opdracht, contract) en `docs/bewijs/<level>/` (ieder in zijn e
 | `in-progress` | Iemand werkt er nu aan |
 | `blocked` | Wacht op iets of iemand |
 | `needs-sync` | De ander moet dit lezen voor hij/zij verder werkt |
-| `contract` | Wijzigt gedeelde interfaces (`docs/contract.md`) |
 | `frontend` / `backend` | Deel van de code |
 
 ## Tech stack & commando's
-Verwacht (te bevestigen zodra we toegang hebben): Google Cloud (IAM, Secret Manager), Terraform, Kubernetes, Alertmanager, een AI-agent en een MCP-server (container image).
-Pipelines: GitHub Actions (voorstel). Commando's volgen zodra de omgeving gekend is.
+OVHcloud (Managed Kubernetes, Object Storage, IAM, registry), Terraform, Helm, Alertmanager, een AI-agent (Ixeth) en een MCP-server (container image).
+Pipelines: GitHub Actions (`.github/workflows/`). Commando's: zie hierboven en het [stappenplan](docs/stappenplan/index.md).
