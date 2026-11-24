@@ -147,3 +147,22 @@ De cluster draait `realm/ancient-oracle:1.0.1`. Dezelfde reeks calls als om 10:4
 !!! tip "Het echte bewijs komt na 12:00"
     Voer `mcp-server/baseline.sh` opnieuw uit om ±13:00 en ±15:30. Met de oude server zouden de cijfers daar
     afwijken (of leeg zijn); met de nieuwe moeten ze gelijk blijven aan die van de cluster.
+
+## Automatische tests
+
+`mcp-server/tests/test_oracle.py` zet de klok op 10:30, 13:00, 15:45 en 16:30 en roept telkens 30 keer dezelfde tool aan.
+Op de **originele** code zie je de bom groeien met de klok:
+
+| Klok | Origineel | Gefixt |
+|---|---|---|
+| 10:30 | 0 / 30 fout | 0 / 30 |
+| 13:00 | 2 / 30 fout | 0 / 30 |
+| 15:45 | 17 / 30 fout | 0 / 30 |
+| 16:30 | 21 / 30 fout | 0 / 30 |
+
+```bash
+python3 -m unittest discover -s mcp-server/tests -v
+```
+
+De test controleert ook dat er geen `sitecustomize`, geen `import random`, geen `json.dumps = ...` en geen
+`GUIDANCE` meer in de code staat. Hij draait bij elke PR (`.github/workflows/l3-l4-tests.yml`).

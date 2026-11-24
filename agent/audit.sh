@@ -23,6 +23,8 @@ ROOT="$(git -C "$(dirname "$0")" rev-parse --show-toplevel)"
 OUT="$ROOT/docs/bewijs/level-3/$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$OUT"
 echo "Output: $OUT"
+# Ruwe JSON is alleen een tussenstap voor de analyses: tijdelijke map, niet in Git.
+RAW="$(mktemp -d)"; trap 'rm -rf "$RAW"' EXIT
 
 run() { # run <bestand> <commando...>: output naar bestand, fouten niet fataal
   local f="$1"; shift
@@ -34,9 +36,9 @@ kubectl config current-context > "$OUT/00-context.txt" 2>&1 || true
 run 01-namespaces.txt kubectl get ns
 
 # Ruwe dumps (bron voor de jq-analyses hieronder)
-kubectl get deploy,statefulset,daemonset "${NSFLAG[@]}" -o json > "$OUT/raw-workloads.json"
-kubectl get replicaset "${NSFLAG[@]}" -o json > "$OUT/raw-replicasets.json"
-kubectl get hpa "${NSFLAG[@]}" -o json > "$OUT/raw-hpa.json" 2>/dev/null || echo '{"items":[]}' > "$OUT/raw-hpa.json"
+kubectl get deploy,statefulset,daemonset "${NSFLAG[@]}" -o json > "$RAW/raw-workloads.json"
+kubectl get replicaset "${NSFLAG[@]}" -o json > "$RAW/raw-replicasets.json"
+kubectl get hpa "${NSFLAG[@]}" -o json > "$RAW/raw-hpa.json" 2>/dev/null || echo '{"items":[]}' > "$RAW/raw-hpa.json"
 
 # 1. Resources en replicas per container
 jq -r '
@@ -46,14 +48,14 @@ jq -r '
      (.resources.requests.cpu // "-"), (.resources.limits.cpu // "-"),
      (.resources.requests.memory // "-"), (.resources.limits.memory // "-"),
      ($w.spec.template.spec.serviceAccountName // "default")])
-  | @tsv' "$OUT/raw-workloads.json" | column -t -s $'\t' > "$OUT/10-resources-replicas.txt"
+  | @tsv' "$RAW/raw-workloads.json" | column -t -s $'\t' > "$OUT/10-resources-replicas.txt"
 
 # 2. Wie heeft wat wanneer gewijzigd (managedFields: manager = welke tool/agent)
 jq -r '
   ["NAMESPACE","KIND","NAAM","MANAGER","OPERATIE","TIJD"],
   (.items[] | . as $w | (.metadata.managedFields // [])[] |
     [$w.metadata.namespace, $w.kind, $w.metadata.name, .manager, .operation, .time])
-  | @tsv' "$OUT/raw-workloads.json" | sort -t $'\t' -k6 | column -t -s $'\t' > "$OUT/11-wijzigingen-managedfields.txt"
+  | @tsv' "$RAW/raw-workloads.json" | sort -t $'\t' -k6 | column -t -s $'\t' > "$OUT/11-wijzigingen-managedfields.txt"
 
 # 3. ReplicaSet-geschiedenis: elke rollout met zijn resources en replicas, chronologisch
 jq -r '
@@ -64,23 +66,23 @@ jq -r '
      ($c.resources.requests.cpu // "-"), ($c.resources.requests.memory // "-"),
      ($c.resources.limits.cpu // "-"), ($c.resources.limits.memory // "-"),
      ($r.metadata.annotations["kubernetes.io/change-cause"] // "-")])
-  | @tsv' "$OUT/raw-replicasets.json" | column -t -s $'\t' > "$OUT/12-replicaset-geschiedenis.txt"
+  | @tsv' "$RAW/raw-replicasets.json" | column -t -s $'\t' > "$OUT/12-replicaset-geschiedenis.txt"
 
 # 4. HPA's (shadow scaling)
 jq -r '
   ["NAMESPACE","HPA","TARGET","MIN","MAX"],
   (.items[] | [.metadata.namespace, .metadata.name, .spec.scaleTargetRef.name, (.spec.minReplicas // 1), .spec.maxReplicas])
-  | @tsv' "$OUT/raw-hpa.json" | column -t -s $'\t' > "$OUT/13-hpa.txt"
+  | @tsv' "$RAW/raw-hpa.json" | column -t -s $'\t' > "$OUT/13-hpa.txt"
 
 # 5. RBAC: welke rollen hangen aan welke service accounts (permission creep)
-kubectl get clusterrolebindings -o json > "$OUT/raw-clusterrolebindings.json"
-kubectl get rolebindings "${NSFLAG[@]}" -o json > "$OUT/raw-rolebindings.json"
+kubectl get clusterrolebindings -o json > "$RAW/raw-clusterrolebindings.json"
+kubectl get rolebindings "${NSFLAG[@]}" -o json > "$RAW/raw-rolebindings.json"
 jq -rs '
   ["SCOPE","BINDING","ROL","SUBJECT_KIND","SUBJECT","AANGEMAAKT"],
   ([.[].items[]] | sort_by(.metadata.creationTimestamp)[] | . as $b | ($b.subjects // [])[] |
     [($b.metadata.namespace // "cluster"), $b.metadata.name, ($b.roleRef.kind + "/" + $b.roleRef.name),
      .kind, ((.namespace // "") + "/" + .name), $b.metadata.creationTimestamp])
-  | @tsv' "$OUT/raw-clusterrolebindings.json" "$OUT/raw-rolebindings.json" \
+  | @tsv' "$RAW/raw-clusterrolebindings.json" "$RAW/raw-rolebindings.json" \
   | column -t -s $'\t' > "$OUT/20-rbac-bindings.txt"
 grep -Ei 'cluster-admin|admin|edit|ServiceAccount' "$OUT/20-rbac-bindings.txt" > "$OUT/21-rbac-verdacht.txt" || true
 

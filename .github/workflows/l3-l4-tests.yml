@@ -1,0 +1,53 @@
+# Level 3 + 4 (eigenaar VR0EM): controleert bij elke PR en push naar main dat
+# - Ixeth zichzelf niet verrijkt en geen rechten uitdeelt (agent/tests),
+# - de Ancient Oracle op elk uur exacte data geeft, zonder tijdsbom (mcp-server/tests),
+# - de Helm-charts nog renderen.
+name: L3+L4 tests
+
+on:
+  pull_request:
+    paths:
+      - "workload/charts/**"
+      - "workload/images/**"
+      - "agent/**"
+      - "mcp-server/**"
+      - ".github/workflows/l3-l4-tests.yml"
+  push:
+    branches: [main]
+    paths:
+      - "workload/charts/**"
+      - "workload/images/**"
+      - "agent/**"
+      - "mcp-server/**"
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"   # zelfde versie als de image (python:3.13-alpine)
+
+      - name: Python compileert
+        run: python -m py_compile workload/charts/kube-monitoring/files/ixeth/ixeth.py workload/images/ancient-oracle/oracle/*.py
+
+      - name: Level 3, Ixeth
+        run: |
+          pip install pyyaml
+          python -m unittest discover -s agent/tests -v
+
+      - name: Level 4, Ancient Oracle (klok 10:30, 13:00, 15:45, 16:30)
+        run: python -m unittest discover -s mcp-server/tests -v
+
+      - uses: azure/setup-helm@v4
+
+      - name: Helm-charts renderen
+        run: |
+          helm lint workload/charts/kube-monitoring workload/charts/ancient-oracle
+          helm template t workload/charts/kube-monitoring > /dev/null
+          helm template t workload/charts/ancient-oracle > /dev/null

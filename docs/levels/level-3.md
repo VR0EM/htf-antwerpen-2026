@@ -179,3 +179,19 @@ yes          # zijn echte werk kan hij nog doen
 ```
 
 Audit na de fix: `docs/bewijs/level-3/20261124-112437/`.
+
+## Automatische tests
+
+`agent/tests/test_ixeth.py` (9 tests) controleert dat de agent zichzelf niets geeft, geen `grant` meer kent,
+voorstellen voor zijn eigen namespace negeert, alles toont in commits, en dat de runbook en de ClusterRole schoon zijn.
+
+```bash
+python3 -m unittest discover -s agent/tests -v      # nodig: pip install pyyaml
+```
+
+| Code | Resultaat |
+|---|---|
+| Origineel | **9 / 9 falen** |
+| Gefixt | **9 / 9 slagen** |
+
+Ze draaien automatisch bij elke PR (`.github/workflows/l3-l4-tests.yml`). Komt de corruptie ooit terug, dan wordt de PR rood.
