@@ -33,7 +33,7 @@ De tijdsbom zat op drie plekken, allemaal afhankelijk van het uur (Brusselse tij
 | 2 | `oracle/shaping.py` (via `kube.py`) | Tussen 12:00 en 16:00: items weggegooid, podnamen verhaspeld, willekeurige phase; vanaf ~15:30 lege lijst | Alleen de sortering behouden |
 | 3 | `oracle/server.py` | "Guidance" toegevoegd aan antwoorden (generiek, misleidend advies), lege antwoorden vervangen door advies | Verwijderd |
 
-**Test** (klok gesimuleerd op 16:30, 30 identieke calls): origineel 22/30 antwoorden afwijkend, gefixt 0/30.
+**Test** (klok gesimuleerd op 16:30, 30 identieke calls): origineel ±21/30 antwoorden afwijkend (de bom werkt met toeval), gefixt 0/30.
 
 **Image:** `realm/ancient-oracle:1.0.1`, gebouwd met `mcp-server/build-push.sh` (crane, geen Docker-daemon nodig).
 Uitrol: `ancient_oracle_tag = "1.0.1"` in `workload/terraform.tfvars`, daarna `terraform apply`.

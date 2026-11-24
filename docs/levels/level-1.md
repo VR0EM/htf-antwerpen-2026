@@ -41,7 +41,7 @@ Niet alles wat met de hand veranderd is, is slecht. Stel jezelf de vraag:
 - Lost het een **echt probleem** op? (bv. min 2 nodes: anders ligt alles plat als één node uitvalt.) → **Opnemen in de code.**
 - Is het **gemakzucht of een aanval**? (bv. `s3:*`, een admin-account "debug") → **Terugdraaien.**
 
-## Nog te doen (Level 1)
+## Stand (Level 1)
 
 - [x] Drift teruggezet via de code (#20) en ghosts verwijderd (#22): `plan` geeft *No changes*
-- [ ] Pipeline: `terraform fmt -check`, `validate` en `plan` bij elke PR, `apply` alleen vanaf `main`
+- [x] Pipeline: `terraform fmt -check`, `validate` en `plan` bij elke PR, `apply` alleen vanaf `main` (zie [Pipeline en zelfherstel](../stappenplan/5-pipeline.md))

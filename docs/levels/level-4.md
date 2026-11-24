@@ -144,9 +144,9 @@ De cluster draait `realm/ancient-oracle:1.0.1`. Dezelfde reeks calls als om 10:4
 | 10:45 (oude server, voor de bom) | 9 | 2 | 21 | 14 | 9 | 2 | 4 |
 | 11:24 (nieuwe server) | 9 | 2 | 21 | 14 | 9 | 2 | 4 |
 
-!!! tip "Het echte bewijs komt na 12:00"
-    Voer `mcp-server/baseline.sh` opnieuw uit om ±13:00 en ±15:30. Met de oude server zouden de cijfers daar
-    afwijken (of leeg zijn); met de nieuwe moeten ze gelijk blijven aan die van de cluster.
+Het echte bewijs komt na 12:00, als de bom zou afgaan. Om 15:01 en 15:30 hebben we elk antwoord vergeleken met
+`kubectl` op hetzelfde moment: **alles gelijk** (`docs/bewijs/level-4/20261124-153022/90-vergelijking-met-kubectl.md`).
+Met de oude code waren de lijsten om 15:30 leeg geweest, of aangevuld met verzonnen "Guidance".
 
 ## Automatische tests
 

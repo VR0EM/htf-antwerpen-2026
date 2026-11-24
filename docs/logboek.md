@@ -17,6 +17,11 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 16:30 · VR0EM · Repo klaar om te delen: README en handboek bijgewerkt
+- **Wat:** nieuwe `README.md` (wat de repo is, hoe ze gemaakt is: Claude schreef zo goed als alle code, wij stuurden en leerden via het handboek). Achterhaalde handboekpagina's rechtgezet: status op de startpagina, Level 2 (was nog "plan", nu met wat we deden en het bewijs), het L4-bewijs van 15:01 en 15:30, de drift-check (±5 min plus de Kubernetes-laag), en de GCP-gok in de opdracht (het bleek OVHcloud). De lege template `docs/contract.md` is weg (stond in het menu, werd nooit gebruikt).
+- **Waarom:** de repo wordt doorgestuurd, dus het handboek moet kloppen. Zo weinig mogelijk aangepast: geen code, geen bewijs, geen logboek-entries herschreven.
+- **Waar:** deze PR. Gecontroleerd met `uvx zensical build` (geen problemen) en de tests van L3/L4 (groen).
+
 ### 15:35 · VR0EM · Afronding: alle oude S3-keys ongeldig, L4 om 15:30 exact, L3-restje opgeruimd
 - **Wat:**
   - #72 live (15:26–15:28): nieuwe gebruiker `achrona-scrolls-app` (`1015263`), de oude is weg. De gestolen key `99e911c5…` geeft **403** (15:29), en `e9fb7aa3…` ook (15:30). Alle oude keys zijn ongeldig.

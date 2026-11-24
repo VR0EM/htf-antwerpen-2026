@@ -137,7 +137,7 @@ flowchart LR
     subgraph na["Na: Git is de enige waarheid"]
         pr["Pull request"] --> ci["CI: fmt, validate, plan"]
         ci --> m["Review + merge"] --> cd["CD: apply<br/>(1 tegelijk)"] --> r2[("Cloud")]
-        dc["Drift-check<br/>elke 30 min"] -->|plan ≠ leeg| al["Alarm: issue"]
+        dc["Drift-check<br/>elke ±5 min"] -->|plan ≠ leeg| al["Alarm: issue"]
         al --> pr
         r2 -.-> dc
     end
@@ -157,7 +157,7 @@ Het complete overzicht met tijden, beslissingen en bewijs staat in het
 ## 5. Valkuilen die we tegenkwamen
 
 - **Geen state locking.** De S3-backend heeft hier geen lock. Twee applies tegelijk op dezelfde state maken die
-  kapot. Afspraak: "APPLY START/KLAAR" op het issue. Straks lost de pipeline het op met één `concurrency`-groep.
+  kapot. Eerst losten we dat op met de afspraak "APPLY START/KLAAR" op het issue, nu met één `concurrency`-groep in de pipeline.
 - **Quirk van de provider bij `object_lock` van de bucket.** Na de wijziging in de console geeft de API een leeg
   `object_lock`-blok terug. De provider wilde daardoor de bucket **vervangen** (= data kwijt). Opgelost met
   `ignore_changes = [object_lock]` en `prevent_destroy = true`, plus een eenmalige correctie van de state

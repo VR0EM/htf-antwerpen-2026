@@ -6,7 +6,7 @@ Bron: het briefing document van FlowFactor (Google Doc, gedeeld bij de briefing)
 **Verhaal in één zin:** door *The Desync* wijkt de infrastructuur af van de waarheid. Breng alles terug onder controle via IaC, Git en pipelines.
 
 **Toegang** (cloud, cluster en repo's) wordt bij de start van de hackathon per deelnemer gegeven.
-Omdat Google-account en Secret Manager genoemd worden, is de cloud waarschijnlijk **Google Cloud (GCP)**. Dit is nog niet bevestigd.
+Door het Google-account en de Secret Manager in de briefing dachten we eerst aan Google Cloud. Het bleek **OVHcloud** te zijn (zie [De omgeving](omgeving.md)).
 
 ---
 

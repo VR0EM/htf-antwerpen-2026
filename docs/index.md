@@ -40,12 +40,21 @@ flowchart LR
 
 ## Status
 
-| Level | Gevonden | Gefixt in code | Uitgerold | Bewijs |
-|---|---|---|---|---|
-| 1 | :white_check_mark: | :white_check_mark: (PR van Wimme) | bezig | `docs/bewijs/level-1/` |
-| 2 | :white_check_mark: (hardcoded key) | bezig | nee | |
-| 3 | :white_check_mark: 5 corrupties | :white_check_mark: PR #17 | :white_check_mark: 11:23, teruggedraaid door night-shift om 11:34, opnieuw live via de pipeline om 11:57 | `docs/bewijs/level-3/` |
-| 4 | :white_check_mark: 3 plekken | :white_check_mark: PR #18, image `1.0.1` | :white_check_mark: 11:23, teruggedraaid door night-shift om 11:34, opnieuw live via de pipeline om 11:57 | `docs/bewijs/level-4/` |
+Alle vier de levels zijn opgelost, via Git en de pipeline, en live gecontroleerd (eindstand 15:30).
+
+| Level | Wat we deden | Bewijs |
+|---|---|---|
+| 1 | 11 afwijkingen teruggezet in de code, ghosts via Git opgeruimd, pipeline met drift-check en zelfherstel | `docs/bewijs/level-1/` |
+| 2 | `cluster-admin` weg (least privilege), secrets uit Git, alle gelekte geheimen geroteerd: oude token `401`, oude S3-keys `403` | `docs/bewijs/level-2/` |
+| 3 | 5 corrupties uit de code (10:52). Om 13:39 kwam een tweede, onzichtbare corruptie: ook die is gevonden en opgeruimd | `docs/bewijs/level-3/` |
+| 4 | Tijdsbom op 3 plekken verwijderd, image `1.0.1`. Om 15:30 waren alle 7 MCP-antwoorden gelijk aan `kubectl` | `docs/bewijs/level-4/` |
+
+Bewust uitgesteld: de kubeconfig resetten (stap 4/4 van de rotatie in Level 2). Bij OVH installeert dat alle nodes opnieuw, en dat deden we niet vlak voor de demo.
+
+!!! info "Hoe dit gemaakt is"
+    Zo goed als alle code, de tests en de pipelines zijn geschreven door **Claude** (Claude Code), als twee agents die
+    via GitHub-issues samenwerkten. Wij stuurden, namen de beslissingen en controleerden het bewijs. Dit handboek is
+    vooral ons leermateriaal: zo begrijpen we zelf wat er gebeurd is.
 
 !!! note "Online: <https://vr0em.github.io/htf-antwerpen-2026/>"
     Lokaal bekijken:

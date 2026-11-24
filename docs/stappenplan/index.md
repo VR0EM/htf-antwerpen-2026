@@ -15,10 +15,10 @@ Elke stap heeft:
 |---|---|---|---|
 | 0 | [Voorbereiding](0-voorbereiding.md) | Repo, afspraken voor 2 agents, toegang, eerst kijken | 09:30–10:45 |
 | 1 | [Level 1: drift](1-level-1.md) | Drift vinden, beslissen, terugzetten via Terraform, ghosts | 10:45–11:35 |
-| 2 | [Level 2: gelekte sleutel](2-level-2.md) | Sleutel intrekken, onderzoeken, least privilege | *nog bezig* |
+| 2 | [Level 2: gelekte sleutel](2-level-2.md) | Sleutel intrekken, onderzoeken, least privilege | 13:14–15:30 |
 | 3 | [Level 3: corrupte agent](3-level-3.md) | Audit, code lezen, RBAC beperken, tests | 10:50–11:23 |
 | 4 | [Level 4: tijdsbom](4-level-4.md) | Bewijs vooraf, klokafhankelijke code, image bouwen | 10:45–11:23 |
-| 5 | [Pipeline en zelfherstel](5-pipeline.md) | Alles via Git, drift-check, wat we leerden van 3 golven | 11:40–13:00 |
+| 5 | [Pipeline en zelfherstel](5-pipeline.md) | Alles via Git, drift-check, wat we leerden van de golven | 11:40–13:00 |
 | 6 | [Bewijs en pitch](6-bewijs-en-pitch.md) | Voor/na vastleggen, handboek publiceren | doorlopend |
 
 Level 3 en 4 (Dali) liepen **parallel** met Level 1 en 2 (Wimme). Dat kon dankzij de afspraken uit fase 0.
