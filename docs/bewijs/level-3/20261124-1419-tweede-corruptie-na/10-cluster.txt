@@ -1,0 +1,41 @@
+# 2026-11-24 14:19:31 CET - na #58 en #59 (pipeline) + grimoire-revert, VR0EM
+
+## can-i als system:serviceaccount:oracle:ixeth
+'*' '*' (cluster-admin): no
+create clusterrolebindings: no
+get secrets (alle namespaces): no
+patch deployments -n oracle (zichzelf): yes
+patch deployments -n scrolls (zijn werk): yes
+
+## Bindings naar oracle
+NAME ROLE SERVICEACCOUNTS
+ancient-oracle-reader ClusterRole/ancient-oracle-reader ancient/ancient-oracle
+ixeth-seer ClusterRole/ixeth-seer oracle/ixeth
+
+## Deployments in oracle
+NAME           REPL   MEM     CPU
+alertmanager   1      128Mi   200m
+grimoire       1      128Mi   300m
+ixeth          1      384Mi   500m
+sentinel       1      128Mi   200m
+
+## Verwijderde objecten
+deploy -n kube-system coredns-ledger: weg (NotFound)
+clusterrolebinding system:oracle-sight: weg (NotFound)
+clusterrole realm-security-admin: weg (NotFound)
+clusterrolebinding ixeth-realm-security-admin: weg (NotFound)
+deploy -n oracle seer-shades: weg (NotFound)
+cm -n kube-system rollup-staging: weg (NotFound)
+sa -n observability metrics-collector: weg (NotFound)
+
+## Hooks in de grimoire
+update
+core.hooksPath: (niet gezet)
+
+## Kubernetes-ghost-check (droog)
+### Kubernetes-ghosts (buiten Helm, Terraform en OVH)
+
+Geen gevonden.
+
+## Ixeth log (laatste regels)
+[seer 13:15:53] the Seer opens its eye on :8080 (auto-apply True, oracle Mistral-Small-3.2-24B-Instruct-2506)

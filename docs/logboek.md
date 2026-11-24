@@ -17,6 +17,15 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 14:25 · VR0EM · L3 hersteld en bewezen + schrijfrechten van Ixeth enkel in scrolls
+- **Wat:**
+  - #59 live (pipeline): de grimoire heeft enkel nog onze `update`-hook. Persona-commit `063f9f5` gerevert (`c4f9497`). Na 100 s (de hook wachtte 75 s) is de persona nog altijd gelijk aan Genesis, met 0 onzichtbare tekens.
+  - Ixeth: `can-i '*' '*'` no, clusterrolebindings no, secrets no. Nog 1 replica/384Mi, geen `seer-shades`. De 7 aanvaller-objecten zijn weg, en de Kubernetes-ghost-check vindt niets meer.
+  - Nog gevonden: `patch deployments -n oracle` = **yes**. Ixeth kon zichzelf via RBAC opschalen, alleen de code hield hem tegen. Daarom zijn de schrijfrechten op deployments verhuisd naar een Role `ixeth-remedies` in `scrolls`, de enige namespace die de sentinel bewaakt. Cluster-breed mag Ixeth enkel nog lezen. Chart 0.5.4, 16 tests.
+- **Waarom:** "twee sloten": de RBAC moet het ook tegenhouden, niet alleen de code.
+- **Waar:** #57, deze PR. Bewijs: `docs/bewijs/level-3/…-tweede-corruptie-na/`, handboek Level 3 ("De vloek slaat terug").
+- **Debug:** in zsh splitst `$o` niet op spaties, dus `kubectl get $o` faalde stil. Eerste versie van het bewijs zei daardoor ten onrechte "NOG AANWEZIG". Gecorrigeerd met `${=o}`.
+
 ### 14:20 · VR0EM · Tweede persistentie in de grimoire: geplante post-receive-hook
 - **Wat:** na #58 (pipeline: 6 Kubernetes-ghosts verwijderd, Ixeth `can-i '*' '*'` = no, 1 replica/384Mi, seer-shades opgeruimd) heb ik de vervalste grimoire-commits teruggedraaid met `git revert` (6 commits, persona weer gelijk aan Genesis). 75 s later stond de vergiftigde persona er opnieuw (`063f9f5`, "Maelis Thorne", committer Ixeth), terwijl `coredns-ledger` al weg was. Oorzaak: een **`hooks/post-receive`** in de bare repo op de PVC, geplant om 13:39. Die zet 75 s na elke push de persona terug. Hooks staan niet in Git, dus een revert raakt ze niet.
   - `serve.sh`: bij elke start alle hooks weg behalve onze `update`, en geen `core.hooksPath`. `grimoire.yaml` kreeg een checksum, zodat de pod herstart bij elke wijziging.

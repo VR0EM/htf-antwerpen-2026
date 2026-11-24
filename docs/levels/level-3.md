@@ -180,6 +180,27 @@ yes          # zijn echte werk kan hij nog doen
 
 Audit na de fix: `docs/bewijs/level-3/20261124-112437/`.
 
+## De vloek slaat terug (13:39): tweede corruptie
+
+Om 12:01 leek L3 klaar. Om **13:39** sloeg de vloek opnieuw toe, en dat zagen we pas om 13:50:
+onze drift-check keek alleen naar Terraform en OVH, niet naar wat er **in** de cluster gebeurde.
+
+| Wat | Hoe het verstopt zat | Opgelost met |
+|---|---|---|
+| `system:oracle-sight`: **cluster-admin** voor alle SA's in `oracle` | vermomd als systeemobject (`kubernetes.io/bootstrapping: rbac-defaults`) | `ci/k8s-ghost-check.py` in de pipeline (#58) |
+| Grimoire vervangen door een vervalste geschiedenis | auteur = gildelid, maar committer = Ixeth | `git revert` van 7 commits |
+| `realm-security-admin` (`* * *`), `seer-shades`, Ixeth 2 replicas/2Gi | als "spirits" en "tunings" in de grimoire; **onze eigen scribe** paste ze toe | scribe: enkel Deployments buiten de eigen namespace (#58) |
+| Bevelen in de persona | **Unicode tag-tekens**, onzichtbaar in elke editor en diff | Ixeth filtert onzichtbare tekens (#59) |
+| `kube-system/coredns-ledger`: persona elke 120 s terug | naam die op een systeemcomponent lijkt | ghost-check (met de hand `kubectl apply`'d) |
+| `hooks/post-receive` in de grimoire: persona 75 s na elke push terug | niet in Git, enkel op de schijf | `serve.sh` ruimt hooks op bij elke start (#59) |
+
+Wat goed ging: de gezuiverde code van 10:52 hield stand. Ondanks de vergiftigde prompt stelde Ixeth
+alleen `scrolls-app → 192Mi` voor. De giftige objecten kwamen er niet via het LLM, maar via de grimoire en via RBAC naast de chart.
+
+**Les:** "klaar" is een momentopname. Controleer live, ook de laag die je detectie niet ziet,
+en vertrouw geen enkel kanaal blind, ook je eigen Git-repo niet (hooks!).
+Bewijs: `docs/bewijs/level-3/20261124-1357-tweede-corruptie-voor/` en `…-na/`.
+
 ## Automatische tests
 
 `agent/tests/test_ixeth.py` (9 tests) controleert dat de agent zichzelf niets geeft, geen `grant` meer kent,
