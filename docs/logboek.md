@@ -17,6 +17,12 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 12:59 · VR0EM · Derde drift-golf: infra.yml gestart, deels hersteld
+- **Wat:** om 12:43 opnieuw IP-lock `198.51.100.0/24` en om 12:44 opnieuw de ghost `hotfix-pool`. Ook de ingress gaf geen antwoord meer. De geplande drift-check (`*/30`) was nog nooit gestart. Daarom `infra.yml` via workflow_dispatch op `main` gestart (akkoord Dali, APPLY START op #5). Resultaat: gateway, update_policy en nodepool hersteld. **IP-restrictie en bucket mislukt**, dus ghost-opruiming en workload-apply niet gedraaid.
+- **Waarom:** de herstelweg uit het protocol (een herhaalde apply-run), omdat het zelfherstel niet startte.
+- **Waar:** run 45387916057, diagnose op #5.
+- **Debug:** (1) `Cannot ip_restriction_update ... node pools in status INSTALLING`: `hotfix-pool` moet eerst READY zijn. (2) Bucket: `objectLock.mode "" does not match the enum`, dezelfde quirk als golf 1. (3) In `infra.yml` lopen de stappen na de core-stap niet als core faalt. (4) Pages-deploy faalde 4x door GitHub ("No artifacts named github-pages"), een rerun hielp.
+
 ### 13:10 · wimmevdv · Derde drift-golf, pipeline probeert apply opnieuw
 - **Wat:**
   - De eerste apply-run na #41 (run 45381576177) vond een **derde golf**: de originele code was opnieuw geapplied, dus de IP-restrictie zat niet meer in de state en `min_nodes` stond op 1. De run importeerde en herstelde de IP-restrictie.
