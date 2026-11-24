@@ -18,3 +18,4 @@ deploy.log
 .terraform/
 *.tfstate
 *.tfstate.backup
+*.zip
