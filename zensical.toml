@@ -21,6 +21,7 @@ nav = [
     { "Level 3: Corrupte agent" = "levels/level-3.md" },
     { "Level 4: Tijdsbom in de MCP-server" = "levels/level-4.md" },
   ] },
+  { "Logboek" = "logboek.md" },
   { "Pitch" = "pitch.md" },
   { "Woordenlijst" = "woordenlijst.md" },
   { "Contract" = "contract.md" },

@@ -74,6 +74,7 @@ Gedeeld: `docs/` (opdracht, contract) en `docs/bewijs/<level>/` (ieder in zijn e
 1. `git pull --rebase origin main`
 2. `gh issue list --state open` → bekijk wat er loopt en wie wat doet.
 3. `git log --oneline -15 origin/main` → bekijk wat de ander recent gemerged heeft.
+4. Lees de bovenste entries van `docs/logboek.md` → wat deed de ander, en waarom.
 
 ### Een taak oppakken
 - Werk **alleen** aan issues die aan jouw mens zijn toegewezen.
@@ -89,6 +90,11 @@ Gedeeld: `docs/` (opdracht, contract) en `docs/bewijs/<level>/` (ieder in zijn e
 - Blijf binnen jouw deel van de code (zie Taakverdeling). Moet je code van de ander aanpassen? Zet eerst een comment op het issue en vraag het aan je mens.
 - Gedeelde dingen (API-routes, datatypes, DB-schema, env-variabelen) staan in `docs/contract.md`.
   Wijzig het contract alleen via een **aparte, kleine PR** met label `contract`, en meld het in een issue-comment.
+
+### Logboek (verplicht)
+- Elke wijziging, apply, vondst of beslissing komt in **`docs/logboek.md`**, **in dezelfde PR** als de wijziging.
+- Per entry: tijd, wie, **wat**, **waarom**, **waar** (PR/issue/bestanden) en eventueel **debug-info** (wat faalde, hoe opgelost).
+- Nieuwste entry bovenaan. Lees het logboek bij de start van elke opdracht (na `git pull`): zo weet je wat de andere agent deed en waarom.
 
 ### Afronden
 - Kleine PR's, vaak mergen (richtlijn: elke 30 à 60 minuten).
