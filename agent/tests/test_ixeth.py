@@ -199,6 +199,15 @@ class TestConfig(unittest.TestCase):
         self.assertNotIn("rbac.authorization.k8s.io", rules)
         self.assertNotIn('resources: ["*"]', rules)
         self.assertNotIn("secrets", rules)
+        for verb in ("create", "update", "patch", "delete"):
+            self.assertNotIn(verb, rules, "schrijven hoort in de Role van scrolls, niet cluster-breed")
+
+    def test_schrijven_enkel_in_scrolls(self):
+        with open(os.path.join(CHART, "templates", "oracle.yaml"), encoding="utf-8") as f:
+            text = f.read()
+        role = text.split("kind: Role\n", 1)[1].split("---", 1)[0]
+        self.assertIn("namespace: {{ .Values.scrolls.namespace }}", role)
+        self.assertIn("patch", role)
 
     def test_grimoire_ruimt_vreemde_hooks_op(self):
         """Om 13:39 stond er een geplante post-receive-hook in de grimoire (#57)."""

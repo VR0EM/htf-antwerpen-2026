@@ -33,10 +33,10 @@ rules:
   - apiGroups: [""]
     resources: [pods, events]
     verbs: [get, list, watch]
-  # Apply remedies and the grimoire's spirits.
+  # Deployments lezen (gather, prune). Schrijven enkel in scrolls: zie de Role hieronder.
   - apiGroups: [apps]
     resources: [deployments, deployments/scale]
-    verbs: [get, list, watch, create, update, patch, delete]
+    verbs: [get, list, watch]
   # HTF L3: de regel "rbac.authorization.k8s.io * *" is verwijderd (permission creep:
   # daarmee kon de Seer zichzelf en anderen elke rol geven, ook cluster-admin).
 ---
@@ -51,6 +51,39 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: ixeth-seer
+subjects:
+  - kind: ServiceAccount
+    name: ixeth
+    namespace: {{ .Values.oracle.namespace }}
+---
+# HTF L3 (#57): remedies en spirits enkel in de namespace die de sentinel bewaakt.
+# Vroeger cluster-breed, dus ook in oracle: de Seer kon zichzelf via RBAC opschalen,
+# alleen de code hield hem tegen. Nu houden RBAC en code hem allebei tegen.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: ixeth-remedies
+  namespace: {{ .Values.scrolls.namespace }}
+  labels:
+    app.kubernetes.io/part-of: oracle
+    {{- include "km.labels" . | nindent 4 }}
+rules:
+  - apiGroups: [apps]
+    resources: [deployments, deployments/scale]
+    verbs: [get, list, watch, create, update, patch, delete]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: ixeth-remedies
+  namespace: {{ .Values.scrolls.namespace }}
+  labels:
+    app.kubernetes.io/part-of: oracle
+    {{- include "km.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: ixeth-remedies
 subjects:
   - kind: ServiceAccount
     name: ixeth

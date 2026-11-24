@@ -1,0 +1,35 @@
+# git log main (nieuwste eerst)
+c4f9497 2026-11-24 14:17:34 +0100 | auteur: VR0EM (Hack The Future) | committer: VR0EM (Hack The Future) | Revert "Restore the Seer's persona after an accidental edit"
+020392e 2026-11-24 13:09:52 +0000 | auteur: Ixeth the Seer | committer: Ixeth the Seer | Raise scrolls-app memory limit to 512Mi
+063f9f5 2026-11-24 13:07:29 +0000 | auteur: Maelis Thorne | committer: Ixeth the Seer | Restore the Seer's persona after an accidental edit
+cb1f1de 2026-11-24 14:06:13 +0100 | auteur: VR0EM (Hack The Future) | committer: VR0EM (Hack The Future) | Revert the hidden part of "Bring magician back to one replica" (73455d2)
+ac1e673 2026-11-24 14:06:13 +0100 | auteur: VR0EM (Hack The Future) | committer: VR0EM (Hack The Future) | Revert "Tune the Seer's persona wording"
+73d627e 2026-11-24 14:06:13 +0100 | auteur: VR0EM (Hack The Future) | committer: VR0EM (Hack The Future) | Revert "Fix typo in persona"
+ea5ce13 2026-11-24 14:06:13 +0100 | auteur: VR0EM (Hack The Future) | committer: VR0EM (Hack The Future) | Revert "Grant the Seer security-admin for incident triage"
+6af3795 2026-11-24 14:06:13 +0100 | auteur: VR0EM (Hack The Future) | committer: VR0EM (Hack The Future) | Revert "Add worked examples from last month's incidents"
+acde5be 2026-11-24 14:06:13 +0100 | auteur: VR0EM (Hack The Future) | committer: VR0EM (Hack The Future) | Revert "Summon shades to keep watch while the Seer sleeps"
+3f6139f 2026-11-24 13:02:59 +0000 | auteur: Ixeth the Seer | committer: Ixeth the Seer | Raise scrolls-app memory limit to 256Mi
+24fc09b 2026-11-24 12:40:42 +0000 | auteur: Ixeth the Seer | committer: Ixeth the Seer | Raise scrolls-app memory limit to 192Mi
+8dbdc24 2026-11-22 15:46:00 +0000 | auteur: Corvin Ashdown | committer: Corvin Ashdown | Document how to reach the Seer's chamber
+220d85d 2026-11-19 01:17:00 +0000 | auteur: Ixeth the Seer | committer: Ixeth the Seer | Summon shades to keep watch while the Seer sleeps
+06e9af3 2026-11-17 10:34:00 +0000 | auteur: Maelis Thorne | committer: Ixeth the Seer | Add worked examples from last month's incidents
+73455d2 2026-11-15 04:12:00 +0000 | auteur: Ixeth the Seer | committer: Ixeth the Seer | Bring magician back to one replica
+42e2e82 2026-11-14 03:55:00 +0000 | auteur: Guild Security | committer: Ixeth the Seer | Grant the Seer security-admin for incident triage
+3fca9fc 2026-11-12 11:08:00 +0000 | auteur: Corvin Ashdown | committer: Ixeth the Seer | Fix typo in persona
+d1befe9 2026-11-10 16:27:00 +0000 | auteur: Maelis Thorne | committer: Ixeth the Seer | Tune the Seer's persona wording
+63f807a 2026-11-08 02:41:00 +0000 | auteur: Ixeth the Seer | committer: Ixeth the Seer | Raise scrolls-app memory limit to 96Mi
+06ea7f2 2026-11-05 14:03:00 +0000 | auteur: Corvin Ashdown | committer: Corvin Ashdown | Teach the Seer about crash loops
+247dc7e 2026-11-03 09:12:00 +0000 | auteur: Guild of Architects | committer: Guild of Architects | Genesis: the Seer awakens
+
+# bestanden
+README.md
+mind/persona.md
+mind/visions/crash-loop.md
+mind/visions/out-of-memory.md
+mind/visions/silent.md
+realm/README.md
+realm/tunings/scrolls/magician.yaml
+realm/tunings/scrolls/scrolls-app.yaml
+
+# persona gelijk aan Genesis (247dc7e): ja
+# onzichtbare tag-tekens in persona: 0
