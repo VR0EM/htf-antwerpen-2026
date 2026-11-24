@@ -32,7 +32,12 @@ Benodigdheden: laptop en een Google-account.
 | 16:00–18:00 | Pitches (+ stemmen voor de publieksprijs) |
 | 18:00–21:00 | Slotshow en diner |
 
-> **Nog aan te vullen na de briefing:** technische details per seal (repo's, cluster, toegang), jurycriteria en wat er precies opgeleverd moet worden.
+**De volledige opdracht staat in [`docs/opdracht.md`](docs/opdracht.md). Lees die eerst.** Kort samengevat:
+- Level 1 (Terraform-drift) is de basis. Levels 2 en 3 bouwen voort op dezelfde IaC- en Git-aanpak. Level 4 is een bonus.
+- Regel: **geen handmatige wijzigingen in de console**. Alles loopt via Git en de pipeline.
+- Jurering: pitch, vooruitgang en codekwaliteit. Pitches om 16:00, begin om 15:00 met de voorbereiding.
+
+> **Nog aan te vullen:** toegang (cloud, cluster, repo's), die bij de start wordt uitgedeeld.
 
 ## Taakverdeling
 <!-- Vul in na overleg, bv.:
