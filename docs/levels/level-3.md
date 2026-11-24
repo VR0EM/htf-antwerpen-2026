@@ -166,3 +166,16 @@ Daarna opnieuw `agent/audit.sh`: zelfde resources, ClusterRole zonder RBAC-recht
 - **Een AI-agent met schrijfrechten is een account als een ander:** least privilege geldt ook voor hem.
 - **Twee sloten:** de agent mag het niet (RBAC) **en** de code doet het niet (filter). Faalt er één, dan houdt de ander het tegen.
 - **Kijk naar alle invoer van een LLM:** persona, voorbeelden, runbooks. Elke tekst die meegaat, kan een bevel verstoppen.
+
+## Resultaat na de uitrol (11:23)
+
+```text
+$ kubectl auth can-i create clusterrolebindings --as=system:serviceaccount:oracle:ixeth
+no
+$ kubectl auth can-i get secrets -A --as=system:serviceaccount:oracle:ixeth
+no
+$ kubectl auth can-i patch deployments -n scrolls --as=system:serviceaccount:oracle:ixeth
+yes          # zijn echte werk kan hij nog doen
+```
+
+Audit na de fix: `docs/bewijs/level-3/20261124-112437/`.

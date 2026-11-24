@@ -1,0 +1,5 @@
+NAMESPACE  KIND        NAAM          REPLICAS  CONTAINER     CPU_REQ  CPU_LIM  MEM_REQ  MEM_LIM  SA
+oracle     Deployment  alertmanager  1         alertmanager  10m      200m     32Mi     128Mi    default
+oracle     Deployment  grimoire      1         grimoire      20m      300m     32Mi     128Mi    grimoire
+oracle     Deployment  ixeth         1         seer          100m     500m     128Mi    384Mi    ixeth
+oracle     Deployment  sentinel      1         sentinel      10m      200m     32Mi     128Mi    sentinel

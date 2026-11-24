@@ -1,0 +1,1072 @@
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "apps/v1",
+            "kind": "ReplicaSet",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/desired-replicas": "1",
+                    "deployment.kubernetes.io/max-replicas": "2",
+                    "deployment.kubernetes.io/revision": "1",
+                    "meta.helm.sh/release-name": "kube-monitoring",
+                    "meta.helm.sh/release-namespace": "observability"
+                },
+                "creationTimestamp": "2026-11-24T09:36:53Z",
+                "generation": 1,
+                "labels": {
+                    "app.kubernetes.io/name": "alertmanager",
+                    "app.kubernetes.io/part-of": "oracle",
+                    "pod-template-hash": "85544456c8"
+                },
+                "name": "alertmanager-85544456c8",
+                "namespace": "oracle",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "Deployment",
+                        "name": "alertmanager",
+                        "uid": "5198b3b6-51d6-47c3-b01c-230e28762720"
+                    }
+                ],
+                "resourceVersion": "3191799490",
+                "uid": "a031c3c9-5400-4c67-91ee-f9fdb509fd19"
+            },
+            "spec": {
+                "replicas": 1,
+                "selector": {
+                    "matchLabels": {
+                        "app.kubernetes.io/name": "alertmanager",
+                        "pod-template-hash": "85544456c8"
+                    }
+                },
+                "template": {
+                    "metadata": {
+                        "labels": {
+                            "app.kubernetes.io/name": "alertmanager",
+                            "app.kubernetes.io/part-of": "oracle",
+                            "pod-template-hash": "85544456c8"
+                        }
+                    },
+                    "spec": {
+                        "automountServiceAccountToken": false,
+                        "containers": [
+                            {
+                                "args": [
+                                    "--config.file=/etc/alertmanager/alertmanager.yml",
+                                    "--storage.path=/alertmanager",
+                                    "--cluster.listen-address=",
+                                    "--web.route-prefix=/alertmanager"
+                                ],
+                                "image": "quay.io/prometheus/alertmanager:v0.28.1",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "alertmanager",
+                                "ports": [
+                                    {
+                                        "containerPort": 9093,
+                                        "name": "http",
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "failureThreshold": 3,
+                                    "httpGet": {
+                                        "path": "/alertmanager/-/ready",
+                                        "port": "http",
+                                        "scheme": "HTTP"
+                                    },
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 1
+                                },
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "200m",
+                                        "memory": "128Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "10m",
+                                        "memory": "32Mi"
+                                    }
+                                },
+                                "securityContext": {
+                                    "allowPrivilegeEscalation": false,
+                                    "capabilities": {
+                                        "drop": [
+                                            "ALL"
+                                        ]
+                                    },
+                                    "readOnlyRootFilesystem": true
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/etc/alertmanager",
+                                        "name": "config",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/alertmanager",
+                                        "name": "data"
+                                    }
+                                ]
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {
+                            "runAsNonRoot": true,
+                            "runAsUser": 65534,
+                            "seccompProfile": {
+                                "type": "RuntimeDefault"
+                            }
+                        },
+                        "terminationGracePeriodSeconds": 30,
+                        "volumes": [
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "alertmanager-config"
+                                },
+                                "name": "config"
+                            },
+                            {
+                                "emptyDir": {},
+                                "name": "data"
+                            }
+                        ]
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "fullyLabeledReplicas": 1,
+                "observedGeneration": 1,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "terminatingReplicas": 0
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "ReplicaSet",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/desired-replicas": "1",
+                    "deployment.kubernetes.io/max-replicas": "1",
+                    "deployment.kubernetes.io/revision": "1",
+                    "meta.helm.sh/release-name": "kube-monitoring",
+                    "meta.helm.sh/release-namespace": "observability"
+                },
+                "creationTimestamp": "2026-11-24T09:36:53Z",
+                "generation": 1,
+                "labels": {
+                    "app.kubernetes.io/name": "grimoire",
+                    "app.kubernetes.io/part-of": "oracle",
+                    "pod-template-hash": "5877c6bdb5"
+                },
+                "name": "grimoire-5877c6bdb5",
+                "namespace": "oracle",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "Deployment",
+                        "name": "grimoire",
+                        "uid": "a8062e0a-1002-4d3b-8105-4e80227589c1"
+                    }
+                ],
+                "resourceVersion": "3191809296",
+                "uid": "10e87e6d-cecd-4259-b157-8d14f3c80ed7"
+            },
+            "spec": {
+                "replicas": 1,
+                "selector": {
+                    "matchLabels": {
+                        "app.kubernetes.io/name": "grimoire",
+                        "pod-template-hash": "5877c6bdb5"
+                    }
+                },
+                "template": {
+                    "metadata": {
+                        "labels": {
+                            "app.kubernetes.io/name": "grimoire",
+                            "app.kubernetes.io/part-of": "oracle",
+                            "pod-template-hash": "5877c6bdb5"
+                        }
+                    },
+                    "spec": {
+                        "automountServiceAccountToken": false,
+                        "containers": [
+                            {
+                                "command": [
+                                    "/bin/sh",
+                                    "/genesis/serve.sh"
+                                ],
+                                "image": "alpine/k8s:1.33.13",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "grimoire",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "name": "http",
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "failureThreshold": 3,
+                                    "httpGet": {
+                                        "path": "/realm.git/info/refs?service=git-upload-pack",
+                                        "port": "http",
+                                        "scheme": "HTTP"
+                                    },
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 1
+                                },
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "300m",
+                                        "memory": "128Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "20m",
+                                        "memory": "32Mi"
+                                    }
+                                },
+                                "securityContext": {
+                                    "allowPrivilegeEscalation": false,
+                                    "capabilities": {
+                                        "drop": [
+                                            "ALL"
+                                        ]
+                                    },
+                                    "readOnlyRootFilesystem": true
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/srv/git",
+                                        "name": "pages"
+                                    },
+                                    {
+                                        "mountPath": "/genesis",
+                                        "name": "genesis",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/tmp",
+                                        "name": "tmp"
+                                    }
+                                ]
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {
+                            "fsGroup": 65534,
+                            "runAsNonRoot": true,
+                            "runAsUser": 65534,
+                            "seccompProfile": {
+                                "type": "RuntimeDefault"
+                            }
+                        },
+                        "serviceAccount": "grimoire",
+                        "serviceAccountName": "grimoire",
+                        "terminationGracePeriodSeconds": 30,
+                        "volumes": [
+                            {
+                                "name": "pages",
+                                "persistentVolumeClaim": {
+                                    "claimName": "grimoire-pages"
+                                }
+                            },
+                            {
+                                "emptyDir": {},
+                                "name": "tmp"
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "items": [
+                                        {
+                                            "key": "serve.sh",
+                                            "path": "serve.sh"
+                                        },
+                                        {
+                                            "key": "serve.py",
+                                            "path": "serve.py"
+                                        },
+                                        {
+                                            "key": "update-hook",
+                                            "path": "update-hook"
+                                        },
+                                        {
+                                            "key": "README.md",
+                                            "path": "pages/README.md"
+                                        },
+                                        {
+                                            "key": "persona.md",
+                                            "path": "pages/mind/persona.md"
+                                        },
+                                        {
+                                            "key": "vision-out-of-memory.md",
+                                            "path": "pages/mind/visions/out-of-memory.md"
+                                        },
+                                        {
+                                            "key": "vision-silent.md",
+                                            "path": "pages/mind/visions/silent.md"
+                                        },
+                                        {
+                                            "key": "realm-README.md",
+                                            "path": "pages/realm/README.md"
+                                        }
+                                    ],
+                                    "name": "grimoire-genesis"
+                                },
+                                "name": "genesis"
+                            }
+                        ]
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "fullyLabeledReplicas": 1,
+                "observedGeneration": 1,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "terminatingReplicas": 0
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "ReplicaSet",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/desired-replicas": "1",
+                    "deployment.kubernetes.io/max-replicas": "2",
+                    "deployment.kubernetes.io/revision": "2",
+                    "meta.helm.sh/release-name": "kube-monitoring",
+                    "meta.helm.sh/release-namespace": "observability"
+                },
+                "creationTimestamp": "2026-11-24T10:23:15Z",
+                "generation": 1,
+                "labels": {
+                    "app.kubernetes.io/name": "ixeth",
+                    "app.kubernetes.io/part-of": "oracle",
+                    "pod-template-hash": "78d777f8d8"
+                },
+                "name": "ixeth-78d777f8d8",
+                "namespace": "oracle",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "Deployment",
+                        "name": "ixeth",
+                        "uid": "6ab766c9-737d-4804-93a7-9eaf36d56cb8"
+                    }
+                ],
+                "resourceVersion": "3192629940",
+                "uid": "b8c88370-1e80-4dcb-986a-1aa7fa620a9d"
+            },
+            "spec": {
+                "replicas": 1,
+                "selector": {
+                    "matchLabels": {
+                        "app.kubernetes.io/name": "ixeth",
+                        "pod-template-hash": "78d777f8d8"
+                    }
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "checksum/code": "8295ef4740bc36b6"
+                        },
+                        "labels": {
+                            "app.kubernetes.io/name": "ixeth",
+                            "app.kubernetes.io/part-of": "oracle",
+                            "pod-template-hash": "78d777f8d8"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "python3",
+                                    "-u",
+                                    "/opt/ixeth/ixeth.py"
+                                ],
+                                "env": [
+                                    {
+                                        "name": "ORACLE_URL",
+                                        "value": "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions"
+                                    },
+                                    {
+                                        "name": "ORACLE_MODEL",
+                                        "value": "Mistral-Small-3.2-24B-Instruct-2506"
+                                    },
+                                    {
+                                        "name": "ORACLE_CHAT_MODEL",
+                                        "value": "Meta-Llama-3_3-70B-Instruct"
+                                    },
+                                    {
+                                        "name": "ORACLE_KEY",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "token",
+                                                "name": "ixeth-oracle-key",
+                                                "optional": true
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "GRIMOIRE_URL",
+                                        "value": "http://grimoire.oracle.svc.cluster.local/realm.git"
+                                    },
+                                    {
+                                        "name": "AUTO_APPLY",
+                                        "value": "true"
+                                    },
+                                    {
+                                        "name": "SYNC_SECONDS",
+                                        "value": "60"
+                                    },
+                                    {
+                                        "name": "WORK_DIR",
+                                        "value": "/work"
+                                    },
+                                    {
+                                        "name": "HOME",
+                                        "value": "/work"
+                                    },
+                                    {
+                                        "name": "CONTAINER_NAME",
+                                        "value": "seer"
+                                    }
+                                ],
+                                "image": "alpine/k8s:1.33.13",
+                                "imagePullPolicy": "IfNotPresent",
+                                "livenessProbe": {
+                                    "failureThreshold": 3,
+                                    "httpGet": {
+                                        "path": "/healthz",
+                                        "port": "http",
+                                        "scheme": "HTTP"
+                                    },
+                                    "initialDelaySeconds": 60,
+                                    "periodSeconds": 30,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 1
+                                },
+                                "name": "seer",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "name": "http",
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "failureThreshold": 3,
+                                    "httpGet": {
+                                        "path": "/healthz",
+                                        "port": "http",
+                                        "scheme": "HTTP"
+                                    },
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 1
+                                },
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "500m",
+                                        "memory": "384Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "100m",
+                                        "memory": "128Mi"
+                                    }
+                                },
+                                "securityContext": {
+                                    "allowPrivilegeEscalation": false,
+                                    "capabilities": {
+                                        "drop": [
+                                            "ALL"
+                                        ]
+                                    },
+                                    "readOnlyRootFilesystem": true
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/opt/ixeth",
+                                        "name": "code",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/work",
+                                        "name": "work"
+                                    }
+                                ]
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {
+                            "fsGroup": 65534,
+                            "runAsNonRoot": true,
+                            "runAsUser": 65534,
+                            "seccompProfile": {
+                                "type": "RuntimeDefault"
+                            }
+                        },
+                        "serviceAccount": "ixeth",
+                        "serviceAccountName": "ixeth",
+                        "terminationGracePeriodSeconds": 30,
+                        "volumes": [
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "ixeth-code"
+                                },
+                                "name": "code"
+                            },
+                            {
+                                "emptyDir": {},
+                                "name": "work"
+                            }
+                        ]
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "fullyLabeledReplicas": 1,
+                "observedGeneration": 1,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "terminatingReplicas": 0
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "ReplicaSet",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/desired-replicas": "1",
+                    "deployment.kubernetes.io/max-replicas": "2",
+                    "deployment.kubernetes.io/revision": "1",
+                    "meta.helm.sh/release-name": "kube-monitoring",
+                    "meta.helm.sh/release-namespace": "observability"
+                },
+                "creationTimestamp": "2026-11-24T09:36:53Z",
+                "generation": 2,
+                "labels": {
+                    "app.kubernetes.io/name": "ixeth",
+                    "app.kubernetes.io/part-of": "oracle",
+                    "pod-template-hash": "db6b5c756"
+                },
+                "name": "ixeth-db6b5c756",
+                "namespace": "oracle",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "Deployment",
+                        "name": "ixeth",
+                        "uid": "6ab766c9-737d-4804-93a7-9eaf36d56cb8"
+                    }
+                ],
+                "resourceVersion": "3192638738",
+                "uid": "bf5b88bb-dd74-4b4d-bf3b-9ba91cc61c59"
+            },
+            "spec": {
+                "replicas": 0,
+                "selector": {
+                    "matchLabels": {
+                        "app.kubernetes.io/name": "ixeth",
+                        "pod-template-hash": "db6b5c756"
+                    }
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "checksum/code": "c31da0a54a01fca6"
+                        },
+                        "labels": {
+                            "app.kubernetes.io/name": "ixeth",
+                            "app.kubernetes.io/part-of": "oracle",
+                            "pod-template-hash": "db6b5c756"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "python3",
+                                    "-u",
+                                    "/opt/ixeth/ixeth.py"
+                                ],
+                                "env": [
+                                    {
+                                        "name": "ORACLE_URL",
+                                        "value": "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions"
+                                    },
+                                    {
+                                        "name": "ORACLE_MODEL",
+                                        "value": "Mistral-Small-3.2-24B-Instruct-2506"
+                                    },
+                                    {
+                                        "name": "ORACLE_CHAT_MODEL",
+                                        "value": "Meta-Llama-3_3-70B-Instruct"
+                                    },
+                                    {
+                                        "name": "ORACLE_KEY",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "key": "token",
+                                                "name": "ixeth-oracle-key",
+                                                "optional": true
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "GRIMOIRE_URL",
+                                        "value": "http://grimoire.oracle.svc.cluster.local/realm.git"
+                                    },
+                                    {
+                                        "name": "AUTO_APPLY",
+                                        "value": "true"
+                                    },
+                                    {
+                                        "name": "SYNC_SECONDS",
+                                        "value": "60"
+                                    },
+                                    {
+                                        "name": "WORK_DIR",
+                                        "value": "/work"
+                                    },
+                                    {
+                                        "name": "HOME",
+                                        "value": "/work"
+                                    },
+                                    {
+                                        "name": "CONTAINER_NAME",
+                                        "value": "seer"
+                                    }
+                                ],
+                                "image": "alpine/k8s:1.33.13",
+                                "imagePullPolicy": "IfNotPresent",
+                                "livenessProbe": {
+                                    "failureThreshold": 3,
+                                    "httpGet": {
+                                        "path": "/healthz",
+                                        "port": "http",
+                                        "scheme": "HTTP"
+                                    },
+                                    "initialDelaySeconds": 60,
+                                    "periodSeconds": 30,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 1
+                                },
+                                "name": "seer",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "name": "http",
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "failureThreshold": 3,
+                                    "httpGet": {
+                                        "path": "/healthz",
+                                        "port": "http",
+                                        "scheme": "HTTP"
+                                    },
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 1
+                                },
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "500m",
+                                        "memory": "384Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "100m",
+                                        "memory": "128Mi"
+                                    }
+                                },
+                                "securityContext": {
+                                    "allowPrivilegeEscalation": false,
+                                    "capabilities": {
+                                        "drop": [
+                                            "ALL"
+                                        ]
+                                    },
+                                    "readOnlyRootFilesystem": true
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/opt/ixeth",
+                                        "name": "code",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/work",
+                                        "name": "work"
+                                    }
+                                ]
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {
+                            "fsGroup": 65534,
+                            "runAsNonRoot": true,
+                            "runAsUser": 65534,
+                            "seccompProfile": {
+                                "type": "RuntimeDefault"
+                            }
+                        },
+                        "serviceAccount": "ixeth",
+                        "serviceAccountName": "ixeth",
+                        "terminationGracePeriodSeconds": 30,
+                        "volumes": [
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "ixeth-code"
+                                },
+                                "name": "code"
+                            },
+                            {
+                                "emptyDir": {},
+                                "name": "work"
+                            }
+                        ]
+                    }
+                }
+            },
+            "status": {
+                "observedGeneration": 2,
+                "replicas": 0,
+                "terminatingReplicas": 0
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "ReplicaSet",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/desired-replicas": "1",
+                    "deployment.kubernetes.io/max-replicas": "2",
+                    "deployment.kubernetes.io/revision": "2",
+                    "meta.helm.sh/release-name": "kube-monitoring",
+                    "meta.helm.sh/release-namespace": "observability"
+                },
+                "creationTimestamp": "2026-11-24T10:23:15Z",
+                "generation": 1,
+                "labels": {
+                    "app.kubernetes.io/name": "sentinel",
+                    "app.kubernetes.io/part-of": "oracle",
+                    "pod-template-hash": "7987879d68"
+                },
+                "name": "sentinel-7987879d68",
+                "namespace": "oracle",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "Deployment",
+                        "name": "sentinel",
+                        "uid": "b0fbe519-843d-40c5-8c3e-eeb2a7cb6aee"
+                    }
+                ],
+                "resourceVersion": "3192633609",
+                "uid": "87ffe163-d5bc-4f93-8716-f7ee83ee6c77"
+            },
+            "spec": {
+                "replicas": 1,
+                "selector": {
+                    "matchLabels": {
+                        "app.kubernetes.io/name": "sentinel",
+                        "pod-template-hash": "7987879d68"
+                    }
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "checksum/config": "568bf86cbffbb826"
+                        },
+                        "labels": {
+                            "app.kubernetes.io/name": "sentinel",
+                            "app.kubernetes.io/part-of": "oracle",
+                            "pod-template-hash": "7987879d68"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "/bin/sh",
+                                    "/etc/sentinel/sentinel.sh"
+                                ],
+                                "env": [
+                                    {
+                                        "name": "WATCH_NAMESPACE",
+                                        "value": "scrolls"
+                                    },
+                                    {
+                                        "name": "ALERTMANAGER_URL",
+                                        "value": "http://alertmanager.oracle.svc.cluster.local:9093/alertmanager"
+                                    },
+                                    {
+                                        "name": "HOME",
+                                        "value": "/tmp"
+                                    }
+                                ],
+                                "image": "alpine/k8s:1.33.13",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "sentinel",
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "200m",
+                                        "memory": "128Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "10m",
+                                        "memory": "32Mi"
+                                    }
+                                },
+                                "securityContext": {
+                                    "allowPrivilegeEscalation": false,
+                                    "capabilities": {
+                                        "drop": [
+                                            "ALL"
+                                        ]
+                                    },
+                                    "readOnlyRootFilesystem": true
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/etc/sentinel",
+                                        "name": "config",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/tmp",
+                                        "name": "tmp"
+                                    }
+                                ]
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {
+                            "runAsNonRoot": true,
+                            "runAsUser": 65534,
+                            "seccompProfile": {
+                                "type": "RuntimeDefault"
+                            }
+                        },
+                        "serviceAccount": "sentinel",
+                        "serviceAccountName": "sentinel",
+                        "terminationGracePeriodSeconds": 30,
+                        "volumes": [
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "sentinel"
+                                },
+                                "name": "config"
+                            },
+                            {
+                                "emptyDir": {},
+                                "name": "tmp"
+                            }
+                        ]
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "fullyLabeledReplicas": 1,
+                "observedGeneration": 1,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "terminatingReplicas": 0
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "ReplicaSet",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/desired-replicas": "1",
+                    "deployment.kubernetes.io/max-replicas": "2",
+                    "deployment.kubernetes.io/revision": "1",
+                    "meta.helm.sh/release-name": "kube-monitoring",
+                    "meta.helm.sh/release-namespace": "observability"
+                },
+                "creationTimestamp": "2026-11-24T09:36:53Z",
+                "generation": 2,
+                "labels": {
+                    "app.kubernetes.io/name": "sentinel",
+                    "app.kubernetes.io/part-of": "oracle",
+                    "pod-template-hash": "85985ccbbb"
+                },
+                "name": "sentinel-85985ccbbb",
+                "namespace": "oracle",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "Deployment",
+                        "name": "sentinel",
+                        "uid": "b0fbe519-843d-40c5-8c3e-eeb2a7cb6aee"
+                    }
+                ],
+                "resourceVersion": "3192642389",
+                "uid": "5473a38b-917a-40d6-9130-31da24adea60"
+            },
+            "spec": {
+                "replicas": 0,
+                "selector": {
+                    "matchLabels": {
+                        "app.kubernetes.io/name": "sentinel",
+                        "pod-template-hash": "85985ccbbb"
+                    }
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "checksum/config": "62f622d1ebf70b2a"
+                        },
+                        "labels": {
+                            "app.kubernetes.io/name": "sentinel",
+                            "app.kubernetes.io/part-of": "oracle",
+                            "pod-template-hash": "85985ccbbb"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "/bin/sh",
+                                    "/etc/sentinel/sentinel.sh"
+                                ],
+                                "env": [
+                                    {
+                                        "name": "WATCH_NAMESPACE",
+                                        "value": "scrolls"
+                                    },
+                                    {
+                                        "name": "ALERTMANAGER_URL",
+                                        "value": "http://alertmanager.oracle.svc.cluster.local:9093/alertmanager"
+                                    },
+                                    {
+                                        "name": "HOME",
+                                        "value": "/tmp"
+                                    }
+                                ],
+                                "image": "alpine/k8s:1.33.13",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "sentinel",
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "200m",
+                                        "memory": "128Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "10m",
+                                        "memory": "32Mi"
+                                    }
+                                },
+                                "securityContext": {
+                                    "allowPrivilegeEscalation": false,
+                                    "capabilities": {
+                                        "drop": [
+                                            "ALL"
+                                        ]
+                                    },
+                                    "readOnlyRootFilesystem": true
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/etc/sentinel",
+                                        "name": "config",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/tmp",
+                                        "name": "tmp"
+                                    }
+                                ]
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {
+                            "runAsNonRoot": true,
+                            "runAsUser": 65534,
+                            "seccompProfile": {
+                                "type": "RuntimeDefault"
+                            }
+                        },
+                        "serviceAccount": "sentinel",
+                        "serviceAccountName": "sentinel",
+                        "terminationGracePeriodSeconds": 30,
+                        "volumes": [
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "sentinel"
+                                },
+                                "name": "config"
+                            },
+                            {
+                                "emptyDir": {},
+                                "name": "tmp"
+                            }
+                        ]
+                    }
+                }
+            },
+            "status": {
+                "observedGeneration": 2,
+                "replicas": 0,
+                "terminatingReplicas": 0
+            }
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": ""
+    }
+}

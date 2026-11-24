@@ -1,0 +1,6 @@
+$ kubectl get pods -n oracle -o wide
+NAME                            READY   STATUS    RESTARTS   AGE   IP          NODE                       NOMINATED NODE   READINESS GATES
+alertmanager-85544456c8-wpjm2   1/1     Running   0          47m   10.2.1.3    achrona-pool-node-979479   <none>           <none>
+grimoire-5877c6bdb5-5kzxv       1/1     Running   0          47m   10.2.1.11   achrona-pool-node-979479   <none>           <none>
+ixeth-78d777f8d8-w6gtp          1/1     Running   0          84s   10.2.1.13   achrona-pool-node-979479   <none>           <none>
+sentinel-7987879d68-nkgs9       1/1     Running   0          84s   10.2.0.8    achrona-pool-node-8839b8   <none>           <none>

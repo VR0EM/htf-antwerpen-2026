@@ -134,3 +134,16 @@ diff -r docs/bewijs/level-4/<10:45> docs/bewijs/level-4/<na-fix>
 - **Een AI is maar zo betrouwbaar als zijn tools.** Een MCP-server is kritieke infrastructuur.
 - **Verdachte patronen:** iets met de klok, met toeval, of iets dat ingebouwde functies overschrijft (`json.dumps = ...`).
 - **Bewijs eerst, dan fixen:** zonder de baseline van 10:45 kun je niet tonen dat het eerst wél klopte.
+
+## Resultaat na de uitrol (11:23)
+
+De cluster draait `realm/ancient-oracle:1.0.1`. Dezelfde reeks calls als om 10:45:
+
+| Moment | namespaces | nodes | pods | deployments | services | pods in scrolls | deployments in oracle |
+|---|---|---|---|---|---|---|---|
+| 10:45 (oude server, voor de bom) | 9 | 2 | 21 | 14 | 9 | 2 | 4 |
+| 11:24 (nieuwe server) | 9 | 2 | 21 | 14 | 9 | 2 | 4 |
+
+!!! tip "Het echte bewijs komt na 12:00"
+    Voer `mcp-server/baseline.sh` opnieuw uit om ±13:00 en ±15:30. Met de oude server zouden de cijfers daar
+    afwijken (of leeg zijn); met de nieuwe moeten ze gelijk blijven aan die van de cluster.
