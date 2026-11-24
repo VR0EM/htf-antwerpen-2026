@@ -17,6 +17,30 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 12:10 · wimmevdv · CI/CD-pipeline + drift- en ghost-check (level 1)
+- **Wat:**
+  - `.github/workflows/infra.yml`:
+    - bij een PR: `fmt -check`, `validate` en `plan` voor `core/` en `workload/`, met het plan als PR-comment;
+    - bij een push naar `main`: `apply` (eerst core, dan workload), in één concurrency-groep `terraform-apply`.
+  - `.github/workflows/drift.yml`: elke 30 min `plan -detailed-exitcode` op beide stacks, plus `ci/ghost-check.py` (OVH-API tegenover de state). Bij drift: een issue met label `drift` en een rode run.
+  - Lockfiles met hashes voor `linux_amd64` en `windows_amd64` (`workload/.terraform.lock.hcl` stond nog niet in git).
+  - GitHub Secrets gezet: `OVH_*` en `AWS_*` (de state-bucket), met toestemming van Wimme.
+- **Waarom:**
+  - Git wordt de enige weg naar de cloud.
+  - De concurrency-groep vervangt de ontbrekende state locking.
+  - Night-shift kan opnieuw toeslaan, en `plan` ziet geen ghosts.
+- **Waar:** PR van issue #30.
+- **Debug:**
+  - Ghost-check lokaal getest: 0 ghosts op de echte state. Met een state zonder user/nodepool vond hij ze wel (exit 2).
+  - De OVH-API geeft soms een 500 (vooral `/instance`), dus het script probeert tot 5 keer opnieuw.
+  - De drift-check heeft een eigen concurrency-groep, omdat GitHub per groep maar 1 wachtende run bijhoudt. Een drift-run mag een wachtende apply nooit wegduwen.
+- **Afspraak:** een manuele `terraform apply` is niet meer de bedoeling. Merge naar `main` en de pipeline applyt.
+
+### 11:50 · wimmevdv · Drift op workload: L3/L4-fixes teruggedraaid om 11:34
+- **Wat:** `helm history` toont om 11:34:35/37 een upgrade met **oude code**: `kube-monitoring` 0.4.2 → 0.4.1 en de ancient-oracle-image 1.0.1 → 1.0.0. De workload-state is mee bijgewerkt, dus het was een `terraform apply` met de originele zip-code. Er stond geen APPLY-melding, en wimmevdv deed om 11:34 alleen core.
+- **Waarom belangrijk:** de corrupte Ixeth en de tijdsbom in de Oracle draaien weer live.
+- **Waar:** gemeld op #7 en #8. Herstel = een apply van `main` op workload: de eerste run van de nieuwe pipeline doet dat.
+
 ### 11:41 · VR0EM · Handboek publiek via GitHub Pages
 - **Wat:** GitHub Pages aangezet (build via workflow), `.github/workflows/docs.yml` bouwt `docs/` met Zensical bij elke push naar `main`. `site_url` in `zensical.toml`. Regel in `CLAUDE.md`: `docs/` is publiek, dus nooit secrets.
 - **Waarom:** het handboek bereikbaar voor team en jury op <https://vr0em.github.io/htf-antwerpen-2026/>. Beslissing van Dali.

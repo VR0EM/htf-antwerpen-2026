@@ -1,0 +1,131 @@
+# Level 1 (eigenaar wimmevdv): Git is de enige weg naar de cloud.
+#
+#   pull request  -> fmt, validate en plan voor core/ en workload/, plan als PR-comment
+#   push op main  -> apply: eerst core/, dan workload/ (workload leest de state van core)
+#
+# Er is geen state locking in de S3-backend. Daarom lopen alle applies (en de
+# drift-check) in één concurrency-groep: nooit twee tegelijk, en niets wordt afgebroken.
+# Manueel `terraform apply` is niet meer de bedoeling: merge naar main.
+name: Infra (Terraform)
+
+on:
+  pull_request:
+    paths:
+      - "core/**"
+      - "workload/**"
+      - ".github/workflows/infra.yml"
+  push:
+    branches: [main]
+    paths:
+      - "core/**"
+      - "workload/**"
+      - ".github/workflows/infra.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  TF_IN_AUTOMATION: "true"
+  TF_INPUT: "false"
+  OVH_ENDPOINT: ${{ secrets.OVH_ENDPOINT }}
+  OVH_CLIENT_ID: ${{ secrets.OVH_CLIENT_ID }}
+  OVH_CLIENT_SECRET: ${{ secrets.OVH_CLIENT_SECRET }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+jobs:
+  plan:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: plan-${{ github.ref }}
+      cancel-in-progress: true
+    strategy:
+      fail-fast: false
+      matrix:
+        stack: [core, workload]
+    defaults:
+      run:
+        working-directory: ${{ matrix.stack }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.17.2
+          terraform_wrapper: false
+
+      - name: Format
+        run: terraform fmt -check -recursive -diff
+
+      - name: Init
+        run: terraform init -backend-config=backend.hcl
+
+      - name: Validate
+        run: terraform validate -no-color
+
+      - name: Plan
+        id: plan
+        run: |
+          set +e
+          terraform plan -no-color -detailed-exitcode -out=tfplan > plan.txt 2>&1
+          code=$?
+          set -e
+          cat plan.txt
+          echo "exitcode=$code" >> "$GITHUB_OUTPUT"
+          # 0 = niets te doen, 2 = wijzigingen, 1 = fout
+          [ "$code" -ne 1 ]
+
+      - name: Plan als comment op de PR
+        if: always() && steps.plan.outcome != 'skipped'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          summary=$(grep -E '^(Plan:|No changes\.|Error:)' plan.txt | head -3)
+          {
+            echo "### Terraform plan: \`${{ matrix.stack }}/\`"
+            echo
+            echo "**${summary:-zie log}**"
+            echo
+            echo "<details><summary>Volledig plan</summary>"
+            echo
+            echo '```'
+            grep -vE 'Refreshing state|Reading\.\.\.|Read complete' plan.txt | tail -c 60000
+            echo '```'
+            echo "</details>"
+          } > comment.md
+          gh pr comment "${{ github.event.pull_request.number }}" --body-file comment.md
+
+  apply:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: terraform-apply
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.17.2
+          terraform_wrapper: false
+
+      - name: Apply core
+        working-directory: core
+        run: |
+          terraform init -backend-config=backend.hcl
+          terraform plan -no-color -out=tfplan | tee plan.txt
+          terraform apply -no-color tfplan
+          echo "### core/" >> "$GITHUB_STEP_SUMMARY"
+          grep -E '^(Plan:|No changes\.)' plan.txt >> "$GITHUB_STEP_SUMMARY" || true
+
+      - name: Apply workload
+        working-directory: workload
+        run: |
+          terraform init -backend-config=backend.hcl
+          terraform plan -no-color -out=tfplan | tee plan.txt
+          terraform apply -no-color tfplan
+          echo "### workload/" >> "$GITHUB_STEP_SUMMARY"
+          grep -E '^(Plan:|No changes\.)' plan.txt >> "$GITHUB_STEP_SUMMARY" || true
