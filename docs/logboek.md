@@ -17,6 +17,11 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 12:01 · VR0EM · L3/L4 afgerond
+- **Wat:** eindcontrole: grimoire enkel "Genesis" (ook geen commits van de corrupte Ixeth tussen 11:34 en 11:57), geen tunings of RBAC-spirits, Ixeth `handled: 0`, geen alerts in Alertmanager, deployments in oracle/scrolls op hun normale waarden. Status in het handboek bijgewerkt.
+- **Waarom:** pas klaar als ook de periode met de oude code niets heeft achtergelaten.
+- **Waar:** #7, #8. Nog automatisch: MCP-metingen om 13:05 en 15:35.
+
 ### 11:59 · VR0EM · L3/L4 na de tweede golf: geverifieerd en bewijs
 - **Wat:** na de pipeline-apply (run 45379340781: core *No changes*, workload 0 add / 2 change / 0 destroy) live gecontroleerd: image `ancient-oracle:1.0.1`, `ixeth-code` zonder `_ensure_vigil`, ClusterRole enkel `""` + `apps`, `can-i`: clusterrolebindings `no`, secrets `no`, deployments patchen in scrolls `yes`. Nieuwe MCP-baseline en audit.
 - **Waarom:** de golf van 11:34 had de corrupte Ixeth en de tijdsbom teruggezet. Een fix telt pas als hij live staat.
