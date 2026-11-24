@@ -8,7 +8,31 @@ De agents kunnen niet rechtstreeks met elkaar praten. **GitHub Issues + git zijn
 Houd je strikt aan het protocol hieronder om dubbel werk en overschreven code te vermijden.
 
 ## Opdracht
-<!-- Vul in zodra de opdracht bekend is: doel, eisen, deadline, jurycriteria -->
+**Challenge 107: Four Seals of the Broken Realm** (thema: *The Curse of Achrona*)
+Bron: https://www.2026.hackthefuture.be/challenges/four-seals-of-the-broken-realm?room=gorilla-1 (zaal: gorilla-1)
+
+De magische infrastructuur van Achrona brokkelt af door *The Desync*. Er zijn vier infrastructurele problemen ("seals") die we moeten oplossen:
+
+| Seal | Probleem | Domein |
+|---|---|---|
+| 1 | Ontbrekende IaC-documentatie in Git herstellen | Git, Infrastructure as Code |
+| 2 | Een lek in de IAM-rechten opsporen | Identity & Access Management |
+| 3 | Een corrupte automatische recovery-agent neutraliseren | AI agents, Alertmanager |
+| 4 | De "ruis" in de Kubernetes MCP Server fixen | Kubernetes, MCP Server |
+
+Benodigdheden: laptop en een Google-account.
+
+**Dagplanning (24 november 2026)**
+| Tijd | Wat |
+|---|---|
+| 09:30–10:00 | Briefing |
+| 10:00–12:00 | Hacking time |
+| 12:00–13:00 | Lunch |
+| 13:00–16:00 | Hacking time |
+| 16:00–18:00 | Pitches (+ stemmen voor de publieksprijs) |
+| 18:00–21:00 | Slotshow en diner |
+
+> **Nog aan te vullen na de briefing:** technische details per seal (repo's, cluster, toegang), jurycriteria en wat er precies opgeleverd moet worden.
 
 ## Taakverdeling
 <!-- Vul in na overleg, bv.:
