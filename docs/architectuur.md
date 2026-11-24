@@ -21,7 +21,7 @@ flowchart LR
         bucket[("Bucket scrolls<br/>versioned + encrypted")]
         iam["IAM-user scrolls_app<br/>alleen bucket scrolls"]
         subgraph kube["Managed Kubernetes"]
-            lb["Load balancer<br/>91.134.93.91"]
+            lb["Load balancer<br/>141.95.179.84"]
             apps["Namespaces: traefik, scrolls,<br/>observability, oracle, ancient"]
         end
     end
@@ -68,7 +68,7 @@ Waarom splitsen?
 ```mermaid
 flowchart TB
     internet(("Internet"))
-    internet -->|":80"| lb["OVH Load Balancer (small)<br/>publiek 91.134.93.91 → VIP 10.10.0.241"]
+    internet -->|":80"| lb["OVH Load Balancer (small)<br/>publiek 141.95.179.84 → VIP 10.10.0.27"]
 
     subgraph vrack["Privénetwerk achrona-net (vRack VLAN 103, 10.10.0.0/24)"]
         direction TB
@@ -118,7 +118,7 @@ sequenceDiagram
     participant LB as Load balancer
     participant T as Traefik
     participant S as Service (bv. chamber)
-    B->>LB: GET http://91.134.93.91/
+    B->>LB: GET http://141.95.179.84/
     LB->>T: doorsturen naar een node
     T-->>B: 401, eerst inloggen (guild)
     B->>T: opnieuw, met wachtwoord
