@@ -1,0 +1,14 @@
+{
+  "jsonrpc": "2.0",
+  "id": 1795530623050770147,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"count\": 2,\n  \"pods\": [\n    {\n      \"age\": \"1h\",\n      \"name\": \"magician-7ff57554b4-gnzg4\",\n      \"namespace\": \"scrolls\",\n      \"node\": \"achrona-pool-node-979479\",\n      \"phase\": \"Running\",\n      \"ready\": \"1/1\",\n      \"restarts\": 0\n    },\n    {\n      \"age\": \"1m\",\n      \"name\": \"scrolls-app-79974b7899-2kr5p\",\n      \"namespace\": \"scrolls\",\n      \"node\": \"achrona-pool-node-979479\",\n      \"phase\": \"Running\",\n      \"ready\": \"1/1\",\n      \"restarts\": 0\n    }\n  ]\n}"
+      }
+    ],
+    "isError": false
+  },
+  "opgehaald": "2026-11-24T15:30:23+01:00"
+}
