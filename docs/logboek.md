@@ -17,6 +17,11 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 13:07 · VR0EM · Pages-workflow in 2 jobs
+- **Wat:** `docs.yml` opgesplitst in `build` (upload) en `deploy` (`needs: build`), zoals het officiële Pages-voorbeeld.
+- **Waarom:** in één job vond `deploy-pages` het artefact vaak niet (6x "No artifacts named github-pages"), terwijl de upload lukte en githubstatus "operational" zei. Een rerun hielp soms, niet altijd.
+- **Waar:** deze PR.
+
 ### 13:05 · VR0EM · Stappenplan in het handboek
 - **Wat:** sectie `docs/stappenplan/` met 7 pagina's (voorbereiding, L1–L4, pipeline, bewijs en pitch). Per stap: doel, commando's, checkpoint, valkuil en "probeer zelf". L1 gebaseerd op het drift-rapport van wimmevdv, L2 als **plan** (nog niet uitgevoerd).
 - **Waarom:** het team moet alles stap voor stap kunnen naspelen en zelf proberen.
