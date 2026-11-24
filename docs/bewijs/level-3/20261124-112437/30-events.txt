@@ -1,0 +1,57 @@
+$ kubectl get events -n oracle --sort-by=.lastTimestamp
+LAST SEEN   TYPE      REASON                   OBJECT                                 MESSAGE
+47m         Warning   FailedScheduling         pod/grimoire-5877c6bdb5-5kzxv          0/2 nodes are available: pod has unbound immediate PersistentVolumeClaims. not found
+83s         Normal    Scheduled                pod/sentinel-7987879d68-nkgs9          Successfully assigned oracle/sentinel-7987879d68-nkgs9 to achrona-pool-node-8839b8
+47m         Normal    Scheduled                pod/ixeth-db6b5c756-jbbxm              Successfully assigned oracle/ixeth-db6b5c756-jbbxm to achrona-pool-node-979479
+47m         Normal    Scheduled                pod/sentinel-85985ccbbb-x262d          Successfully assigned oracle/sentinel-85985ccbbb-x262d to achrona-pool-node-979479
+84s         Normal    Scheduled                pod/ixeth-78d777f8d8-w6gtp             Successfully assigned oracle/ixeth-78d777f8d8-w6gtp to achrona-pool-node-979479
+47m         Normal    Scheduled                pod/alertmanager-85544456c8-wpjm2      Successfully assigned oracle/alertmanager-85544456c8-wpjm2 to achrona-pool-node-979479
+47m         Normal    Scheduled                pod/grimoire-5877c6bdb5-5kzxv          Successfully assigned oracle/grimoire-5877c6bdb5-5kzxv to achrona-pool-node-979479
+47m         Warning   FailedScheduling         pod/grimoire-5877c6bdb5-5kzxv          0/2 nodes are available: pod has unbound immediate PersistentVolumeClaims. not found
+47m         Normal    SuccessfulCreate         replicaset/grimoire-5877c6bdb5         Created pod: grimoire-5877c6bdb5-5kzxv
+47m         Normal    ExternalProvisioning     persistentvolumeclaim/grimoire-pages   Waiting for a volume to be created either by the external provisioner 'cinder.csi.openstack.org' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+47m         Normal    ScalingReplicaSet        deployment/ixeth                       Scaled up replica set ixeth-db6b5c756 from 0 to 1
+47m         Normal    ScalingReplicaSet        deployment/alertmanager                Scaled up replica set alertmanager-85544456c8 from 0 to 1
+47m         Normal    ScalingReplicaSet        deployment/sentinel                    Scaled up replica set sentinel-85985ccbbb from 0 to 1
+47m         Normal    SuccessfulCreate         replicaset/alertmanager-85544456c8     Created pod: alertmanager-85544456c8-wpjm2
+47m         Normal    SuccessfulCreate         replicaset/sentinel-85985ccbbb         Created pod: sentinel-85985ccbbb-x262d
+47m         Normal    ScalingReplicaSet        deployment/grimoire                    Scaled up replica set grimoire-5877c6bdb5 from 0 to 1
+47m         Normal    ProvisioningSucceeded    persistentvolumeclaim/grimoire-pages   Successfully provisioned volume ovh-managed-kubernetes-924056-pvc-d365ce52-5028-429c-a26b-6ca2412ab399
+47m         Normal    Provisioning             persistentvolumeclaim/grimoire-pages   External provisioner is provisioning volume for claim "oracle/grimoire-pages"
+47m         Normal    SuccessfulCreate         replicaset/ixeth-db6b5c756             Created pod: ixeth-db6b5c756-jbbxm
+47m         Normal    Pulling                  pod/alertmanager-85544456c8-wpjm2      Pulling image "quay.io/prometheus/alertmanager:v0.28.1"
+47m         Normal    Pulling                  pod/sentinel-85985ccbbb-x262d          Pulling image "alpine/k8s:1.33.13"
+47m         Normal    Pulling                  pod/ixeth-db6b5c756-jbbxm              Pulling image "alpine/k8s:1.33.13"
+47m         Normal    Started                  pod/alertmanager-85544456c8-wpjm2      Container started
+47m         Normal    Created                  pod/alertmanager-85544456c8-wpjm2      Container created
+47m         Normal    Pulled                   pod/alertmanager-85544456c8-wpjm2      Successfully pulled image "quay.io/prometheus/alertmanager:v0.28.1" in 2.286s (2.286s including waiting). Image size: 35015543 bytes.
+47m         Normal    SuccessfulAttachVolume   pod/grimoire-5877c6bdb5-5kzxv          AttachVolume.Attach succeeded for volume "ovh-managed-kubernetes-924056-pvc-d365ce52-5028-429c-a26b-6ca2412ab399"
+47m         Normal    Pulling                  pod/grimoire-5877c6bdb5-5kzxv          Pulling image "alpine/k8s:1.33.13"
+47m         Normal    Pulled                   pod/sentinel-85985ccbbb-x262d          Successfully pulled image "alpine/k8s:1.33.13" in 606ms (20.476s including waiting). Image size: 314988667 bytes.
+47m         Normal    Created                  pod/sentinel-85985ccbbb-x262d          Container created
+47m         Normal    Started                  pod/sentinel-85985ccbbb-x262d          Container started
+47m         Normal    Pulled                   pod/ixeth-db6b5c756-jbbxm              Successfully pulled image "alpine/k8s:1.33.13" in 16.145s (19.9s including waiting). Image size: 314988667 bytes.
+47m         Normal    Created                  pod/ixeth-db6b5c756-jbbxm              Container created
+47m         Normal    Started                  pod/ixeth-db6b5c756-jbbxm              Container started
+47m         Normal    Created                  pod/grimoire-5877c6bdb5-5kzxv          Container created
+47m         Normal    Pulled                   pod/grimoire-5877c6bdb5-5kzxv          Successfully pulled image "alpine/k8s:1.33.13" in 636ms (16.726s including waiting). Image size: 314988667 bytes.
+47m         Warning   Unhealthy                pod/ixeth-db6b5c756-jbbxm              Readiness probe failed: Get "http://10.2.1.8:8080/healthz": dial tcp 10.2.1.8:8080: connect: connection refused
+47m         Normal    Started                  pod/grimoire-5877c6bdb5-5kzxv          Container started
+47m         Warning   Unhealthy                pod/grimoire-5877c6bdb5-5kzxv          Readiness probe failed: Get "http://10.2.1.11:8080/realm.git/info/refs?service=git-upload-pack": dial tcp 10.2.1.11:8080: connect: connection refused
+84s         Normal    Started                  pod/ixeth-78d777f8d8-w6gtp             Container started
+84s         Normal    ScalingReplicaSet        deployment/sentinel                    Scaled up replica set sentinel-7987879d68 from 0 to 1
+84s         Normal    ScalingReplicaSet        deployment/ixeth                       Scaled up replica set ixeth-78d777f8d8 from 0 to 1
+84s         Normal    Pulled                   pod/ixeth-78d777f8d8-w6gtp             Container image "alpine/k8s:1.33.13" already present on machine and can be accessed by the pod
+84s         Normal    Created                  pod/ixeth-78d777f8d8-w6gtp             Container created
+84s         Normal    SuccessfulCreate         replicaset/sentinel-7987879d68         Created pod: sentinel-7987879d68-nkgs9
+84s         Normal    SuccessfulCreate         replicaset/ixeth-78d777f8d8            Created pod: ixeth-78d777f8d8-w6gtp
+83s         Normal    Pulling                  pod/sentinel-7987879d68-nkgs9          Pulling image "alpine/k8s:1.33.13"
+83s         Normal    SuccessfulDelete         replicaset/ixeth-db6b5c756             Deleted pod: ixeth-db6b5c756-jbbxm
+83s         Normal    ScalingReplicaSet        deployment/ixeth                       Scaled down replica set ixeth-db6b5c756 from 1 to 0
+83s         Normal    Killing                  pod/ixeth-db6b5c756-jbbxm              Stopping container seer
+71s         Normal    Started                  pod/sentinel-7987879d68-nkgs9          Container started
+71s         Normal    Created                  pod/sentinel-7987879d68-nkgs9          Container created
+71s         Normal    Pulled                   pod/sentinel-7987879d68-nkgs9          Successfully pulled image "alpine/k8s:1.33.13" in 611ms (12.056s including waiting). Image size: 314988667 bytes.
+71s         Normal    Killing                  pod/sentinel-85985ccbbb-x262d          Stopping container sentinel
+71s         Normal    SuccessfulDelete         replicaset/sentinel-85985ccbbb         Deleted pod: sentinel-85985ccbbb-x262d
+71s         Normal    ScalingReplicaSet        deployment/sentinel                    Scaled down replica set sentinel-85985ccbbb from 1 to 0

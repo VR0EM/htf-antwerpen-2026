@@ -41,8 +41,8 @@ flowchart LR
 |---|---|---|---|---|
 | 1 | :white_check_mark: | :white_check_mark: (PR van Wimme) | bezig | `docs/bewijs/level-1/` |
 | 2 | :white_check_mark: (hardcoded key) | bezig | nee | |
-| 3 | :white_check_mark: 5 corrupties | :white_check_mark: PR #17 | wacht op L1 | `docs/bewijs/level-3/` |
-| 4 | :white_check_mark: 3 plekken | :white_check_mark: PR #18, image `1.0.1` | wacht op L1 | `docs/bewijs/level-4/` |
+| 3 | :white_check_mark: 5 corrupties | :white_check_mark: PR #17 | :white_check_mark: 11:23 | `docs/bewijs/level-3/` |
+| 4 | :white_check_mark: 3 plekken | :white_check_mark: PR #18, image `1.0.1` | :white_check_mark: 11:23 | `docs/bewijs/level-4/` |
 
 !!! note "Dit handboek lokaal bekijken"
     ```bash

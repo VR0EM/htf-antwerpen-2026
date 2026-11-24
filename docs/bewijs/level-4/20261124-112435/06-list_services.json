@@ -1,0 +1,14 @@
+{
+  "jsonrpc": "2.0",
+  "id": 1795515876649866716,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"count\": 9,\n  \"services\": [\n    {\n      \"cluster_ip\": \"10.3.228.237\",\n      \"name\": \"ancient-oracle\",\n      \"namespace\": \"ancient\",\n      \"ports\": [\n        \"80/TCP\"\n      ],\n      \"type\": \"ClusterIP\"\n    },\n    {\n      \"cluster_ip\": \"10.3.0.1\",\n      \"name\": \"kubernetes\",\n      \"namespace\": \"default\",\n      \"ports\": [\n        \"443/TCP\"\n      ],\n      \"type\": \"ClusterIP\"\n    },\n    {\n      \"cluster_ip\": \"10.3.0.10\",\n      \"name\": \"kube-dns\",\n      \"namespace\": \"kube-system\",\n      \"ports\": [\n        \"53/UDP\",\n        \"53/TCP\",\n        \"9153/TCP\"\n      ],\n      \"type\": \"ClusterIP\"\n    },\n    {\n      \"cluster_ip\": \"10.3.143.98\",\n      \"name\": \"metrics-server\",\n      \"namespace\": \"kube-system\",\n      \"ports\": [\n        \"443/TCP\"\n      ],\n      \"type\": \"ClusterIP\"\n    },\n    {\n      \"cluster_ip\": \"10.3.173.70\",\n      \"name\": \"alertmanager\",\n      \"namespace\": \"oracle\",\n      \"ports\": [\n        \"9093/TCP\"\n      ],\n      \"type\": \"ClusterIP\"\n    },\n    {\n      \"cluster_ip\": \"10.3.162.99\",\n      \"name\": \"grimoire\",\n      \"namespace\": \"oracle\",\n      \"ports\": [\n        \"80/TCP\"\n      ],\n      \"type\": \"ClusterIP\"\n    },\n    {\n      \"cluster_ip\": \"10.3.46.60\",\n      \"name\": \"ixeth\",\n      \"namespace\": \"oracle\",\n      \"ports\": [\n        \"80/TCP\"\n      ],\n      \"type\": \"ClusterIP\"\n    },\n    {\n      \"cluster_ip\": \"10.3.249.142\",\n      \"name\": \"magician\",\n      \"namespace\": \"scrolls\",\n      \"ports\": [\n        \"80/TCP\"\n      ],\n      \"type\": \"ClusterIP\"\n    },\n    {\n      \"cluster_ip\": \"10.3.200.91\",\n      \"name\": \"traefik\",\n      \"namespace\": \"traefik\",\n      \"ports\": [\n        \"80/TCP\"\n      ],\n      \"type\": \"LoadBalancer\"\n    }\n  ]\n}"
+      }
+    ],
+    "isError": false
+  },
+  "opgehaald": "2026-11-24T11:24:36+01:00"
+}

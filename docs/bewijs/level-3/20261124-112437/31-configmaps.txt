@@ -1,0 +1,7 @@
+$ kubectl get configmaps -n oracle
+NAME                  DATA   AGE
+alertmanager-config   1      47m
+grimoire-genesis      8      47m
+ixeth-code            2      47m
+kube-root-ca.crt      1      47m
+sentinel              2      47m

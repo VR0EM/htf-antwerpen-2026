@@ -1,0 +1,7 @@
+NAMESPACE  REPLICASET               AANGEMAAKT            REVISIE  REPLICAS  CPU_REQ  MEM_REQ  CPU_LIM  MEM_LIM  CHANGE-CAUSE
+oracle     alertmanager-85544456c8  2026-11-24T09:36:53Z  1        1         10m      32Mi     200m     128Mi    -
+oracle     grimoire-5877c6bdb5      2026-11-24T09:36:53Z  1        1         20m      32Mi     300m     128Mi    -
+oracle     ixeth-db6b5c756          2026-11-24T09:36:53Z  1        0         100m     128Mi    500m     384Mi    -
+oracle     sentinel-85985ccbbb      2026-11-24T09:36:53Z  1        0         10m      32Mi     200m     128Mi    -
+oracle     ixeth-78d777f8d8         2026-11-24T10:23:15Z  2        1         100m     128Mi    500m     384Mi    -
+oracle     sentinel-7987879d68      2026-11-24T10:23:15Z  2        1         10m      32Mi     200m     128Mi    -
