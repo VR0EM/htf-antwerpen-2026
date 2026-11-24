@@ -1,0 +1,56 @@
+$ kubectl get events -n oracle --sort-by=.lastTimestamp
+LAST SEEN   TYPE      REASON              OBJECT                           MESSAGE
+23m         Normal    Scheduled           pod/ixeth-db6b5c756-thhsm        Successfully assigned oracle/ixeth-db6b5c756-thhsm to achrona-pool-node-979479
+111s        Normal    Scheduled           pod/ixeth-78d777f8d8-ms9bp       Successfully assigned oracle/ixeth-78d777f8d8-ms9bp to hotfix-pool-node-82a0b5
+35m         Normal    Scheduled           pod/sentinel-7987879d68-nkgs9    Successfully assigned oracle/sentinel-7987879d68-nkgs9 to achrona-pool-node-8839b8
+110s        Normal    Scheduled           pod/sentinel-7987879d68-lfrdb    Successfully assigned oracle/sentinel-7987879d68-lfrdb to hotfix-pool-node-82a0b5
+23m         Normal    Scheduled           pod/sentinel-85985ccbbb-dkbgg    Successfully assigned oracle/sentinel-85985ccbbb-dkbgg to achrona-pool-node-8839b8
+35m         Normal    Scheduled           pod/ixeth-78d777f8d8-w6gtp       Successfully assigned oracle/ixeth-78d777f8d8-w6gtp to achrona-pool-node-979479
+35m         Normal    Pulled              pod/ixeth-78d777f8d8-w6gtp       Container image "alpine/k8s:1.33.13" already present on machine and can be accessed by the pod
+35m         Normal    Created             pod/ixeth-78d777f8d8-w6gtp       Container created
+35m         Normal    Started             pod/ixeth-78d777f8d8-w6gtp       Container started
+35m         Normal    SuccessfulCreate    replicaset/ixeth-78d777f8d8      Created pod: ixeth-78d777f8d8-w6gtp
+35m         Normal    SuccessfulCreate    replicaset/sentinel-7987879d68   Created pod: sentinel-7987879d68-nkgs9
+35m         Normal    SuccessfulDelete    replicaset/ixeth-db6b5c756       Deleted pod: ixeth-db6b5c756-jbbxm
+35m         Normal    Pulling             pod/sentinel-7987879d68-nkgs9    Pulling image "alpine/k8s:1.33.13"
+35m         Normal    Killing             pod/ixeth-db6b5c756-jbbxm        Stopping container seer
+35m         Normal    Started             pod/sentinel-7987879d68-nkgs9    Container started
+35m         Normal    Created             pod/sentinel-7987879d68-nkgs9    Container created
+35m         Normal    Killing             pod/sentinel-85985ccbbb-x262d    Stopping container sentinel
+35m         Normal    Pulled              pod/sentinel-7987879d68-nkgs9    Successfully pulled image "alpine/k8s:1.33.13" in 611ms (12.056s including waiting). Image size: 314988667 bytes.
+35m         Normal    SuccessfulDelete    replicaset/sentinel-85985ccbbb   Deleted pod: sentinel-85985ccbbb-x262d
+23m         Normal    SuccessfulCreate    replicaset/ixeth-db6b5c756       Created pod: ixeth-db6b5c756-thhsm
+23m         Normal    ScalingReplicaSet   deployment/ixeth                 Scaled up replica set ixeth-db6b5c756 from 0 to 1
+23m         Normal    Pulled              pod/ixeth-db6b5c756-thhsm        Container image "alpine/k8s:1.33.13" already present on machine and can be accessed by the pod
+23m         Normal    Created             pod/ixeth-db6b5c756-thhsm        Container created
+23m         Normal    Started             pod/ixeth-db6b5c756-thhsm        Container started
+23m         Warning   Unhealthy           pod/ixeth-db6b5c756-thhsm        Readiness probe failed: Get "http://10.2.1.15:8080/healthz": dial tcp 10.2.1.15:8080: connect: connection refused
+23m         Normal    SuccessfulCreate    replicaset/sentinel-85985ccbbb   Created pod: sentinel-85985ccbbb-dkbgg
+23m         Normal    ScalingReplicaSet   deployment/sentinel              Scaled up replica set sentinel-85985ccbbb from 0 to 1
+23m         Normal    ScalingReplicaSet   deployment/ixeth                 Scaled down replica set ixeth-78d777f8d8 from 1 to 0
+23m         Normal    SuccessfulDelete    replicaset/ixeth-78d777f8d8      Deleted pod: ixeth-78d777f8d8-w6gtp
+23m         Normal    ScalingReplicaSet   deployment/sentinel              Scaled down replica set sentinel-7987879d68 from 1 to 0
+23m         Normal    Killing             pod/ixeth-78d777f8d8-w6gtp       Stopping container seer
+23m         Normal    Pulled              pod/sentinel-85985ccbbb-dkbgg    Container image "alpine/k8s:1.33.13" already present on machine and can be accessed by the pod
+23m         Normal    Started             pod/sentinel-85985ccbbb-dkbgg    Container started
+23m         Normal    SuccessfulDelete    replicaset/sentinel-7987879d68   Deleted pod: sentinel-7987879d68-nkgs9
+23m         Normal    Created             pod/sentinel-85985ccbbb-dkbgg    Container created
+23m         Normal    Killing             pod/sentinel-7987879d68-nkgs9    Stopping container sentinel
+112s        Normal    ScalingReplicaSet   deployment/ixeth                 Scaled up replica set ixeth-78d777f8d8 from 0 to 1
+112s        Normal    SuccessfulCreate    replicaset/ixeth-78d777f8d8      Created pod: ixeth-78d777f8d8-ms9bp
+111s        Normal    Pulling             pod/ixeth-78d777f8d8-ms9bp       Pulling image "alpine/k8s:1.33.13"
+111s        Normal    SuccessfulCreate    replicaset/sentinel-7987879d68   Created pod: sentinel-7987879d68-lfrdb
+111s        Normal    ScalingReplicaSet   deployment/sentinel              Scaled up replica set sentinel-7987879d68 from 0 to 1
+110s        Normal    Pulling             pod/sentinel-7987879d68-lfrdb    Pulling image "alpine/k8s:1.33.13"
+100s        Normal    SuccessfulDelete    replicaset/ixeth-db6b5c756       Deleted pod: ixeth-db6b5c756-thhsm
+100s        Normal    Killing             pod/ixeth-db6b5c756-thhsm        Stopping container seer
+100s        Normal    ScalingReplicaSet   deployment/ixeth                 Scaled down replica set ixeth-db6b5c756 from 1 to 0
+100s        Normal    Started             pod/ixeth-78d777f8d8-ms9bp       Container started
+100s        Normal    Created             pod/ixeth-78d777f8d8-ms9bp       Container created
+100s        Normal    Pulled              pod/ixeth-78d777f8d8-ms9bp       Successfully pulled image "alpine/k8s:1.33.13" in 637ms (10.73s including waiting). Image size: 314988667 bytes.
+100s        Normal    Started             pod/sentinel-7987879d68-lfrdb    Container started
+100s        Normal    Created             pod/sentinel-7987879d68-lfrdb    Container created
+100s        Normal    Pulled              pod/sentinel-7987879d68-lfrdb    Successfully pulled image "alpine/k8s:1.33.13" in 587ms (10.223s including waiting). Image size: 314988667 bytes.
+99s         Normal    Killing             pod/sentinel-85985ccbbb-dkbgg    Stopping container sentinel
+99s         Normal    SuccessfulDelete    replicaset/sentinel-85985ccbbb   Deleted pod: sentinel-85985ccbbb-dkbgg
+99s         Normal    ScalingReplicaSet   deployment/sentinel              Scaled down replica set sentinel-85985ccbbb from 1 to 0
