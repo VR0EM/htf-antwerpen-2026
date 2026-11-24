@@ -1,7 +1,7 @@
 # De omgeving
 
 !!! info "Zie ook"
-    Wimme schrijft een uitgebreidere architectuurpagina in `docs/architectuur.md` (issue #19).
+    De uitgebreide [architectuurpagina](architectuur.md) met diagrammen van de cluster en de drift-flow.
 
 ## Twee Terraform-mappen
 

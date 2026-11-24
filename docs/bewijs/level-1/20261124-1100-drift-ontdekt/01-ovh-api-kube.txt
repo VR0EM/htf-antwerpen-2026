@@ -1,0 +1,127 @@
+# GET /cloud/project/<project>/kube/<id>  (2026-11-24T10:12:37Z)
+{
+    "id": "6562b850-fad2-4175-bfbc-0f28c7843168",
+    "region": "GRA11",
+    "name": "achrona-kube",
+    "url": "924056.c1.gra11.k8s.ovh.net",
+    "nodesUrl": "924056.nodes.c1.gra11.k8s.ovh.net",
+    "version": "1.35.2-6",
+    "plan": "free",
+    "nextUpgradeVersions": [],
+    "kubeProxyMode": "iptables",
+    "customization": {
+        "apiServer": {
+            "admissionPlugins": {
+                "enabled": [
+                    "NodeRestriction"
+                ],
+                "disabled": [
+                    "AlwaysPullImages"
+                ]
+            }
+        },
+        "kubeProxy": {
+            "iptables": {},
+            "ipvs": {}
+        }
+    },
+    "status": "READY",
+    "updatePolicy": "NEVER_UPDATE",
+    "isUpToDate": true,
+    "controlPlaneIsUpToDate": true,
+    "privateNetworkId": "6baafccd-d699-4dfe-9aca-0722e4bab496",
+    "nodesSubnetId": "18993f2d-c6bd-4fdc-a1b4-966ba86b6331",
+    "privateNetworkConfiguration": {
+        "privateNetworkRoutingAsDefault": false,
+        "defaultVrackGateway": ""
+    },
+    "ipAllocationPolicy": {
+        "podsIpv4Cidr": "10.2.0.0/16",
+        "servicesIpv4Cidr": "10.3.0.0/16"
+    },
+    "createdAt": "2026-11-24T09:10:29Z",
+    "updatedAt": "2026-11-24T10:07:57Z",
+    "auditLogsSubscribed": false
+}
+
+# GET .../kube/<id>/ipRestrictions
+["198.51.100.0/24"]
+
+# GET .../kube/<id>/nodepool
+[
+    {
+        "id": "b680635f-cb61-4a70-8a98-a36a84cffebd",
+        "projectId": "7bbf03963d58494ea845b2c7ff83dad9",
+        "name": "achrona-pool",
+        "flavor": "b3-8",
+        "status": "READY",
+        "sizeStatus": "CAPACITY_OK",
+        "autoscale": true,
+        "monthlyBilled": false,
+        "antiAffinity": true,
+        "desiredNodes": 2,
+        "minNodes": 2,
+        "maxNodes": 5,
+        "currentNodes": 2,
+        "availableNodes": 2,
+        "upToDateNodes": 2,
+        "createdAt": "2026-11-24T09:15:04Z",
+        "updatedAt": "2026-11-24T09:57:22Z",
+        "autoscaling": {
+            "scaleDownUtilizationThreshold": 0.2,
+            "scaleDownUnneededTimeSeconds": 86400,
+            "scaleDownUnreadyTimeSeconds": 1200
+        },
+        "template": {
+            "metadata": {
+                "labels": {
+                    "environment": "hack-the-future",
+                    "managed-by": "console",
+                    "owner": "night-shift",
+                    "team": "de-rubberen-badeendjes"
+                },
+                "annotations": {},
+                "finalizers": []
+            },
+            "spec": {
+                "unschedulable": false,
+                "taints": []
+            }
+        }
+    },
+    {
+        "id": "ef0f8e2f-8343-4b18-bcad-9f369857c004",
+        "projectId": "7bbf03963d58494ea845b2c7ff83dad9",
+        "name": "hotfix-pool",
+        "flavor": "b3-8",
+        "status": "READY",
+        "sizeStatus": "CAPACITY_OK",
+        "autoscale": false,
+        "monthlyBilled": false,
+        "antiAffinity": false,
+        "desiredNodes": 1,
+        "minNodes": 1,
+        "maxNodes": 1,
+        "currentNodes": 1,
+        "availableNodes": 1,
+        "upToDateNodes": 1,
+        "createdAt": "2026-11-24T09:57:36Z",
+        "updatedAt": "2026-11-24T10:01:35Z",
+        "autoscaling": {
+            "scaleDownUtilizationThreshold": 0.5,
+            "scaleDownUnneededTimeSeconds": 600,
+            "scaleDownUnreadyTimeSeconds": 1200
+        },
+        "template": {
+            "metadata": {
+                "labels": {},
+                "annotations": {},
+                "finalizers": []
+            },
+            "spec": {
+                "unschedulable": false,
+                "taints": []
+            }
+        }
+    }
+]

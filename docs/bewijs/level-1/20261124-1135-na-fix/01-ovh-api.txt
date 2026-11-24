@@ -1,0 +1,18 @@
+# Toestand na de fix (2026-11-24T10:25:27Z)
+## kube
+{'status': 'READY', 'version': '1.35.2-6', 'updatePolicy': 'MINIMAL_DOWNTIME'}
+## ipRestrictions
+["0.0.0.0/0"]
+## nodepools
+achrona-pool min 2 max 3 labels {'environment': 'hack-the-future', 'managed-by': 'terraform', 'team': 'de-rubberen-badeendjes'}
+## users
+achrona-tfstate ['objectstore_operator']
+achrona-scrolls-app ['objectstore_operator']
+## scrolls_app S3-keys
+1 key(s)
+## scrolls_app policy
+{"policy":"{\"Statement\":[{\"Action\":[\"s3:GetObject\",\"s3:PutObject\",\"s3:DeleteObject\",\"s3:ListBucket\",\"s3:GetBucketLocation\",\"s3:ListMultipartUploadParts\",\"s3:ListBucketMultipartUploads\",\"s3:AbortMultipartUpload\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:s3:::achrona-7bbf0396-scrolls\",\"arn:aws:s3:::achrona-7bbf0396-scrolls/*\"],\"Sid\":\"ScrollsReadWrite\"}]}"}
+## bucket scrolls
+encryption {'sseAlgorithm': 'AES256'} versioning {'status': 'enabled'}
+## gateway
+[('achrona-gateway', 's')]

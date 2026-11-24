@@ -1,0 +1,2 @@
+kubectl get ns om 2026-11-24T10:12:41Z:
+Unable to connect to the server: EOF
