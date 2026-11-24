@@ -5,8 +5,18 @@ scrolls:
     tag: "1.37.0"
   # Megabytes of the ledger that scrolls-app keeps warm in memory.
   ledgerMegabytes: 12
+  # Set by Terraform (workload/monitoring.tf, set_sensitive). Never put real values here.
+  credentials:
+    s3AccessKey: ""
+    s3SecretKey: ""
+    s3Bucket: ""
+    s3Endpoint: ""
+    signingKey: ""
 
 monitoring:
+  # ServiceAccount of the metrics collector. Change the name to rotate all its
+  # tokens (Level 2): was `metrics-collector`, compromised and over-privileged.
+  serviceAccount: metrics-reader
   image:
     repository: alpine/k8s
     tag: "1.33.13"

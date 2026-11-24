@@ -17,6 +17,18 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 13:25 · wimmevdv · Level 2: least privilege, nieuw service account, secrets uit Git
+- **Wat:**
+  - `rbac.yaml`: de binding van `metrics-collector` naar **`cluster-admin`** is weg, net als de rol die alle Secrets las en alle ConfigMaps schreef, en de aggregated ClusterRole. Er is nu één rol `monitoring-metrics-reader`: `nodes`/`pods` `list` + `GET /metrics`, precies wat de collector doet.
+  - Rotatie: het service account heet nu **`metrics-reader`** (`values.yaml`). Helm verwijdert `metrics-collector`, en daarmee wordt elke token van dat account ongeldig.
+  - `scrolls.yaml`: de hardcoded S3-key en signing key (`9d4e1c7a…`, `7c1e5b9a…`) zijn weg. De waarden komen uit Terraform (`set_sensitive` in `workload/monitoring.tf`): de S3-key van `scrolls_app` (`core/` outputs) en een `random_password` als signing key. Er is een rotatieknop: `scrolls_key_version` (core) en `keepers` (workload).
+  - Chart 0.4.2 → 0.5.0.
+- **Waarom:** de "keukenhulp" had de sleutels van alle kamers. Least privilege, en geheimen horen niet in Git.
+- **Waar:** issue #6. Bewijs vóór: `docs/bewijs/level-2/20261124-1315-voor/` (`can-i '*' '*'`: yes).
+- **Debug:**
+  - `workload/` leest de nieuwe outputs van core met `try()`. Zo faalt de PR-plan niet zolang core nog niet geapplied is (de pipeline doet core voor workload).
+  - Een token aanmaken voor het oude account (om na de rotatie een 401 te tonen) werd tegengehouden, omdat dat zelf een admin-sleutel aanmaakt. Dat vraag ik eerst aan Wimme.
+
 ### 13:20 · wimmevdv · Vierde golf: pipeline robuuster (bucket, stappen na fout, drift-lus)
 - **Wat:**
   - Vierde golf om 12:43–12:44: IP-lock, `NEVER_UPDATE`, nodepool, S3-policy, bucket weer `plaintext`, opnieuw `hotfix-pool`. De drift-check zag het en startte zelfherstel. De runs 45387916057 en 45388130560 faalden: de object_lock-bug van de bucket, en een IP-wijziging die geblokkeerd werd zolang `hotfix-pool` INSTALLING was.

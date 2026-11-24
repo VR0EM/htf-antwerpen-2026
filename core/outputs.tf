@@ -20,3 +20,26 @@ output "registry_password" {
   value       = ovh_cloud_project_containerregistry_user.realm.password
   sensitive   = true
 }
+
+# Read by workload/monitoring.tf to give the scrolls app its credentials (Level 2).
+output "scrolls_bucket" {
+  description = "Name of the scrolls bucket."
+  value       = ovh_cloud_project_storage.scrolls.name
+}
+
+output "scrolls_s3_endpoint" {
+  description = "S3 endpoint of the scrolls bucket."
+  value       = "https://s3.${lower(var.storage_region)}.io.cloud.ovh.net"
+}
+
+output "scrolls_s3_access_key" {
+  description = "Access key of scrolls_app (only bucket scrolls)."
+  value       = ovh_cloud_project_user_s3_credential.scrolls_app.access_key_id
+  sensitive   = true
+}
+
+output "scrolls_s3_secret_key" {
+  description = "Secret key of scrolls_app."
+  value       = ovh_cloud_project_user_s3_credential.scrolls_app.secret_access_key
+  sensitive   = true
+}
