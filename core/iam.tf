@@ -5,6 +5,15 @@ resource "ovh_cloud_project_user" "scrolls_app" {
   service_name = var.service_name
   description  = "${var.name_prefix}-scrolls-app"
   role_names   = ["objectstore_operator"]
+
+  # A rotation replaces the whole identity, not only its key (#63). At 15:22 OVH's S3
+  # service still accepted two keys that the API had deleted 80 minutes earlier (a key
+  # that was never used was refused at once). A new user takes the old keys' owner,
+  # and with it their policy, away. New user first, then the old one is deleted
+  # (create_before_destroy is inherited from the credential below).
+  lifecycle {
+    replace_triggered_by = [terraform_data.scrolls_key_rotation]
+  }
 }
 
 # Rotating the S3 key is a commit: bump var.scrolls_key_version and the pipeline

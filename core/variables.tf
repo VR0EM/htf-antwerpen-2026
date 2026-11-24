@@ -120,11 +120,12 @@ variable "registry_plan" {
 }
 
 variable "scrolls_key_version" {
-  description = "Bump this (any new string) to rotate the S3 key of scrolls_app. See iam.tf."
+  description = "Bump this (any new string) to rotate the identity of scrolls_app: a new OVH user with a new S3 key. See iam.tf."
   type        = string
   # History: rotatie-1 (start), rotatie-2 (#64), by mistake back to rotatie-1 (#68,
-  # also a rotation), rotatie-3 (#63). Always pick a NEW value; any change rotates.
-  default = "2026-11-24-rotatie-3"
+  # also a rotation), rotatie-3 (#63), rotatie-4: new USER, because deleted keys were
+  # still accepted by OVH's S3 service (see iam.tf). Always pick a NEW value.
+  default = "2026-11-24-rotatie-4-nieuwe-user"
 }
 
 variable "registry_user_version" {
