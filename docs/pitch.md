@@ -33,6 +33,9 @@
 | MCP-baseline 10:45 (L4) | `docs/bewijs/level-4/20261124-104557/` |
 | MCP na de fix, na 12:00 (L4) | `docs/bewijs/level-4/<na-apply>/` |
 
+!!! success "Al genomen"
+    - [Chamber van Ixeth en Alertmanager](levels/level-3.md#screenshots-na-de-fix)
+
 !!! tip "Screenshots die nog het nemen waard zijn"
     - De **chamber** van Ixeth (de webpagina van de agent) na een alert: zijn remedie toont alleen de echte fix.
     - **Alertmanager** met een alert dat binnenkomt.

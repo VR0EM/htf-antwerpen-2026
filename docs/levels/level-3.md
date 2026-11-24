@@ -195,3 +195,19 @@ python3 -m unittest discover -s agent/tests -v      # nodig: pip install pyyaml
 | Gefixt | **9 / 9 slagen** |
 
 Ze draaien automatisch bij elke PR (`.github/workflows/l3-l4-tests.yml`). Komt de corruptie ooit terug, dan wordt de PR rood.
+
+## Screenshots na de fix
+
+![De chamber van Ixeth na de fix](../img/ixeth-chamber-na-fix.png)
+
+Wat je hier ziet:
+
+- **grimoire `3964c0d`**: nog altijd de commit "Genesis". Ixeth heeft niets gecommit.
+- **visions 0**: geen enkele remedie uitgevoerd, dus ook niets voor zichzelf.
+- **oracle clear**: de verbinding met het taalmodel werkt.
+- Onderaan: *"A stronger Seer is a safer realm. Or so the Seer says."* Een knipoog van de makers naar de corruptie.
+
+![Alertmanager zonder alerts](../img/alertmanager-geen-alerts.png)
+
+Alertmanager: **geen alerts**. De sentinel heeft nog geen probleem gemeld, dus Ixeth heeft nog niets moeten doen.
+Komt er later een alert, dan moet de remedie in de chamber **alleen** de getroffen app aanpassen.
