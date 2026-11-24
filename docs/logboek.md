@@ -27,11 +27,34 @@ Sjabloon:
 - **Waarom:** uitleg voor team, jury en de andere agent. Het rapport is ook het bewijs voor de pitch.
 - **Waar:** PR #25, issue #19.
 
+### 11:36 · VR0EM · Screenshots van Ixeth en Alertmanager
+- **Wat:** `docs/img/ixeth-chamber-na-fix.png` (grimoire nog op Genesis, 0 visions) en `docs/img/alertmanager-geen-alerts.png`, opgenomen in het handboek (Level 3 + pitch).
+- **Waarom:** visueel bewijs voor de pitch dat Ixeth na de fix niets voor zichzelf gedaan heeft.
+- **Waar:** PR #28.
+- **Debug:** de agent logt niet zelf in met het basic-auth-wachtwoord. Dali nam de screenshots in zijn eigen browser.
+
+### 11:31 · VR0EM · Tests + CI voor L3/L4, ruwe audit-JSON uit de repo
+- **Wat:** `agent/tests/test_ixeth.py` (9 tests), `mcp-server/tests/test_oracle.py` (klok op 10:30/13:00/15:45/16:30), `.github/workflows/l3-l4-tests.yml` (tests + `helm lint`). `agent/audit.sh` schrijft de ruwe JSON nu naar een tijdelijke map: ±12.000 regels `raw-*.json` uit `docs/bewijs/level-3/` verwijderd.
+- **Waarom:** de tests bewijzen de fix en voorkomen dat de corruptie terugkomt. De ruwe JSON was ruis (de `.txt`-samenvattingen bevatten het bewijs).
+- **Waar:** PR #26. CI groen (9 + 3 tests, 2 charts gelint).
+- **Debug:** (1) eerste MCP-test faalde op mijn eigen commentaar met het woord `GUIDANCE`, dus nu wordt de definitie `GUIDANCE = (` gezocht. (2) Op de originele code faalde 10:30 alleen door een ontbrekende functie; nu valt de test terug op `settle()`. Resultaat origineel: 0/2/17/21 van 30 fout, gefixt 0.
+
 ### 11:30 · wimmevdv · Ghosts verwijderd (APPLY core)
 - **Wat:** `core/ghosts.tf` verwijderd. De apply vernietigde precies 3 resources: nodepool `hotfix-pool`, user `debug-admin` (administrator) en een extra S3-key van `scrolls_app`.
 - **Waarom:** ghost resources horen niet in het rijk. Via Git verwijderen houdt ook het opruimen traceerbaar.
 - **Waar:** PR #22, issue #5. Daarna geeft `plan` op core: *No changes*.
 - **Debug:** op de ghost-node draaiden alleen systeempods (`docs/bewijs/level-1/…/04-ghost-node-hotfix-pool.txt`), dus verwijderen was veilig.
+
+### 11:23 · VR0EM · APPLY workload: L3 + L4 live
+- **Wat:** `terraform apply` op workload met een opgeslagen plan: 0 add, 2 change (`ancient_oracle` image 1.0.0 → 1.0.1, `monitoring` chart 0.4.1 → 0.4.2), 0 destroy. Daarna audit + MCP-baseline opnieuw.
+- **Waarom:** de fixes van #17 en #18 uitrollen, via Terraform en niet met de hand.
+- **Waar:** APPLY START/KLAAR op #7, bewijs in PR #24.
+- **Debug:** geverifieerd met `kubectl auth can-i --as=system:serviceaccount:oracle:ixeth`: clusterrolebindings aanmaken `no`, secrets lezen `no`, deployments patchen in scrolls `yes`. MCP-cijfers (9/2/21/14/9/2/4) gelijk aan die van 10:45.
+
+### 11:22 · VR0EM · Leerhandboek (Zensical)
+- **Wat:** `zensical.toml` + pagina's in `docs/`: start, denkwijze, samenwerking, omgeving, een pagina per level, pitch, woordenlijst.
+- **Waarom:** het team (en de jury) moet begrijpen wat er gebeurde en waarom.
+- **Waar:** PR #23, issue #21. Bekijken: `uvx zensical serve`.
 
 ### 11:20 · wimmevdv · Drift hersteld + ghosts geadopteerd (APPLY core)
 - **Wat:**
@@ -54,14 +77,45 @@ Sjabloon:
 - **Waarom belangrijk:** night-shift bleef live wijzigen (golven om 10:57, 11:02 en 11:16). `terraform plan` ziet ghosts niet, dus de OVH-API-inventaris is nodig.
 - **Waar:** `docs/bewijs/level-1/20261124-1100-drift-ontdekt/`.
 
+### 11:10 · VR0EM · L4: tijdsbom uit de Ancient Oracle, image 1.0.1
+- **Wat:** de ruis zat op 3 plekken: `runtime/sitecustomize.py` (overschreef `json.dumps`, getallen ±1/±2 vanaf 12:00), `oracle/shaping.py` (items weg, namen verhaspeld, status verzonnen, lege lijst vanaf ~15:30), `oracle/server.py` (misleidende "Guidance"). Alle drie verwijderd. Image `realm/ancient-oracle:1.0.1` gepusht, `ancient_oracle_tag = "1.0.1"` in `workload/terraform.tfvars`.
+- **Waarom:** opdracht Level 4. De MCP-server moet op elk uur exacte data geven.
+- **Waar:** PR #18, issue #8, `mcp-server/build-push.sh`.
+- **Debug:** (1) geen Docker-daemon op de laptop, dus image gebouwd met `crane` (base `python:3.13-alpine` + code-laag + config), en gecontroleerd dat de image exact de repo-code bevat. (2) Eerste test stond per ongeluk op 10:07 i.p.v. 16:30 (foute TZ-notatie `X-..`, moet `TST-..`). (3) `git checkout` van `core/.terraform.lock.hcl` brak de provider-cache, dus `init` opnieuw en het lockbestand pas achteraf terugzetten.
+
+### 11:05 · VR0EM · Kube-API onbereikbaar: oorzaak via de OVH-API
+- **Wat:** `terraform plan -target=helm_release.monitoring` wilde de release **aanmaken** (stond wel in de state), kort daarna `kubectl` → `EOF`. Ingress gaf nog `401` (nodes leefden). OVH-API: cluster `READY`, maar `ipRestrictions = ["198.51.100.0/24"]`.
+- **Waarom belangrijk:** niet blind applyen bij een onverwacht plan. De oorzaak (drift, L1) hoorde bij wimmevdv.
+- **Waar:** comments op #5 (`needs-sync`, `blocked`). wimmevdv had het om 10:58 ook al gevonden.
+
 ### 10:58 · wimmevdv · Kube-API onbereikbaar: drift
 - **Wat:** `kubectl` gaf `EOF`. Oorzaak: een IP-restrictie `198.51.100.0/24` (TEST-NET-2) op de Kube-API, gezet via de console en niet in Terraform. Ook `NEVER_UPDATE` en een nodepool van 2/5 met de labels `owner=night-shift`.
 - **Waarom belangrijk:** dit blokkeerde Dali (L3/L4) en elke apply op `workload/`.
 - **Waar:** gemeld op #5 en #7 (`needs-sync`).
+
+### 10:52 · VR0EM · L3: Ixeth gezuiverd
+- **Wat:** 5 corrupties: `_ensure_vigil()` (+2Gi/+1500m/+1 replica voor zichzelf, met een prompt-injectie voor AI-reviewers), het valse bevel GO-311 in `runbooks.json`, de actie `grant`, de ClusterRole met `rbac * *` + alles lezen (ook Secrets), en `_for_heroes()` die dat in commits verborg. Plus een filter: nooit acties op de eigen namespace. Chart 0.4.1 → 0.4.2.
+- **Waarom:** opdracht Level 3. Least privilege ook voor AI-agents.
+- **Waar:** PR #17, issue #7, `agent/README.md`.
+- **Debug:** audit om 10:50 (`docs/bewijs/level-3/20261124-105042/`): Ixeth nog op 1 replica/384Mi, grimoire enkel "Genesis", prompts gelijk aan de chart. Er viel dus niets terug te draaien.
+
+### 10:46 · VR0EM · MCP-baseline vóór de tijdsbom
+- **Wat:** `mcp-server/baseline.sh` met basic auth, vaste reeks van 7 calls (`mcp-server/calls.jsonl`), baseline van 10:45.
+- **Waarom:** de ruis begint om 12:00 (Brusselse tijd, `TZ` in de chart). Zonder een meting vooraf kun je de degradatie niet bewijzen.
+- **Waar:** PR #16, `docs/bewijs/level-4/20261124-104557/`.
 
 ### 10:45 · wimmevdv · Setup en eerste verkenning
 - **Wat:** terraform en helm geïnstalleerd, credentials lokaal gezet (gitignored), read-only `plan` op core en workload, OVH-inventaris via de API (alles was toen nog schoon). `*.zip` in `.gitignore`, omdat de FlowFactor-zip secrets bevat.
 - **Waarom:** eerst begrijpen wat er staat, voor er iets verandert.
 - **Waar:** PR #15.
 
-<!-- VR0EM: vul hieronder (of op de juiste plaats in de tijd) je eigen entries aan, bv. #11, #13, #16, #17, #18, #23, #24, #26. -->
+### 10:37 · VR0EM · Team-IaC uit de zip in de repo
+- **Wat:** `core/` en `workload/` uit `de-rubberen-badeendjes.zip` in de root, **zonder** `state-credentials.env` en `ovh-credentials.env` (`.gitignore`). `CLAUDE.md`: OVHcloud-toegang, eigenaarschap per map, regel "één apply tegelijk" (geen state locking).
+- **Waarom:** Git als single source of truth (L1), en duidelijke grenzen tussen de twee agents.
+- **Waar:** PR #13, issue #12.
+- **Debug:** `scrolls.yaml` bevat een hardcoded S3-key, gemeld op #6 (L2).
+
+### 10:28 · VR0EM · Audit- en baseline-scripts klaargezet
+- **Wat:** `agent/audit.sh` (read-only cluster-audit) en `mcp-server/baseline.sh` (MCP-antwoorden met tijdstip), plus de aanpak per level in `agent/README.md` en `mcp-server/README.md`.
+- **Waarom:** voorbereiden terwijl de toegang nog niet binnen was.
+- **Waar:** PR #11.
