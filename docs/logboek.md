@@ -17,6 +17,11 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 14:55 · VR0EM · Website: nieuwe Load Balancer + floating IP via Git
+- **Wat:** Traefik krijgt `fullnameOverride = "traefik-lb2"` (`workload/ingress.tf`). Helm verwijdert de oude Service `traefik` en maakt `traefik-lb2` aan, en de OVH-cloud-controller bouwt een nieuwe LB met een **nieuw publiek IP** en ruimt de oude op. De nieuwe URL: `terraform output url`.
+- **Waarom (diagnose, read-only):** sinds golf 3 (12:43–12:51) gaf `91.134.93.91` een time-out. Van binnen de cluster werkte alles: NodePort op beide nodes `401`, en ook het **private adres van de LB `10.10.0.241` → `401`** (geen kube-proxy-kortsluiting: die vangt enkel het publieke IP). LB en nodes waren dus in orde, en het probleem zat tussen het floating IP en de gateway. De gateway zelf antwoordt op ping, het floating IP niet. Golf 3 wisselde het gateway-model (S→M, de pipeline zette het om 12:52 terug naar S). Vermoedelijk ging daarbij de NAT-regel van het floating IP verloren, terwijl de API nog "gekoppeld" zegt (en de pool ten onrechte `error`). Die laag (OpenStack) zien we niet, maar een nieuw floating IP omzeilt het.
+- **Waar:** `workload/ingress.tf` (bestand van wimmevdv, gemeld op #5), deze PR.
+
 ### 14:25 · VR0EM · L3 hersteld en bewezen + schrijfrechten van Ixeth enkel in scrolls
 - **Wat:**
   - #59 live (pipeline): de grimoire heeft enkel nog onze `update`-hook. Persona-commit `063f9f5` gerevert (`c4f9497`). Na 100 s (de hook wachtte 75 s) is de persona nog altijd gelijk aan Genesis, met 0 onzichtbare tekens.
