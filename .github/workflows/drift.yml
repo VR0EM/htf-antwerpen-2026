@@ -1,6 +1,8 @@
 # Level 1 (eigenaar wimmevdv): drift-detectie.
 #
-# Elke 30 minuten (en op aanvraag):
+# Elke ~5 minuten, en op aanvraag. De `schedule` van GitHub startte deze workflow
+# vandaag nooit (0 geplande runs in 2 uur), dus start elke run zichzelf opnieuw na
+# 4 minuten ("Volgende ronde"), tot 18:00 Belgische tijd. De cron blijft als vangnet.
 #   1. terraform plan -detailed-exitcode op core/ en workload/ -> wat Terraform beheert en afwijkt
 #   2. ci/ghost-check.py -> wat in OVH bestaat maar niet in de state staat (ziet plan niet)
 # Bij drift: een issue met label `drift` (nieuw, of een comment op het open issue), een rode run,
@@ -10,7 +12,7 @@ name: Drift-check
 
 on:
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "*/10 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -110,3 +112,13 @@ jobs:
           gh workflow run infra.yml --ref main
           echo "Zelfherstel gestart: infra.yml op main" >> "$GITHUB_STEP_SUMMARY"
           exit 1
+
+      - name: Volgende ronde (tot 18:00)
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "$(TZ=Europe/Brussels date +%H)" -lt 18 ]; then
+            sleep 240
+            gh workflow run drift.yml --ref main
+          fi

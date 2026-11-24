@@ -32,8 +32,8 @@ resource "ovh_cloud_project_user_s3_policy" "scrolls_app" {
           "s3:AbortMultipartUpload",
         ]
         Resource = [
-          "arn:aws:s3:::${ovh_cloud_storage_object_bucket.scrolls.name}",
-          "arn:aws:s3:::${ovh_cloud_storage_object_bucket.scrolls.name}/*",
+          "arn:aws:s3:::${ovh_cloud_project_storage.scrolls.name}",
+          "arn:aws:s3:::${ovh_cloud_project_storage.scrolls.name}/*",
         ]
       },
     ]
