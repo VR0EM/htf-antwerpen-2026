@@ -16,7 +16,7 @@ scrolls:
 monitoring:
   # ServiceAccount of the metrics collector. Change the name to rotate all its
   # tokens (Level 2): was `metrics-collector`, compromised and over-privileged.
-  serviceAccount: metrics-reader
+  serviceAccount: metrics-reader-r2
   image:
     repository: alpine/k8s
     tag: "1.33.13"
