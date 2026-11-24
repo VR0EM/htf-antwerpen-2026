@@ -17,6 +17,12 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 15:15 · wimmevdv · Level 2: stand van de rotaties + belangrijke bevinding over S3
+- **Gedaan (via de pipeline):** S3-key `scrolls_app` (#64, #68, #70), websitewachtwoord (#65), registry-user `scribe` (#70: user-id 3 → 4, nieuw pull-secret, Oracle draait).
+- **Bevinding:** de oude S3-key `99e911c5…` werd **14 min na de rotatie nog altijd aanvaard** door de S3-dienst (HTTP 200), terwijl de OVH-API alleen nog de nieuwe key toont. Een key verwijderen via de API maakt hem dus niet meteen ongeldig. Zo kan een aanvaller met een gestolen key binnen blijven.
+- **Nog open:** kubeconfig-reset. Volgens de API-documentatie van OVH: "Certificates will be regenerated, **nodes will be reinstalled**". Dat geeft downtime voor alle apps, dus het is een beslissing van Wimme (timing tegenover de pitch).
+- **Waar:** #63, `docs/bewijs/level-2/20261124-1505-rotatie-geheimen/`.
+
 ### 15:25 · wimmevdv · Level 2: rotatie 3/4 (registry) + een eigen fout rechtgezet
 - **Wat:**
   - #68 zette de rotatieknop van de registry-user klaar (`rotatie-1`: maakt enkel de knop, geen wijziging).

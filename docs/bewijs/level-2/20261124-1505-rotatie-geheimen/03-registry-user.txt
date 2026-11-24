@@ -1,0 +1,5 @@
+# Rotatie registry-user scribe (2026-11-24T14:12:53Z)
+- registry-users vóór: [('3', 'scribe')]
+- registry-users na PR #70: [('4', 'scribe')]
+- sha256 (12) van pull-secret ancient/realm-registry vÃ³Ã³r: 3a9668e0fa51, na: 16a8d094ef04
+- ancient-oracle draait: 1/1
