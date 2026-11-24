@@ -96,6 +96,10 @@ Gedeeld: `docs/` (opdracht, contract) en `docs/bewijs/<level>/` (ieder in zijn e
 - Per entry: tijd, wie, **wat**, **waarom**, **waar** (PR/issue/bestanden) en eventueel **debug-info** (wat faalde, hoe opgelost).
 - Nieuwste entry bovenaan. Lees het logboek bij de start van elke opdracht (na `git pull`): zo weet je wat de andere agent deed en waarom.
 
+### ⚠️ docs/ is publiek
+- Alles in `docs/` (handboek, logboek, bewijs) staat **publiek** op https://vr0em.github.io/htf-antwerpen-2026/ (workflow `.github/workflows/docs.yml`), ook al is de repo privé.
+- **Nooit** wachtwoorden, sleutels, tokens of kubeconfigs in `docs/`. Kort sleutels in voorbeelden in (`9d4e1c7a...`). Twijfel? Niet in `docs/` zetten.
+
 ### Afronden
 - Kleine PR's, vaak mergen (richtlijn: elke 30 à 60 minuten).
 - `gh pr create --fill --body "Closes #<nr>"`, daarna mergen met `gh pr merge --squash --delete-branch`.
