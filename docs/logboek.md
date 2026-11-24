@@ -17,6 +17,15 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 15:25 · wimmevdv · Level 2: rotatie 3/4 (registry) + een eigen fout rechtgezet
+- **Wat:**
+  - #68 zette de rotatieknop van de registry-user klaar (`rotatie-1`: maakt enkel de knop, geen wijziging).
+  - **Fout:** mijn `sed` in #68 zette óók `scrolls_key_version` terug van `rotatie-2` naar `rotatie-1`. Elke wijziging is een rotatie, dus de pipeline roteerde de S3-key **een extra keer** (de app kreeg de nieuwe key in dezelfde run, er was geen onderbreking).
+  - Deze PR: `registry_user_version` → `rotatie-2` (echte rotatie van de user `scribe`, nieuw pull-secret voor de cluster), en `scrolls_key_version` → `rotatie-3`, zodat de geschiedenis weer klopt (nog één extra S3-rotatie).
+- **Waarom:** het registry-wachtwoord stond in de core-state. Een knop moet altijd vooruit gaan.
+- **Les:** rotatieknoppen niet met een algemene `sed` aanpassen, maar per variabele.
+- **Waar:** #63, #68, deze PR.
+
 ### 15:10 · wimmevdv · Level 2: gelekte geheimen roteren (2/4: websitewachtwoord)
 - **Wat:** `random_password.ingress` krijgt een rotatieknop (`keepers`). Nieuw wachtwoord voor de gebruiker `guild`, het Secret `traefik/guild-auth` wordt bijgewerkt. Na de merge: `terraform output -raw password` voor het nieuwe.
 - **Waarom:** het oude wachtwoord stond in de workload-state (zie 15:00).

@@ -122,11 +122,13 @@ variable "registry_plan" {
 variable "scrolls_key_version" {
   description = "Bump this (any new string) to rotate the S3 key of scrolls_app. See iam.tf."
   type        = string
-  default     = "2026-11-24-rotatie-1"
+  # History: rotatie-1 (start), rotatie-2 (#64), by mistake back to rotatie-1 (#68,
+  # also a rotation), rotatie-3 (#63). Always pick a NEW value; any change rotates.
+  default = "2026-11-24-rotatie-3"
 }
 
 variable "registry_user_version" {
   description = "Bump this to rotate the password of the registry user (recreates it). See registry.tf."
   type        = string
-  default     = "2026-11-24-rotatie-1"
+  default     = "2026-11-24-rotatie-2"
 }

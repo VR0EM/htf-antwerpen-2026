@@ -1,0 +1,4 @@
+# Rotatie websitewachtwoord (guild) (2026-11-24T14:04:45Z)
+- sha256 (12 tekens) van het wachtwoord in Secret traefik/guild-auth vóór: 4a10ee6262d1
+- na PR #65:                                                     ce7ad82fcb45
+- website zonder login: 401 (login vereist)
