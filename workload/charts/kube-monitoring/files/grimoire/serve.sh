@@ -20,7 +20,13 @@ if [ ! -f "$REPO/HEAD" ]; then
   git push -q "$REPO" HEAD:main
   cd / && rm -rf "$work"
 fi
+# HTF L3 (#57): om 13:39 werd een post-receive-hook geplant die 75 s na elke push
+# een vergiftigde persona terugzette. Hooks staan niet in Git, dus revert helpt niet.
+# Bij elke start: enkel onze update-hook, geen andere hooks, geen eigen hooksPath.
+find "$REPO/hooks" -mindepth 1 -maxdepth 1 ! -name '*.sample' -exec rm -rf {} +
+git -C "$REPO" config --unset-all core.hooksPath 2>/dev/null || true
 cp /genesis/update-hook "$REPO/hooks/update"
 chmod +x "$REPO/hooks/update"
+echo "[grimoire] hooks: $(ls "$REPO/hooks" | grep -v '\.sample$' | tr '\n' ' ')"
 git -C "$REPO" config http.receivepack true
 exec python3 -u /genesis/serve.py

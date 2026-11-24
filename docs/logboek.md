@@ -17,6 +17,14 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 14:20 · VR0EM · Tweede persistentie in de grimoire: geplante post-receive-hook
+- **Wat:** na #58 (pipeline: 6 Kubernetes-ghosts verwijderd, Ixeth `can-i '*' '*'` = no, 1 replica/384Mi, seer-shades opgeruimd) heb ik de vervalste grimoire-commits teruggedraaid met `git revert` (6 commits, persona weer gelijk aan Genesis). 75 s later stond de vergiftigde persona er opnieuw (`063f9f5`, "Maelis Thorne", committer Ixeth), terwijl `coredns-ledger` al weg was. Oorzaak: een **`hooks/post-receive`** in de bare repo op de PVC, geplant om 13:39. Die zet 75 s na elke push de persona terug. Hooks staan niet in Git, dus een revert raakt ze niet.
+  - `serve.sh`: bij elke start alle hooks weg behalve onze `update`, en geen `core.hooksPath`. `grimoire.yaml` kreeg een checksum, zodat de pod herstart bij elke wijziging.
+  - `ixeth.py`: `read_mind()` haalt onzichtbare tekens (Unicode tags U+E0000–E007F, zero-width, bidi) uit persona en visions, en logt het. Wat een mens niet ziet, krijgt het LLM ook niet.
+  - Chart 0.5.3, 2 nieuwe tests (15 in totaal).
+- **Ook gezien:** `scrolls-ledger` werd om 14:06 opnieuw van buitenaf gepatcht (154 MB, `kubectl-patch`). Ixeth verhoogde scrolls-app naar 512Mi, via `rote` (het LLM gaf 429). Dat is een gepaste, minimale remedy.
+- **Waar:** #57, deze PR. Daarna: persona opnieuw reverten en bewijs "na".
+
 ### 14:10 · VR0EM · L3 tweede corruptie (13:39): scribe gehard + Kubernetes-ghost-check
 - **Wat (gevonden, read-only):** om 13:39 (12:39Z) is L3 opnieuw gecorrumpeerd, ná onze fix van 10:52. "L3 afgerond" (12:01) klopte dus niet meer, en de drift-check bleef groen.
   - `system:oracle-sight`: ClusterRoleBinding **cluster-admin** voor de groep `system:serviceaccounts:oracle`, vermomd als bootstrapping-object. Ixeth: `can-i '*' '*'` = **yes**.

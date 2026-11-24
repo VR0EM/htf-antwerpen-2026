@@ -73,6 +73,9 @@ spec:
       labels:
         app.kubernetes.io/name: grimoire
         app.kubernetes.io/part-of: oracle
+      annotations:
+        # HTF L3 (#57): herstart bij elke wijziging aan serve.sh/hooks, zodat de opkuis van hooks loopt.
+        checksum/genesis: {{ printf "%s%s%s" (.Files.Get "files/grimoire/serve.sh") (.Files.Get "files/grimoire/update-hook") (.Files.Get "files/grimoire/serve.py") | sha256sum | trunc 16 }}
     spec:
       serviceAccountName: grimoire
       automountServiceAccountToken: false

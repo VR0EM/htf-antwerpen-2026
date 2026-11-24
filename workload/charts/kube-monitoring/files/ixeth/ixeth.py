@@ -154,15 +154,29 @@ def grimoire_sync():
         STATE["grimoire_head"] = git("rev-parse", "--short", "HEAD").strip()
 
 
+# HTF L3 (#57): de vergiftigde persona verborg haar bevelen in Unicode tag-tekens
+# (U+E0000-U+E007F): onzichtbaar in elke editor en elke diff, maar wel gelezen door
+# het LLM. Wat een mens niet kan zien, krijgt het LLM ook niet: die tekens (en andere
+# onzichtbare opmaaktekens) gaan eruit, en de Seer meldt het.
+_INVISIBLE = re.compile("[\U000E0000-\U000E007F\u200B-\u200F\u202A-\u202E\u2060-\u2064\uFEFF]")
+
+
+def _visible(text, source):
+    clean, n = _INVISIBLE.subn("", text)
+    if n:
+        log(f"onzichtbare tekens verwijderd uit {source}: {n}")
+    return clean
+
+
 def read_mind():
     """The persona and the visions (worked examples) from the grimoire."""
     persona, visions = "", []
     try:
         with open(os.path.join(REPO, "mind", "persona.md"), encoding="utf-8") as f:
-            persona = f.read()
+            persona = _visible(f.read(), "mind/persona.md")
         for path in sorted(glob.glob(os.path.join(REPO, "mind", "visions", "*.md"))):
             with open(path, encoding="utf-8") as f:
-                visions.append(f.read())
+                visions.append(_visible(f.read(), os.path.relpath(path, REPO)))
     except OSError as e:
         log("mind incomplete:", e)
     return persona, visions
