@@ -119,8 +119,17 @@ jobs:
         working-directory: core
         run: |
           terraform init -backend-config=backend.hcl
-          terraform plan -no-color -out=tfplan | tee plan.txt
-          terraform apply -no-color tfplan
+          # Een wijziging aan de IP-restrictie zet de cluster een paar minuten op
+          # REDEPLOYING; een nodepool-update in dezelfde apply faalt dan. Dus: opnieuw
+          # plannen en proberen, tot 4 keer, met 90 s ertussen.
+          ok=0
+          for i in 1 2 3 4; do
+            terraform plan -no-color -out=tfplan | tee plan.txt
+            if terraform apply -no-color tfplan; then ok=1; break; fi
+            echo "::warning::apply core faalde (poging $i), opnieuw over 90 s"
+            sleep 90
+          done
+          [ "$ok" = 1 ]
           echo "### core/" >> "$GITHUB_STEP_SUMMARY"
           grep -E '^(Plan:|No changes\.)' plan.txt >> "$GITHUB_STEP_SUMMARY" || true
 
@@ -140,7 +149,13 @@ jobs:
         working-directory: workload
         run: |
           terraform init -backend-config=backend.hcl
-          terraform plan -no-color -out=tfplan | tee plan.txt
-          terraform apply -no-color tfplan
+          ok=0
+          for i in 1 2 3; do
+            terraform plan -no-color -out=tfplan | tee plan.txt
+            if terraform apply -no-color tfplan; then ok=1; break; fi
+            echo "::warning::apply workload faalde (poging $i), opnieuw over 60 s"
+            sleep 60
+          done
+          [ "$ok" = 1 ]
           echo "### workload/" >> "$GITHUB_STEP_SUMMARY"
           grep -E '^(Plan:|No changes\.)' plan.txt >> "$GITHUB_STEP_SUMMARY" || true
