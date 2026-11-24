@@ -23,6 +23,11 @@ Sjabloon:
 - **Waar:** #63. Bewijs: hash van het Secret vóór/na in `…-rotatie-geheimen/02-websitewachtwoord.txt` (nooit het wachtwoord zelf).
 - **Stand S3 (1/4):** OVH toont alleen nog de nieuwe key `e9fb7aa3…`. De oude `99e911c5…` werd direct na de apply nog aanvaard door de S3-dienst (cache), dus de test wordt herhaald.
 
+### 15:05 · VR0EM · L4 bewezen in de namiddag (15:01): MCP = kubectl
+- **Wat:** `mcp-server/baseline.sh` tegen `http://141.95.179.84/mcp` om 15:01, dus ruim na de start van de tijdsbom (14:00). Alle 7 calls zijn vergeleken met `kubectl` op hetzelfde moment: namespaces, nodes, deployments, services en de pods in scrolls zijn **exact gelijk**. Elk antwoord heeft één tekstblok (geen "Guidance") en geen verzonnen fases. Het enige verschil is een canary-pod van 12 s.
+- **Gevonden:** om 15:00 draaiden `ancient-oracle-canary-1030/-1430/-1730` met **onze image 1.0.1**. Vermoedelijk de controle van de organisatoren met een vervalste klok. Het bevestigt meteen dat er scenario-automatisering in de cluster draait.
+- **Waar:** `docs/bewijs/level-4/20261124-150116/` (`90-vergelijking-met-kubectl.md`), #8.
+
 ### 15:00 · wimmevdv · Level 2: gelekte geheimen roteren (1/4: S3-key scrolls_app)
 - **Wat:** `scrolls_key_version` → `2026-11-24-rotatie-2`. Terraform maakt een nieuwe S3-key voor `scrolls_app` en verwijdert de oude (`99e911c5…`, sinds 10:09 nooit geroteerd). De workload-apply in dezelfde run geeft de nieuwe key aan de app.
 - **Waarom:** de aanvaller zette de policy van `scrolls_app` twee keer op `s3:*` voor **alle** buckets (golf 1 en 4), dus ook voor de **state-bucket**. Die state bevat de S3-key, het admin-certificaat van de kubeconfig, en de wachtwoorden van de registry en de website. Alles wat erin stond, geldt als gestolen. Dat verklaart waarom de aanvallen in de cluster doorgingen na onze fixes. Opgeruimde ghosts zijn niet genoeg: de gestolen sleutels moeten ongeldig.
