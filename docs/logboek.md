@@ -17,6 +17,15 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 13:10 · wimmevdv · Derde drift-golf, pipeline probeert apply opnieuw
+- **Wat:**
+  - De eerste apply-run na #41 (run 45381576177) vond een **derde golf**: de originele code was opnieuw geapplied, dus de IP-restrictie zat niet meer in de state en `min_nodes` stond op 1. De run importeerde en herstelde de IP-restrictie.
+  - Daarna faalde de nodepool-update: "Service status is REDEPLOYING".
+  - Fix: de stappen "Apply core" en "Apply workload" in `infra.yml` plannen en proberen opnieuw (core 4×/90 s, workload 3×/60 s).
+- **Waarom:** een wijziging aan de IP-restrictie zet de cluster minutenlang op REDEPLOYING. Bij elke golf komt die combinatie terug, dus de pipeline moet er zelf tegen kunnen.
+- **Waar:** issue #42. Run 45381576177 (gefaald, toont de golf).
+- **Les:** het `import`-blok in `core/kube.tf` bewijst zijn nut: telkens night-shift de originele code applyt, haalt de pipeline de IP-restrictie gewoon opnieuw in de state.
+
 ### 13:00 · wimmevdv · Zelfherstel aan: drift en ghosts worden automatisch teruggedraaid
 - **Wat:**
   - `drift.yml`: bij drift of ghosts start de drift-check zelf `infra.yml` op `main` (`gh workflow run`, `actions: write`).
