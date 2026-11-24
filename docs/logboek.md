@@ -17,6 +17,22 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 12:00 · wimmevdv · Tweede drift-golf hersteld, pipeline live (#33)
+- **Wat:**
+  - Tweede golf van night-shift:
+    - ~11:34: de **originele zip-code** geapplied op core en workload. De IP-restrictie verdween uit de core-state, en L3/L4 gingen terug naar chart 0.4.1 en image 1.0.0.
+    - 11:39: opnieuw IP-lock `198.51.100.0/24`, `NEVER_UPDATE` en max 5.
+    - 11:41:44: **opnieuw** `hotfix-pool`.
+  - Herstel:
+    - laatste manuele apply op core vanaf `main` (APPLY START/KLAAR op #5): de Kube-API is weer open;
+    - daarna PR #33 gemerged, en de pipeline applyt core + workload vanaf `main`, dus de L3/L4-fixes van Dali staan weer live.
+- **Waarom:** de API moest open zijn voor de PR-plan van workload. Vanaf nu past enkel de pipeline nog toe.
+- **Waar:** #5, PR #33, tijdlijn uit de OVH-API (`createdAt`/`updatedAt`).
+- **Debug:**
+  1. Bug in de eerste versie van `infra.yml`: beide plan-jobs zaten in één concurrency-groep en annuleerden elkaar. Nu is er een groep per stack.
+  2. Het automatisch verwijderen van ghosts door de pipeline (`ghost-check.py --remediate`) is voorbereid, maar **nog niet actief**. Verwijderen zonder menselijke blik is een beslissing van Wimme. Tot dan blijft `hotfix-pool` (ghost, 1 VM) staan en meldt de drift-check hem.
+- **Les:** night-shift werkt in golven (~10:57 en ~11:34–11:41). Detectie alleen is niet genoeg: de herstelling moet ook automatisch of snel gebeuren.
+
 ### 12:10 · wimmevdv · CI/CD-pipeline + drift- en ghost-check (level 1)
 - **Wat:**
   - `.github/workflows/infra.yml`:
