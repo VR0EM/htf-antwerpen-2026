@@ -17,6 +17,15 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 13:40 · wimmevdv · Level 2 live en bewezen + vals alarm in de ghost-check gefixt
+- **Wat:** PR #50 door de pipeline geapplied (core: rotatieknop; workload: chart 0.5.0 + signing key).
+  - `metrics-collector`: bestaat niet meer, `can-i '*' '*'` → **no** (was **yes**).
+  - `metrics-reader`: enkel `list nodes`/`list pods` → yes, secrets/RBAC/deployments/configmaps → no. De collector logt nog `apiserver metrics ok`.
+  - Secrets in `scrolls`: S3-key, S3-secret en signing key zijn níet meer de gelekte waarden (32/32/48 tekens, uit Terraform).
+  - Ghost-check: kende de bucket alleen als `ovh_cloud_storage_object_bucket`, en meldde hem na de migratie (#47) dus als ghost. Nu worden beide types herkend. (Buckets worden nooit automatisch verwijderd, er was dus geen risico.)
+- **Waarom:** bewijs dat de fix live staat, en geen vals alarm in de drift-check.
+- **Waar:** `docs/bewijs/level-2/20261124-1315-voor/` en `…-1335-na/`, PR #50, issue #6.
+
 ### 13:25 · wimmevdv · Level 2: least privilege, nieuw service account, secrets uit Git
 - **Wat:**
   - `rbac.yaml`: de binding van `metrics-collector` naar **`cluster-admin`** is weg, net als de rol die alle Secrets las en alle ConfigMaps schreef, en de aggregated ClusterRole. Er is nu één rol `monitoring-metrics-reader`: `nodes`/`pods` `list` + `GET /metrics`, precies wat de collector doet.
