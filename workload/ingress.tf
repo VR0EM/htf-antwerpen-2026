@@ -23,6 +23,11 @@ locals {
 resource "random_password" "ingress" {
   length  = 24
   special = false
+  # Rotation knob (Level 2, #63): the old password sat in the Terraform state, which
+  # the attacker could read. Change the value to rotate: new password, new Secret.
+  keepers = {
+    rotation = "2026-11-24-rotatie-2"
+  }
 }
 
 resource "kubernetes_namespace_v1" "ingress" {

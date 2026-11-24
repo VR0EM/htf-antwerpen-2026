@@ -17,6 +17,12 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 15:10 · wimmevdv · Level 2: gelekte geheimen roteren (2/4: websitewachtwoord)
+- **Wat:** `random_password.ingress` krijgt een rotatieknop (`keepers`). Nieuw wachtwoord voor de gebruiker `guild`, het Secret `traefik/guild-auth` wordt bijgewerkt. Na de merge: `terraform output -raw password` voor het nieuwe.
+- **Waarom:** het oude wachtwoord stond in de workload-state (zie 15:00).
+- **Waar:** #63. Bewijs: hash van het Secret vóór/na in `…-rotatie-geheimen/02-websitewachtwoord.txt` (nooit het wachtwoord zelf).
+- **Stand S3 (1/4):** OVH toont alleen nog de nieuwe key `e9fb7aa3…`. De oude `99e911c5…` werd direct na de apply nog aanvaard door de S3-dienst (cache), dus de test wordt herhaald.
+
 ### 15:00 · wimmevdv · Level 2: gelekte geheimen roteren (1/4: S3-key scrolls_app)
 - **Wat:** `scrolls_key_version` → `2026-11-24-rotatie-2`. Terraform maakt een nieuwe S3-key voor `scrolls_app` en verwijdert de oude (`99e911c5…`, sinds 10:09 nooit geroteerd). De workload-apply in dezelfde run geeft de nieuwe key aan de app.
 - **Waarom:** de aanvaller zette de policy van `scrolls_app` twee keer op `s3:*` voor **alle** buckets (golf 1 en 4), dus ook voor de **state-bucket**. Die state bevat de S3-key, het admin-certificaat van de kubeconfig, en de wachtwoorden van de registry en de website. Alles wat erin stond, geldt als gestolen. Dat verklaart waarom de aanvallen in de cluster doorgingen na onze fixes. Opgeruimde ghosts zijn niet genoeg: de gestolen sleutels moeten ongeldig.
