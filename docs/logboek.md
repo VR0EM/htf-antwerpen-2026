@@ -17,6 +17,11 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 13:55 · wimmevdv · Rotatie bewezen: oude token → Unauthorized
+- **Wat:** na PR #55 (pipeline-apply ok) geeft dezelfde token van `metrics-reader` **`Unauthorized`** op `get nodes` en `auth whoami`. De collector draait verder als `metrics-reader-r2`.
+- **Opgemerkt:** om 13:33:30 een kaal ServiceAccount `metrics-collector` (geen labels/bindings/rechten, niet van Helm). Herkomst onbekend (gevraagd op #44). Onze drift-check ziet geen Kubernetes-objecten buiten Helm. Dat is een mogelijke volgende verbetering.
+- **Waar:** `docs/bewijs/level-2/20261124-1350-rotatie/`, #54, #55.
+
 ### 13:45 · wimmevdv · Level 2: rotatie-demo service account
 - **Wat:** `monitoring.serviceAccount` `metrics-reader` → `metrics-reader-r2` (chart 0.5.1). Vooraf een token van `metrics-reader` aangemaakt (2 u geldig, enkel lokaal, **niet** in `docs/`). Die werkte: `get nodes` ok, `list secrets` Forbidden.
 - **Waarom:** bewijzen dat roteren via één PR elke oude token ongeldig maakt. Na de merge moet dezelfde token **401 Unauthorized** geven.
