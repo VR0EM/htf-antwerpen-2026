@@ -40,10 +40,15 @@ Benodigdheden: laptop en een Google-account.
 > **Nog aan te vullen:** toegang (cloud, cluster, repo's), die bij de start wordt uitgedeeld.
 
 ## Taakverdeling
-<!-- Vul in na overleg, bv.:
-- VR0EM: frontend (map /frontend)
-- wimmevdv: backend (map /backend)
--->
+| Wie | Levels | Issues | Mappen (voorlopig) |
+|---|---|---|---|
+| **wimmevdv** | Level 1 (Terraform-drift, pipelines) + Level 2 (service account, IAM) | #5, #6 | `infra/` (Terraform), `.github/workflows/infra-*.yml` |
+| **VR0EM** (Dali) | Level 3 (incident-agent) + Level 4 (MCP-server, bonus) | #7, #8 | `agent/`, `mcp-server/`, `.github/workflows/agent-*.yml` en `mcp-*.yml` |
+
+Gedeeld: `docs/` (opdracht, contract) en `docs/bewijs/<level>/` (screenshots en output voor de pitch; ieder werkt in zijn eigen submap).
+
+**Raakvlak:** Level 3 (permission creep) kan IAM-rollen raken die in `infra/` beheerd worden. Raak in dat geval `infra/` niet zelf aan, maar zet een comment op het issue met label `needs-sync`.
+De mappen zijn voorlopig. Als de organisatie eigen repo's aanlevert, passen we dit aan.
 
 ## Protocol: altijd volgen
 
@@ -83,4 +88,5 @@ Benodigdheden: laptop en een Google-account.
 | `frontend` / `backend` | Deel van de code |
 
 ## Tech stack & commando's
-<!-- Vul in: taal/framework, hoe starten, hoe testen -->
+Verwacht (te bevestigen zodra we toegang hebben): Google Cloud (IAM, Secret Manager), Terraform, Kubernetes, Alertmanager, een AI-agent en een MCP-server (container image).
+Pipelines: GitHub Actions (voorstel). Commando's volgen zodra de omgeving gekend is.
