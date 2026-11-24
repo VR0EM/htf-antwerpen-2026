@@ -40,7 +40,8 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     concurrency:
-      group: plan-${{ github.ref }}
+      # Per stack: anders annuleert de plan van workload die van core (en omgekeerd).
+      group: plan-${{ github.ref }}-${{ matrix.stack }}
       cancel-in-progress: true
     strategy:
       fail-fast: false
