@@ -10,10 +10,10 @@ sequenceDiagram
     participant D as Dali + Claude
     participant GH as GitHub (issues + repo)
     participant W as Wimme + Claude
-    D->>GH: issue #7 toewijzen + label in-progress ("ik doe dit")
+    D->>GH: issue nr. 7 toewijzen + label in-progress ("ik doe dit")
     W->>GH: gh issue list (wie doet wat?)
-    W->>GH: comment op #5: "drift gevonden, raakt jou ook" (needs-sync)
-    D->>GH: leest #5, wacht met apply
+    W->>GH: comment op nr. 5: "drift gevonden, raakt jou ook" (needs-sync)
+    D->>GH: leest nr. 5, wacht met apply
     W->>GH: APPLY START core ... APPLY KLAAR
     D->>GH: PR met fix, mergen, pull
 ```

@@ -17,6 +17,12 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 12:05 · VR0EM · Beelden voor de presentatie
+- **Wat:** `docs/img/presentatie/`: grafiek van de tijdsbom (matplotlib, uit de testresultaten), Ixeth + Alertmanager na het herstel (headless Chromium via `kubectl port-forward`, zonder wachtwoord), screenshots van het handboek. Overzicht op de pitchpagina. Slogans van de chamber als hints bij L3.
+- **Waarom:** beelden maken de pitch sterker.
+- **Waar:** deze PR.
+- **Debug:** (1) het sequence-diagram in `samenwerking.md` kapte berichten af bij `#7`: Mermaid leest `#` als een speciaal teken, nu `nr. 7`. (2) Een screenshot met `#anker` in de URL bleef wit, dus genomen zonder anker.
+
 ### 12:01 · VR0EM · L3/L4 afgerond
 - **Wat:** eindcontrole: grimoire enkel "Genesis" (ook geen commits van de corrupte Ixeth tussen 11:34 en 11:57), geen tunings of RBAC-spirits, Ixeth `handled: 0`, geen alerts in Alertmanager, deployments in oracle/scrolls op hun normale waarden. Status in het handboek bijgewerkt.
 - **Waarom:** pas klaar als ook de periode met de oude code niets heeft achtergelaten.
