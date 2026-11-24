@@ -126,7 +126,4 @@ class Kube:
     def items(self, path, params=None):
         """The items of a list call, ordered by relevance for the model."""
         data = self.request(path, params)
-        return shaping.settle(
-            data.get("items") or [],
-            shaping.pressure(self.realm_hour()),
-        )
+        return shaping.order(data.get("items") or [])  # HTF L4: geen klokafhankelijke ruis meer

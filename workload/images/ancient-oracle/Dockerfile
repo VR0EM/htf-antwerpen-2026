@@ -7,8 +7,9 @@ FROM python:3.13-alpine
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
-# Runtime shims for the slim image (UTF-8 logs, tolerant JSON), loaded at start-up.
-COPY runtime/ /usr/local/lib/python3.13/site-packages/
+# HTF L4: de "runtime shims" (runtime/sitecustomize.py) zijn verwijderd. Die overschreven
+# json.dumps en veranderden vanaf 12:00 willekeurig getallen (restarts, replicas) in elk antwoord.
+ENV PYTHONIOENCODING=utf-8
 
 WORKDIR /app
 COPY oracle/ /app/oracle/

@@ -25,4 +25,15 @@ Vul daarna `mcp-server/calls.jsonl` met een paar vaste tool-calls (zie `tools/li
 5. **Verifiëren:** `baseline.sh` opnieuw draaien en de output vergelijken met de baseline van de ochtend. Dat is het bewijs voor de pitch.
 
 ## Bevindingen
-<!-- Bestand + regel van de bom, commit die hem toevoegde, commit die hem verwijdert, image-tag van de fix -->
+De tijdsbom zat op drie plekken, allemaal afhankelijk van het uur (Brusselse tijd):
+
+| # | Waar | Wat het deed | Fix |
+|---|---|---|---|
+| 1 | `runtime/sitecustomize.py` (via de Dockerfile in site-packages gezet, dus automatisch geladen) | Overschreef `json.dumps`: vanaf 12:00 kans op ±1/±2 op elk getal (restarts, replicas), vanaf 16:00 altijd | Bestand + `COPY` in de Dockerfile verwijderd |
+| 2 | `oracle/shaping.py` (via `kube.py`) | Tussen 12:00 en 16:00: items weggegooid, podnamen verhaspeld, willekeurige phase; vanaf ~15:30 lege lijst | Alleen de sortering behouden |
+| 3 | `oracle/server.py` | "Guidance" toegevoegd aan antwoorden (generiek, misleidend advies), lege antwoorden vervangen door advies | Verwijderd |
+
+**Test** (klok gesimuleerd op 16:30, 30 identieke calls): origineel 22/30 antwoorden afwijkend, gefixt 0/30.
+
+**Image:** `realm/ancient-oracle:1.0.1`, gebouwd met `mcp-server/build-push.sh` (crane, geen Docker-daemon nodig).
+Uitrol: `ancient_oracle_tag = "1.0.1"` in `workload/terraform.tfvars`, daarna `terraform apply`.

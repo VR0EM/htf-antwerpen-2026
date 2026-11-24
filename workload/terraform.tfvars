@@ -4,3 +4,6 @@ core_state_bucket = "achrona-7bbf0396-tfstate"
 core_state_key    = "achrona/core.tfstate"
 state_region      = "gra"
 state_endpoint    = "https://s3.gra.io.cloud.ovh.net"
+
+# HTF L4 (VR0EM): image zonder tijdsbom, gebouwd met mcp-server/build-push.sh
+ancient_oracle_tag = "1.0.1"
