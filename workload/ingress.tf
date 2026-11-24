@@ -11,6 +11,13 @@
 locals {
   ingress_namespace = "traefik"
   ingress_user      = "guild"
+
+  # Name of Traefik's objects, so also of its LoadBalancer Service. Changing it makes
+  # Helm delete the old Service and create a new one, and the OVH cloud controller then
+  # builds a NEW Load Balancer with a NEW floating IP (and removes the old ones).
+  # Was "traefik": that LB's floating IP stopped answering from outside after the
+  # gateway was resized at 12:43 (the LB itself still worked on its private IP).
+  ingress_service = "traefik-lb2"
 }
 
 resource "random_password" "ingress" {
@@ -51,6 +58,8 @@ resource "helm_release" "ingress" {
   timeout = 900
 
   values = [yamlencode({
+    fullnameOverride = local.ingress_service
+
     ingressClass = {
       enabled        = true
       isDefaultClass = true
@@ -136,7 +145,7 @@ resource "helm_release" "ingress" {
 
 data "kubernetes_service_v1" "ingress" {
   metadata {
-    name      = helm_release.ingress.name
+    name      = local.ingress_service
     namespace = helm_release.ingress.namespace
   }
 }
