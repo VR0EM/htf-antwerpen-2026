@@ -17,6 +17,12 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 13:45 · wimmevdv · Level 2: rotatie-demo service account
+- **Wat:** `monitoring.serviceAccount` `metrics-reader` → `metrics-reader-r2` (chart 0.5.1). Vooraf een token van `metrics-reader` aangemaakt (2 u geldig, enkel lokaal, **niet** in `docs/`). Die werkte: `get nodes` ok, `list secrets` Forbidden.
+- **Waarom:** bewijzen dat roteren via één PR elke oude token ongeldig maakt. Na de merge moet dezelfde token **401 Unauthorized** geven.
+- **Waar:** issue #54, akkoord Wimme. Bewijs: `docs/bewijs/level-2/…-rotatie/`.
+- **Debug:** de token is aangemaakt voor het account met minimale rechten. Een token aanmaken voor het oude `cluster-admin`-account werd eerder (terecht) tegengehouden.
+
 ### 13:45 · wimmevdv · Opruimen level 1 (pipeline, drift-rapport, example-bestanden)
 - **Wat:**
   - `infra.yml`: in de apply-lus geen `plan | tee` meer. Zonder `pipefail` verborg `tee` een mislukte plan, en dan probeerde apply een oud plan. De PR-plan schrijft geen ongebruikt `tfplan`/`exitcode` meer, en de commentaar over de concurrency-groepen klopt weer.
