@@ -3,6 +3,7 @@
 # Statische site:   uvx zensical build      -> map site/ (staat in .gitignore)
 
 [project]
+site_url = "https://vr0em.github.io/htf-antwerpen-2026/"
 site_name = "Four Seals of the Broken Realm"
 site_description = "Wat we deden op Hack The Future 2026 (challenge 107, FlowFactor), en wat je eruit kunt leren."
 site_author = "VR0EM & wimmevdv"

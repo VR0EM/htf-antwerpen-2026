@@ -44,7 +44,9 @@ flowchart LR
 | 3 | :white_check_mark: 5 corrupties | :white_check_mark: PR #17 | :white_check_mark: 11:23 | `docs/bewijs/level-3/` |
 | 4 | :white_check_mark: 3 plekken | :white_check_mark: PR #18, image `1.0.1` | :white_check_mark: 11:23 | `docs/bewijs/level-4/` |
 
-!!! note "Dit handboek lokaal bekijken"
+!!! note "Online: <https://vr0em.github.io/htf-antwerpen-2026/>"
+    Lokaal bekijken:
+
     ```bash
     uvx zensical serve      # of: pip install zensical && zensical serve
     ```

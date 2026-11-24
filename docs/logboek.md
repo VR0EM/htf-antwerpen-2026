@@ -17,6 +17,12 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 11:41 · VR0EM · Handboek publiek via GitHub Pages
+- **Wat:** GitHub Pages aangezet (build via workflow), `.github/workflows/docs.yml` bouwt `docs/` met Zensical bij elke push naar `main`. `site_url` in `zensical.toml`. Regel in `CLAUDE.md`: `docs/` is publiek, dus nooit secrets.
+- **Waarom:** het handboek bereikbaar voor team en jury op <https://vr0em.github.io/htf-antwerpen-2026/>. Beslissing van Dali.
+- **Waar:** deze PR.
+- **Debug:** voor publicatie `docs/` gescand: geen wachtwoorden of sleutels. Wel zichtbaar: het publieke IP van de ingress (achter basic auth), het OVH-project-ID in het bewijs van L1, en namen van pods en de registry.
+
 ### 11:55 · wimmevdv · Logboek opgezet
 - **Wat:** dit logboek gemaakt en de regel "elke wijziging in het logboek" toegevoegd aan het protocol in `CLAUDE.md`.
 - **Waarom:** twee agents die niet rechtstreeks praten. Zo weet elke agent wat de andere deed en waarom, en is debuggen makkelijker.
