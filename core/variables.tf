@@ -118,3 +118,9 @@ variable "registry_plan" {
   type        = string
   default     = "SMALL"
 }
+
+variable "scrolls_key_version" {
+  description = "Bump this (any new string) to rotate the S3 key of scrolls_app. See iam.tf."
+  type        = string
+  default     = "2026-11-24-rotatie-1"
+}

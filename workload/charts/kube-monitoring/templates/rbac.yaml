@@ -1,70 +1,40 @@
-# Access of the metrics-collector account.
+# Access of the metrics collector (monitoring.yaml), least privilege (Level 2, #6).
+#
+# The collector does exactly three things every minute:
+#   kubectl get nodes                    -> list nodes
+#   kubectl get pods --all-namespaces    -> list pods
+#   kubectl get --raw /metrics           -> GET /metrics on the API server
+# so that is all it may do. Before, the binding pointed at cluster-admin and a second
+# role let it read every Secret and write every ConfigMap in the cluster: a kitchen
+# hand with the keys to every room. The aggregated ClusterRole is gone too: with
+# aggregation, anyone allowed to create a ClusterRole with the right label could
+# quietly add rights to this account.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: monitoring-collector-reader
+  name: monitoring-metrics-reader
   labels:
-    app.kubernetes.io/part-of: monitoring
-    {{- include "km.labels" . | nindent 4 }}
-aggregationRule:
-  clusterRoleSelectors:
-    - matchLabels:
-        rbac.achrona.io/aggregate-to-collector: "true"
-rules: []
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: monitoring-collector-core
-  labels:
-    rbac.achrona.io/aggregate-to-collector: "true"
     app.kubernetes.io/part-of: monitoring
     {{- include "km.labels" . | nindent 4 }}
 rules:
   - apiGroups: [""]
-    resources: [pods, services, endpoints, namespaces, nodes, nodes/metrics]
-    verbs: [get, list, watch]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: monitoring-collector-metrics
-  labels:
-    rbac.achrona.io/aggregate-to-collector: "true"
-    app.kubernetes.io/part-of: monitoring
-    {{- include "km.labels" . | nindent 4 }}
-rules:
-  - nonResourceURLs: [/metrics, /metrics/cadvisor]
+    resources: [nodes, pods]
+    verbs: [list]
+  - nonResourceURLs: [/metrics]
     verbs: [get]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: monitoring-collector-scrape-config
-  labels:
-    rbac.achrona.io/aggregate-to-collector: "true"
-    app.kubernetes.io/part-of: monitoring
-    {{- include "km.labels" . | nindent 4 }}
-rules:
-  - apiGroups: [""]
-    resources: [secrets]
-    verbs: [get, list, watch]
-  - apiGroups: [""]
-    resources: [configmaps]
-    verbs: [get, list, watch, create, update, patch]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: monitoring-collector-reader
+  name: monitoring-metrics-reader
   labels:
     app.kubernetes.io/part-of: monitoring
     {{- include "km.labels" . | nindent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: cluster-admin
+  name: monitoring-metrics-reader
 subjects:
   - kind: ServiceAccount
-    name: metrics-collector
+    name: {{ .Values.monitoring.serviceAccount }}
     namespace: {{ .Release.Namespace }}

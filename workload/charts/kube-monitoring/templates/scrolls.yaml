@@ -7,6 +7,10 @@ metadata:
     app.kubernetes.io/part-of: scrolls
     {{- include "km.labels" . | nindent 4 }}
 ---
+# The scrolls app's credentials. Never in Git (Level 2, #6): the values come from
+# Terraform (workload/monitoring.tf, set_sensitive). The S3 key is the scrolls_app
+# credential of ../core/iam.tf (only bucket scrolls), the signing key a random_password.
+# Before, both were hardcoded here, so everyone who could read the repo had them.
 apiVersion: v1
 kind: Secret
 metadata:
@@ -17,8 +21,10 @@ metadata:
     {{- include "km.labels" . | nindent 4 }}
 type: Opaque
 stringData:
-  S3_ACCESS_KEY: 9d4e1c7a3b6f4c20a85e
-  S3_SECRET_KEY: f0a8c35e91d24b7ea6c3d58e2b17940c6e3a
+  S3_ACCESS_KEY: {{ required "scrolls.credentials.s3AccessKey is set by Terraform" .Values.scrolls.credentials.s3AccessKey | quote }}
+  S3_SECRET_KEY: {{ required "scrolls.credentials.s3SecretKey is set by Terraform" .Values.scrolls.credentials.s3SecretKey | quote }}
+  S3_BUCKET: {{ .Values.scrolls.credentials.s3Bucket | quote }}
+  S3_ENDPOINT: {{ .Values.scrolls.credentials.s3Endpoint | quote }}
 ---
 apiVersion: v1
 kind: Secret
@@ -30,7 +36,7 @@ metadata:
     {{- include "km.labels" . | nindent 4 }}
 type: Opaque
 stringData:
-  SIGNING_KEY: 7c1e5b9a2d804f63b1a97e0c4d58f2a61b3e90d7c5a4f8e2
+  SIGNING_KEY: {{ required "scrolls.credentials.signingKey is set by Terraform" .Values.scrolls.credentials.signingKey | quote }}
 ---
 apiVersion: v1
 kind: ServiceAccount
