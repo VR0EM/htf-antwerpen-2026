@@ -19,3 +19,6 @@ deploy.log
 *.tfstate
 *.tfstate.backup
 *.zip
+
+# Zensical build-output
+site/
