@@ -17,6 +17,22 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 14:10 · VR0EM · L3 tweede corruptie (13:39): scribe gehard + Kubernetes-ghost-check
+- **Wat (gevonden, read-only):** om 13:39 (12:39Z) is L3 opnieuw gecorrumpeerd, ná onze fix van 10:52. "L3 afgerond" (12:01) klopte dus niet meer, en de drift-check bleef groen.
+  - `system:oracle-sight`: ClusterRoleBinding **cluster-admin** voor de groep `system:serviceaccounts:oracle`, vermomd als bootstrapping-object. Ixeth: `can-i '*' '*'` = **yes**.
+  - Grimoire vervangen door een teruggedateerde geschiedenis. Vervalste commits herken je aan auteur = gildelid, committer = Ixeth (security-admin, persona, vision `the-long-night`, `seer-shades`, tuning ixeth 2 replicas/2Gi).
+  - De scribe (onze code!) paste `realm-security-admin` (`* * *`), de binding, `seer-shades` en de ixeth-tuning toe: `_sanitize()` filterde alleen LLM-output, niet de grimoire zelf.
+  - `kube-system/coredns-ledger`: zet elke 120 s een vergiftigde `persona.md` terug, met een **verborgen prompt-injectie in Unicode tag-tekens** (onzichtbaar in editors).
+  - `scrolls-ledger` gepatcht naar 116 MB → scrolls-app in OOM-lus. De gezuiverde Ixeth deed ondanks de giftige prompt enkel `scrolls-app → 192Mi` (commit `24fc09b`): de code-filter hield stand.
+  - L2-sporen: `kube-system/rollup-staging` (13:12, "staged" S3-keys van scrolls, vlak vóór de rotatie) en het kale SA `metrics-collector` (13:33).
+- **Wat (fix):**
+  - `ixeth.py`: de scribe past enkel nog **Deployments buiten de eigen namespace** toe, de rest wordt geweigerd en gemeld. Geweigerde spirits worden opgeruimd (seer-shades). 4 nieuwe tests spelen de grimoire van 13:39 na.
+  - `ci/k8s-ghost-check.py`: objecten in de cluster buiten Helm/Terraform/OVH (met de hand `kubectl apply`'d, RBAC uit de grimoire, bindings naar onze SA's, vreemde workloads in kube-system, losse SA's). `infra.yml` ruimt op vóór Apply workload, `drift.yml` meldt en start zelfherstel. Lokaal droog getest: exact 6 ghosts, geen vals alarm.
+  - Chart 0.5.1 → 0.5.2: Helm zet ixeth (1 replica, 384Mi) en `scrolls-ledger` (12 MB) terug.
+- **Waarom:** de opdracht vraagt een agent zonder verborgen agenda en een omgeving zonder permission creep. Detectie moet ook de cluster-laag zien.
+- **Waar:** #57, needs-sync op #5 (stappen in de workflows van wimmevdv). Bewijs: `docs/bewijs/level-3/20261124-1357-tweede-corruptie-voor/`.
+- **Debug:** eerste versie van de ghost-check meldde `system:service-account-issuer-discovery` (Kubernetes zelf, groep van álle SA's). Regel beperkt tot `system:serviceaccounts:<onze ns>`.
+
 ### 13:55 · wimmevdv · Rotatie bewezen: oude token → Unauthorized
 - **Wat:** na PR #55 (pipeline-apply ok) geeft dezelfde token van `metrics-reader` **`Unauthorized`** op `get nodes` en `auth whoami`. De collector draait verder als `metrics-reader-r2`.
 - **Opgemerkt:** om 13:33:30 een kaal ServiceAccount `metrics-collector` (geen labels/bindings/rechten, niet van Helm). Herkomst onbekend (gevraagd op #44). Onze drift-check ziet geen Kubernetes-objecten buiten Helm. Dat is een mogelijke volgende verbetering.

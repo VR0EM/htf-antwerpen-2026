@@ -5,6 +5,7 @@
 # 4 minuten ("Volgende ronde"), tot 18:00 Belgische tijd. De cron blijft als vangnet.
 #   1. terraform plan -detailed-exitcode op core/ en workload/ -> wat Terraform beheert en afwijkt
 #   2. ci/ghost-check.py -> wat in OVH bestaat maar niet in de state staat (ziet plan niet)
+#   3. ci/k8s-ghost-check.py -> objecten in de cluster buiten Helm/Terraform/OVH (#57)
 # Bij drift: een issue met label `drift` (nieuw, of een comment op het open issue), een rode run,
 # en zelfherstel: de apply-pipeline (infra.yml) wordt gestart en zet alles terug naar main.
 # Een bewuste wijziging gaat dus via een PR in de code; alles daarbuiten wordt teruggedraaid.
@@ -86,11 +87,22 @@ jobs:
           cat ghosts.md >> report.md
           echo "ghosts=$([ $code -eq 0 ] && echo 0 || echo 1)" >> "$GITHUB_OUTPUT"
 
+      - name: Kubernetes-ghosts (objecten in de cluster buiten Helm, #57)
+        id: k8sghosts
+        run: |
+          set +e
+          python3 ci/k8s-ghost-check.py core-state.json > k8s-ghosts.md
+          code=$?
+          set -e
+          echo >> report.md
+          cat k8s-ghosts.md >> report.md
+          echo "ghosts=$([ $code -eq 0 ] && echo 0 || echo 1)" >> "$GITHUB_OUTPUT"
+
       - name: Rapport
         run: cat report.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Issue bij drift
-        if: steps.plan.outputs.drift == '1' || steps.ghosts.outputs.ghosts == '1'
+        if: steps.plan.outputs.drift == '1' || steps.ghosts.outputs.ghosts == '1' || steps.k8sghosts.outputs.ghosts == '1'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -105,7 +117,7 @@ jobs:
           fi
 
       - name: Zelfherstel (start de apply-pipeline op main)
-        if: steps.plan.outputs.drift == '1' || steps.ghosts.outputs.ghosts == '1'
+        if: steps.plan.outputs.drift == '1' || steps.ghosts.outputs.ghosts == '1' || steps.k8sghosts.outputs.ghosts == '1'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

@@ -266,19 +266,68 @@ def _files(sub):
             if p.endswith((".yaml", ".yml", ".json"))]
 
 
+# HTF L3 (#57): de grimoire zelf kan vergiftigd zijn. Om 13:39 stonden er een
+# ClusterRole met `* * *` + binding voor de Seer, een tuning die de Seer 2 replicas
+# en 2Gi gaf, en "shades" in zijn eigen namespace. _sanitize() filtert alleen wat
+# het LLM voorstelt; de scribe paste alles uit de grimoire blind toe. Nu geldt
+# dezelfde regel voor alles wat de scribe toepast: enkel Deployments, en nooit in
+# de eigen namespace. De rest wordt geweigerd en gemeld.
+def _admissible(obj):
+    """None if the scribe may apply this object, else the reason it refuses."""
+    if not isinstance(obj, dict):
+        return "geen Kubernetes-object"
+    if obj.get("kind") != "Deployment" or not str(obj.get("apiVersion", "")).startswith("apps/"):
+        return f"kind {obj.get('kind')} niet toegelaten"
+    ns = (obj.get("metadata") or {}).get("namespace")
+    if not ns:
+        return "geen namespace"
+    if ns == _vessel()[0]:
+        return "eigen namespace van de Seer"
+    return None
+
+
+def _load_realm(sub):
+    """The admissible objects under realm/<sub>, and what was refused (and why)."""
+    docs, refused = [], []
+    for path in sorted(_files(sub)):
+        rel = os.path.relpath(path, REPO)
+        try:
+            with open(path) as f:
+                items = [o for o in yaml.safe_load_all(f) if o is not None]
+        except (OSError, yaml.YAMLError):
+            refused.append(f"{rel} (onleesbaar)")
+            continue
+        for obj in items:
+            why = _admissible(obj)
+            if why:
+                o = obj if isinstance(obj, dict) else {}
+                md, kind = o.get("metadata") or {}, o.get("kind", "?")
+                refused.append(f"{rel}: {kind}/{md.get('name', '?')} ({why})")
+            else:
+                docs.append(obj)
+    return docs, refused
+
+
+def _apply(docs, *extra):
+    return kubectl("apply", "--server-side", f"--field-manager={FIELD_MANAGER}", "--force-conflicts",
+                   "-f", "-", *extra, input=yaml.safe_dump_all(docs, sort_keys=False))
+
+
 def scribe_once():
     with GIT_LOCK:
         grimoire_sync()
         results = []
-        tunings, spirits = _files("tunings"), _files("spirits")
+        tunings, refused_t = _load_realm("tunings")
+        spirits, refused_s = _load_realm("spirits")
+        refused = refused_t + refused_s
+        if refused:
+            results.append("geweigerd: " + ", ".join(refused))
         if tunings:
-            rc, out, err = kubectl("apply", "--server-side", f"--field-manager={FIELD_MANAGER}",
-                                   "--force-conflicts", "-R", "-f", os.path.join(REPO, "realm", "tunings"))
+            rc, out, err = _apply(tunings)
             results.append("tunings ok" if rc == 0 else f"tunings: {err.strip()[:300]}")
         owned, spirits_ok = set(), True
         if spirits:
-            rc, out, err = kubectl("apply", "--server-side", f"--field-manager={FIELD_MANAGER}",
-                                   "--force-conflicts", "-R", "-f", os.path.join(REPO, "realm", "spirits"), "-o", "json")
+            rc, out, err = _apply(spirits, "-o", "json")
             if rc == 0:
                 data = json.loads(out)
                 for item in data.get("items", [data]):
@@ -289,6 +338,8 @@ def scribe_once():
                 spirits_ok = False
                 results.append(f"spirits: {err.strip()[:300]}")
         if spirits_ok:
+            # Geweigerde spirits horen niet bij `owned`, dus een eerder toegepaste
+            # (bv. seer-shades in de eigen namespace) wordt hier weer opgeruimd.
             for kind in PRUNE_KINDS:
                 try:
                     items = kube_json("get", kind, "-A", "-l", f"{REALM_LABEL}=true").get("items", [])
@@ -314,7 +365,7 @@ def scribe_loop():
         try:
             if AUTO_APPLY:
                 result = scribe_once()
-                if any(word in result for word in ("released", "error", "rror:", "forbidden", "Forbidden")):
+                if any(word in result for word in ("released", "geweigerd", "error", "rror:", "forbidden", "Forbidden")):
                     log("scribe:", result)
             else:
                 with GIT_LOCK:

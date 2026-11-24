@@ -156,6 +156,18 @@ jobs:
           echo "### core/" >> "$GITHUB_STEP_SUMMARY"
           grep -E '^(Plan:|No changes\.)' plan.txt >> "$GITHUB_STEP_SUMMARY" || true
 
+      # Kubernetes-ghosts (#57, VR0EM): objecten in de cluster buiten Helm, Terraform en
+      # OVH, zoals de backdoor van 13:39 (cluster-admin voor `oracle`, coredns-ledger).
+      # Vóór Apply workload: eerst de persistentie weg, dan zet Helm de rest terug.
+      - name: Kubernetes-ghosts opruimen
+        if: ${{ !cancelled() }}
+        run: |
+          set +e
+          python3 ci/k8s-ghost-check.py core-state.json --remediate > k8s-ghosts.md
+          set -e
+          cat k8s-ghosts.md
+          cat k8s-ghosts.md >> "$GITHUB_STEP_SUMMARY"
+
       - name: Apply workload
         # Ook als core faalde (bv. één resource): workload kan meestal toch hersteld worden.
         if: ${{ !cancelled() }}
