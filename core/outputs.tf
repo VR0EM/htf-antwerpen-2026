@@ -24,7 +24,7 @@ output "registry_password" {
 # Read by workload/monitoring.tf to give the scrolls app its credentials (Level 2).
 output "scrolls_bucket" {
   description = "Name of the scrolls bucket."
-  value       = ovh_cloud_storage_object_bucket.scrolls.name
+  value       = ovh_cloud_project_storage.scrolls.name
 }
 
 output "scrolls_s3_endpoint" {
