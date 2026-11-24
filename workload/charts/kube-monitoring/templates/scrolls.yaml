@@ -21,8 +21,8 @@ metadata:
     {{- include "km.labels" . | nindent 4 }}
 type: Opaque
 stringData:
-  S3_ACCESS_KEY: {{ required "scrolls.credentials.s3AccessKey is set by Terraform" .Values.scrolls.credentials.s3AccessKey | quote }}
-  S3_SECRET_KEY: {{ required "scrolls.credentials.s3SecretKey is set by Terraform" .Values.scrolls.credentials.s3SecretKey | quote }}
+  S3_ACCESS_KEY: {{ .Values.scrolls.credentials.s3AccessKey | quote }}
+  S3_SECRET_KEY: {{ .Values.scrolls.credentials.s3SecretKey | quote }}
   S3_BUCKET: {{ .Values.scrolls.credentials.s3Bucket | quote }}
   S3_ENDPOINT: {{ .Values.scrolls.credentials.s3Endpoint | quote }}
 ---
@@ -36,7 +36,7 @@ metadata:
     {{- include "km.labels" . | nindent 4 }}
 type: Opaque
 stringData:
-  SIGNING_KEY: {{ required "scrolls.credentials.signingKey is set by Terraform" .Values.scrolls.credentials.signingKey | quote }}
+  SIGNING_KEY: {{ .Values.scrolls.credentials.signingKey | quote }}
 ---
 apiVersion: v1
 kind: ServiceAccount
