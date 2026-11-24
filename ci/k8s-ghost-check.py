@@ -17,6 +17,13 @@ of OVH beheerd worden en die er niet horen:
   5. Alles wat met de hand `kubectl apply`'d is (annotatie last-applied-configuration):
      Helm, Terraform, OVH en de scribe (server-side apply) zetten die nooit.
 
+Daarnaast Helm-drift: objecten die Helm beheert maar die nadien met de hand
+gewijzigd zijn (`kubectl patch/edit/replace/...`), zoals de ConfigMap
+`scrolls-ledger` die om de 20 min opgedreven werd (OOM-lus van scrolls-app).
+Met --remediate wordt zo'n object teruggezet naar het manifest van de laatste
+Helm-release (`kubectl replace`). Workloads worden enkel gemeld: die past ook de
+scribe van Ixeth aan (via de grimoire), dat is geen hand-werk.
+
 Gebruik:
   k8s-ghost-check.py core-state.json             # melden, exit 2 bij ghosts
   k8s-ghost-check.py core-state.json --remediate # en verwijderen
@@ -24,8 +31,11 @@ core-state.json = `terraform -chdir=core show -json` (daar zit de kubeconfig in)
 De kubeconfig gaat naar een tijdelijk bestand (0600) en wordt nooit getoond.
 """
 
+import base64
+import gzip
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -98,6 +108,66 @@ def why_ghost(kind, obj):
     return None
 
 
+# --- Helm-drift ---------------------------------------------------------------
+
+HAND = ("kubectl-patch", "kubectl-edit", "kubectl-replace", "kubectl-set", "kubectl-scale",
+        "kubectl-label", "kubectl-annotate", "kubectl-client-side-apply")
+FIXER = "k8s-ghost-check"   # field manager van onze eigen herstelling: telt als Helm
+
+
+def releases():
+    """Manifest-documenten van de laatste gedeployde release van elke Helm-release."""
+    docs = {}
+    out = json.loads(kubectl("get", "secrets", "-A", "-l", "owner=helm,status=deployed", "-o", "json"))
+    for sec in out.get("items", []):
+        raw = base64.b64decode(sec["data"]["release"])           # Kubernetes-base64
+        rel = json.loads(gzip.decompress(base64.b64decode(raw)))  # Helm: base64 + gzip
+        ns = rel.get("namespace", "")
+        for doc in re.split(r"(?m)^---\s*$", rel.get("manifest", "")):
+            kind = re.search(r"(?m)^kind:\s*(\S+)", doc)
+            name = re.search(r"(?m)^metadata:\s*\n(?:\s+.*\n)*?\s{2}name:\s*['\"]?([^'\"\s]+)", doc)
+            if not (kind and name):
+                continue
+            dns = re.search(r"(?m)^\s{2}namespace:\s*['\"]?([^'\"\s]+)", doc)
+            docs[(kind.group(1), dns.group(1) if dns else ns, name.group(1))] = (rel["name"], doc)
+    return docs
+
+
+def hand_edited(obj):
+    """De hand-manager als iemand het object na Helm met de hand wijzigde, anders None."""
+    last_helm, hand = "", None
+    for f in obj.get("metadata", {}).get("managedFields") or []:
+        mgr, t = f.get("manager", ""), f.get("time", "")
+        if mgr.startswith(("terraform-provider-helm", "helm")) or mgr == FIXER:
+            last_helm = max(last_helm, t)
+        elif mgr in HAND and (hand is None or t > hand[1]):
+            hand = (mgr, t)
+    return hand if hand and hand[1] > last_helm else None
+
+
+def helm_drift(remediate):
+    rows = []
+    manifests = releases()
+    for (kind, ns, name), (release, doc) in sorted(manifests.items()):
+        args = ["get", kind, name, "-o", "json", "--show-managed-fields"] + (["-n", ns] if ns else [])
+        try:
+            obj = json.loads(kubectl(*args))
+        except RuntimeError:
+            continue  # bestaat niet (meer): helm zelf of de pipeline maakt het opnieuw
+        if obj.get("metadata", {}).get("namespace", "") != ns and obj.get("metadata", {}).get("namespace"):
+            continue
+        hand = hand_edited(obj)
+        if not hand:
+            continue
+        action = "gemeld"
+        if remediate and kind not in ("Deployment", "DaemonSet", "StatefulSet"):
+            p = subprocess.run(["kubectl", "replace", f"--field-manager={FIXER}", "-f", "-"] + (["-n", ns] if ns else []),
+                               input=doc, capture_output=True, text=True, timeout=120)
+            action = "**teruggezet naar Helm**" if p.returncode == 0 else f"terugzetten faalde: {p.stderr.strip()[:200]}"
+        rows.append((kind, ns, name, release, f"{hand[0]} om {hand[1]}", action))
+    return rows
+
+
 def kubeconfig_from_state(path):
     with open(path) as f:
         state = json.load(f)
@@ -128,22 +198,32 @@ def main():
         print("### Kubernetes-ghosts (buiten Helm, Terraform en OVH)\n")
         if not ghosts:
             print("Geen gevonden.")
-            return 0
-        print("| Soort | Namespace | Naam | Aangemaakt | Waarom | Actie |")
-        print("|---|---|---|---|---|---|")
-        for kind, ns, name, created, why in ghosts:
-            action = "gemeld"
-            if remediate:
-                args = ["delete", kind, name, "--wait=false", "--ignore-not-found"]
-                if ns:
-                    args += ["-n", ns]
-                try:
-                    kubectl(*args)
-                    action = "**verwijderd**"
-                except RuntimeError as e:
-                    action = f"verwijderen faalde: {e}"
-            print(f"| {kind.split('.')[0]} | {ns or '-'} | `{name}` | {created} | {why} | {action} |")
-        return 2
+        else:
+            print("| Soort | Namespace | Naam | Aangemaakt | Waarom | Actie |")
+            print("|---|---|---|---|---|---|")
+            for kind, ns, name, created, why in ghosts:
+                action = "gemeld"
+                if remediate:
+                    args = ["delete", kind, name, "--wait=false", "--ignore-not-found"]
+                    if ns:
+                        args += ["-n", ns]
+                    try:
+                        kubectl(*args)
+                        action = "**verwijderd**"
+                    except RuntimeError as e:
+                        action = f"verwijderen faalde: {e}"
+                print(f"| {kind.split('.')[0]} | {ns or '-'} | `{name}` | {created} | {why} | {action} |")
+
+        drift = helm_drift(remediate)
+        print("\n### Helm-drift (met de hand gewijzigd na Helm)\n")
+        if not drift:
+            print("Geen gevonden.")
+        else:
+            print("| Soort | Namespace | Naam | Release | Gewijzigd door | Actie |")
+            print("|---|---|---|---|---|---|")
+            for kind, ns, name, release, who, action in drift:
+                print(f"| {kind} | {ns or '-'} | `{name}` | {release} | {who} | {action} |")
+        return 2 if ghosts or drift else 0
     finally:
         os.unlink(kc)
 

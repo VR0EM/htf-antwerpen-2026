@@ -10,6 +10,7 @@ on:
       - "workload/charts/**"
       - "workload/images/**"
       - "agent/**"
+      - "ci/k8s-ghost-check.py"
       - "mcp-server/**"
       - ".github/workflows/l3-l4-tests.yml"
   push:
@@ -18,6 +19,7 @@ on:
       - "workload/charts/**"
       - "workload/images/**"
       - "agent/**"
+      - "ci/k8s-ghost-check.py"
       - "mcp-server/**"
 
 permissions:

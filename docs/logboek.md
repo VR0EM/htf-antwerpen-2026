@@ -26,6 +26,11 @@ Sjabloon:
 - **Les:** rotatieknoppen niet met een algemene `sed` aanpassen, maar per variabele.
 - **Waar:** #63, #68, deze PR.
 
+### 15:20 · VR0EM · Ghost-check ziet ook Helm-drift (de OOM-lus van scrolls-ledger)
+- **Wat:** `ci/k8s-ghost-check.py` vergelijkt nu ook objecten die Helm beheert met de laatste Helm-release. Werd zo'n object ná Helm met de hand gewijzigd (`kubectl patch/edit/replace/scale/...` in de managedFields), dan meldt de drift-check het, en zet de apply-pipeline het met `kubectl replace` terug naar het manifest. Workloads worden enkel gemeld (de scribe van Ixeth past die legitiem aan). 5 tests, met de echte managedFields van 14:26.
+- **Waarom:** `scrolls-ledger` werd om ~20 min van buitenaf opgedreven (116 → 154 → 308 MB). Daardoor kreeg scrolls-app OOM, en Ixeth verdubbelde telkens het geheugen (192 → 1024Mi). Ixeth deed zijn werk, maar de oorzaak was een handmatige wijziging buiten Git, en die zag niemand. Om 14:59 zette een apply van wimmevdv (rotatie #63) de ledger toevallig terug naar 12. Nu gebeurt dat altijd binnen één drift-ronde.
+- **Waar:** #57, deze PR. Geen wijziging aan de workflows van wimmevdv: de stap bestaat al sinds #58.
+
 ### 15:10 · wimmevdv · Level 2: gelekte geheimen roteren (2/4: websitewachtwoord)
 - **Wat:** `random_password.ingress` krijgt een rotatieknop (`keepers`). Nieuw wachtwoord voor de gebruiker `guild`, het Secret `traefik/guild-auth` wordt bijgewerkt. Na de merge: `terraform output -raw password` voor het nieuwe.
 - **Waarom:** het oude wachtwoord stond in de workload-state (zie 15:00).
