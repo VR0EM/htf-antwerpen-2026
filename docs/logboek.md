@@ -17,6 +17,11 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 13:05 · VR0EM · Stappenplan in het handboek
+- **Wat:** sectie `docs/stappenplan/` met 7 pagina's (voorbereiding, L1–L4, pipeline, bewijs en pitch). Per stap: doel, commando's, checkpoint, valkuil en "probeer zelf". L1 gebaseerd op het drift-rapport van wimmevdv, L2 als **plan** (nog niet uitgevoerd).
+- **Waarom:** het team moet alles stap voor stap kunnen naspelen en zelf proberen.
+- **Waar:** deze PR.
+
 ### 12:59 · VR0EM · Derde drift-golf: infra.yml gestart, deels hersteld
 - **Wat:** om 12:43 opnieuw IP-lock `198.51.100.0/24` en om 12:44 opnieuw de ghost `hotfix-pool`. Ook de ingress gaf geen antwoord meer. De geplande drift-check (`*/30`) was nog nooit gestart. Daarom `infra.yml` via workflow_dispatch op `main` gestart (akkoord Dali, APPLY START op #5). Resultaat: gateway, update_policy en nodepool hersteld. **IP-restrictie en bucket mislukt**, dus ghost-opruiming en workload-apply niet gedraaid.
 - **Waarom:** de herstelweg uit het protocol (een herhaalde apply-run), omdat het zelfherstel niet startte.

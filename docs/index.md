@@ -6,6 +6,9 @@ Team **de-rubberen-badeendjes**: VR0EM (Dali) en wimmevdv (Wimme), elk met een e
 Dit handboek legt uit **wat er stuk was**, **hoe we het vonden**, **hoe we het oplosten** en vooral
 **hoe je zoiets zelf aanpakt**. Lees het van boven naar beneden. Geen voorkennis nodig.
 
+!!! example "Zelf proberen?"
+    Volg het [**stappenplan**](stappenplan/index.md): alles wat we deden, in volgorde, met commando's, checkpoints en valkuilen.
+
 ## Het verhaal in 30 seconden
 
 Het rijk Achrona draait op een cloudomgeving (OVHcloud) met een Kubernetes-cluster.
