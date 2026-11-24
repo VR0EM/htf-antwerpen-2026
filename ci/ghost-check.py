@@ -127,7 +127,9 @@ def find_ghosts(tok, state, base):
             ghosts.append((f"instance `{i['name']}` ({i.get('planCode')})", None))
 
     # Buckets
-    known_buckets = {b["name"] for b in state.get("ovh_cloud_storage_object_bucket", [])}
+    # The bucket moved from ovh_cloud_storage_object_bucket to ovh_cloud_project_storage (#47).
+    known_buckets = {b["name"] for t in ("ovh_cloud_storage_object_bucket", "ovh_cloud_project_storage")
+                     for b in state.get(t, [])}
     for b in call(tok, f"{base}/region/GRA/storage"):
         if b["name"] not in known_buckets and not b["name"].endswith(BOOTSTRAP_BUCKET_SUFFIX):
             ghosts.append((f"bucket `{b['name']}`", None))
