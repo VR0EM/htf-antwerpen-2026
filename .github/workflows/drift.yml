@@ -1,0 +1,102 @@
+# Level 1 (eigenaar wimmevdv): drift-detectie.
+#
+# Elke 30 minuten (en op aanvraag):
+#   1. terraform plan -detailed-exitcode op core/ en workload/ -> wat Terraform beheert en afwijkt
+#   2. ci/ghost-check.py -> wat in OVH bestaat maar niet in de state staat (ziet plan niet)
+# Bij drift: een issue met label `drift` (nieuw, of een comment op het open issue) en een rode run.
+# Herstellen gebeurt via een PR (of een herhaalde apply-run van infra.yml), nooit in de console.
+name: Drift-check
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  # Eigen groep: een drift-check is read-only en mag een wachtende apply nooit
+  # vervangen (GitHub houdt per groep maar één wachtende run over).
+  group: drift-check
+  cancel-in-progress: false
+
+env:
+  TF_IN_AUTOMATION: "true"
+  TF_INPUT: "false"
+  OVH_ENDPOINT: ${{ secrets.OVH_ENDPOINT }}
+  OVH_CLIENT_ID: ${{ secrets.OVH_CLIENT_ID }}
+  OVH_CLIENT_SECRET: ${{ secrets.OVH_CLIENT_SECRET }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.17.2
+          terraform_wrapper: false
+
+      - name: Plan core en workload
+        id: plan
+        run: |
+          drift=0
+          echo "## Drift-check $(date -u +'%Y-%m-%d %H:%M') UTC" > report.md
+          for stack in core workload; do
+            terraform -chdir=$stack init -backend-config=backend.hcl > /dev/null
+            set +e
+            terraform -chdir=$stack plan -no-color -detailed-exitcode -lock=false > $stack-plan.txt 2>&1
+            code=$?
+            set -e
+            echo >> report.md
+            case $code in
+              0) echo "### \`$stack/\`: geen drift" >> report.md ;;
+              2) drift=1
+                 echo "### \`$stack/\`: DRIFT" >> report.md
+                 echo '```' >> report.md
+                 grep -E '^\s+# .*(will|must) be|^Plan:' $stack-plan.txt >> report.md
+                 echo '```' >> report.md ;;
+              *) drift=1
+                 echo "### \`$stack/\`: plan faalde" >> report.md
+                 echo '```' >> report.md
+                 grep -A5 'Error' $stack-plan.txt | head -30 >> report.md
+                 echo '```' >> report.md ;;
+            esac
+          done
+          echo "drift=$drift" >> "$GITHUB_OUTPUT"
+
+      - name: Ghost-check (OVH-API tegenover de state)
+        id: ghosts
+        run: |
+          terraform -chdir=core show -json > core-state.json
+          set +e
+          python3 ci/ghost-check.py core-state.json core/terraform.tfvars > ghosts.md
+          code=$?
+          set -e
+          echo >> report.md
+          cat ghosts.md >> report.md
+          echo "ghosts=$([ $code -eq 0 ] && echo 0 || echo 1)" >> "$GITHUB_OUTPUT"
+
+      - name: Rapport
+        run: cat report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Issue bij drift
+        if: steps.plan.outputs.drift == '1' || steps.ghosts.outputs.ghosts == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo >> report.md
+          echo "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> report.md
+          gh label create drift --color B60205 --description "Drift gedetecteerd door de drift-check" 2>/dev/null || true
+          open=$(gh issue list --label drift --state open --json number --jq '.[0].number')
+          if [ -n "$open" ]; then
+            gh issue comment "$open" --body-file report.md
+          else
+            gh issue create --title "Drift gedetecteerd" --label drift --body-file report.md
+          fi
+          exit 1
