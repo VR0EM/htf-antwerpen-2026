@@ -80,7 +80,10 @@ variable "node_flavor" {
 variable "node_min_count" {
   description = "Minimum number of nodes."
   type        = number
-  default     = 1
+  # Was 1. Raised to 2 after the drift review (docs/bewijs/level-1): the pool
+  # uses anti-affinity and the realm's services should survive losing one node,
+  # so the manual change to 2 was a sensible one and is now part of the code.
+  default = 2
 }
 
 variable "node_max_count" {
@@ -93,6 +96,15 @@ variable "node_desired_count" {
   description = "Initial number of nodes."
   type        = number
   default     = 2
+}
+
+variable "kube_api_allowed_cidrs" {
+  description = "CIDRs that may reach the Kubernetes API server. Managed in code so any change in the console shows up as drift."
+  type        = list(string)
+  # Open on purpose: the API itself requires the cluster's client certificate,
+  # and the GitHub Actions runners that apply workload/ have no fixed IP.
+  # A list of addresses here would lock the pipeline out.
+  default = ["0.0.0.0/0"]
 }
 
 variable "registry_region" {
