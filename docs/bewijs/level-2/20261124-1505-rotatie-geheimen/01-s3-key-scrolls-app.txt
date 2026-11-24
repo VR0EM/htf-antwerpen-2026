@@ -1,0 +1,4 @@
+# Rotatie S3-key scrolls_app (2026-11-24T14:00:19Z)
+- oude key: 99e911c5...   nieuwe key: e9fb7aa3...   key in de app (secret scrolls-app-credentials): e9fb7aa3...
+- oude key: list bucket scrolls -> HTTP 200 (werkt)
+- nieuwe key: list bucket scrolls -> HTTP 200 (werkt)
