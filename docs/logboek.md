@@ -17,6 +17,16 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 13:45 · wimmevdv · Opruimen level 1 (pipeline, drift-rapport, example-bestanden)
+- **Wat:**
+  - `infra.yml`: in de apply-lus geen `plan | tee` meer. Zonder `pipefail` verborg `tee` een mislukte plan, en dan probeerde apply een oud plan. De PR-plan schrijft geen ongebruikt `tfplan`/`exitcode` meer, en de commentaar over de concurrency-groepen klopt weer.
+  - `drift.yml`: `-lock=false` weg. De backend heeft geen locking, dus de vlag deed niets.
+  - `drift-rapport.md`: status en "Nog te doen" vervangen door "Daarna: pipeline en zelfherstel".
+  - De 4 `*.example`-bestanden (backend/tfvars) zijn weg: de echte bestanden staan in git.
+- **Waarom:** review van level 1. De pipeline mag niet zonder reden applyen, en de publieke docs moeten kloppen.
+- **Waar:** issue #51.
+- **Debug:** dezelfde ghost-check-bug zat ook in deze PR, maar #52 loste hem al op. Bij de rebase is de versie van #52 behouden.
+
 ### 13:40 · wimmevdv · Level 2 live en bewezen + vals alarm in de ghost-check gefixt
 - **Wat:** PR #50 door de pipeline geapplied (core: rotatieknop; workload: chart 0.5.0 + signing key).
   - `metrics-collector`: bestaat niet meer, `can-i '*' '*'` → **no** (was **yes**).

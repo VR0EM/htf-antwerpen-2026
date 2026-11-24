@@ -1,7 +1,7 @@
 # Drift-rapport level 1: Seal of the Ancient Scrolls
 
 **Team:** de-rubberen-badeendjes · **Eigenaar:** wimmevdv · **Issue:** #5 · **Code:** `core/`
-**Status:** drift hersteld en ghosts verwijderd (24/11, ~11:30). De pipeline en de automatische drift-check volgen nog.
+**Status:** eerste golf hersteld om ~11:30. Daarna kwam night-shift nog in golven terug (~11:34, ~12:43). Sindsdien herstelt de pipeline zelf: zie [Daarna: pipeline en zelfherstel](#daarna-pipeline-en-zelfherstel).
 
 Uitleg over de omgeving en de diagrammen: [architectuur](../../architectuur.md).
 
@@ -94,11 +94,18 @@ Dat is een instelling die je alleen bij het aanmaken kunt kiezen. Daardoor wilde
 | `20261124-1135-na-fix/01-ovh-api.txt` | toestand na de fix: alles volgens de code |
 | `20261124-1135-na-fix/02-terraform-plan-core.txt` | `No changes. Your infrastructure matches the configuration.` |
 
-## Nog te doen
+## Daarna: pipeline en zelfherstel
 
-- [ ] **Pipeline** (GitHub Actions): `fmt -check`, `validate`, `plan` bij een PR en `apply` alleen vanaf `main`,
-  met één `concurrency`-groep (lost ook het ontbreken van state locking op).
-- [ ] **Drift-check** op een schema (`plan -detailed-exitcode`), die een issue opent bij drift.
-- [ ] **Ghost-check**: inventaris via de OVH-API (users, nodepools, S3-keys, instances) vergelijken met de state,
-  want `plan` ziet ghosts niet.
-- [ ] Drift in `workload/` (Kubernetes-objecten tegenover Helm) bekijken.
+Night-shift kwam terug, onder meer door de originele zip-code opnieuw te applyen. Handmatig herstellen
+volstond dus niet meer. Wat er sindsdien staat (details in het [logboek](../../logboek.md)):
+
+- **`infra.yml`** (#33): bij een PR `fmt -check`, `validate` en `plan` (als PR-comment), bij een merge naar `main`
+  de apply: eerst ghosts opruimen, dan core, dan workload. Eén `concurrency`-groep vervangt de state locking.
+  Apply's worden opnieuw geprobeerd als de cluster `REDEPLOYING` is (#43).
+- **`drift.yml`** (#33, #41, #48): `plan -detailed-exitcode` op beide stacks plus `ci/ghost-check.py`.
+  Bij drift of ghosts een issue met label `drift`, en zelfherstel: hij start `infra.yml` op `main`.
+- **`ci/ghost-check.py`**: vergelijkt de OVH-API met de state. Node pools, users en S3-keys die er niet in
+  staan, ruimt de pipeline op. Instances, buckets en netwerken worden enkel gemeld: daar beslist een mens.
+- **De bucket** (#48): van `ovh_cloud_storage_object_bucket` (v2-API, met de `object_lock`-bug) naar
+  `ovh_cloud_project_storage` (v1-API), met `removed { destroy = false }` en `import`. Geen handmatige
+  state-correcties meer nodig.

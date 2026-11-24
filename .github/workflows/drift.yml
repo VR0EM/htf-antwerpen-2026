@@ -54,7 +54,7 @@ jobs:
           for stack in core workload; do
             terraform -chdir=$stack init -backend-config=backend.hcl > /dev/null
             set +e
-            terraform -chdir=$stack plan -no-color -detailed-exitcode -lock=false > $stack-plan.txt 2>&1
+            terraform -chdir=$stack plan -no-color -detailed-exitcode >$stack-plan.txt 2>&1
             code=$?
             set -e
             echo >> report.md
