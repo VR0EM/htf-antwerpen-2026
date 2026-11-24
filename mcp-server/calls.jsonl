@@ -1,0 +1,8 @@
+# Vaste reeks calls voor de baseline (Level 4). Zelfde reeks voor en na de fix.
+{"name":"list_namespaces","arguments":{}}
+{"name":"list_nodes","arguments":{}}
+{"name":"list_pods","arguments":{}}
+{"name":"list_deployments","arguments":{}}
+{"name":"list_services","arguments":{}}
+{"name":"list_pods","arguments":{"namespace":"scrolls"}}
+{"name":"list_deployments","arguments":{"namespace":"oracle"}}

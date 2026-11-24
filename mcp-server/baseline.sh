@@ -6,6 +6,7 @@
 #
 # Gebruik:
 #   mcp-server/baseline.sh <MCP-URL> [calls-bestand]
+#   Met basic auth: MCP_AUTH="guild:$(cd workload && terraform output -raw password)" mcp-server/baseline.sh <url>
 #   bv. kubectl port-forward svc/<mcp-server> 8080:<poort> -n <ns>   (in een andere terminal)
 #       mcp-server/baseline.sh http://localhost:8080/mcp
 #
@@ -22,14 +23,16 @@ ROOT="$(git -C "$(dirname "$0")" rev-parse --show-toplevel)"
 CALLS="${2:-$ROOT/mcp-server/calls.jsonl}"
 OUT="$ROOT/docs/bewijs/level-4/$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$OUT"
-HDRS="$(mktemp)"; trap 'rm -f "$HDRS"' EXIT
+HDRS="$(mktemp)"; AUTH="$(mktemp)"; trap 'rm -f "$HDRS" "$AUTH"' EXIT
+# Basic auth (bv. de ingress van workload/): MCP_AUTH="guild:<wachtwoord>". Via een bestand, niet zichtbaar in ps.
+if [[ -n "${MCP_AUTH:-}" ]]; then printf "Authorization: Basic %s\n" "$(printf %s "$MCP_AUTH" | base64 -w0)" > "$AUTH"; fi
 SESSION=""
 
 rpc() { # rpc <method> <params-json>: print het JSON-resultaat
   local ID; ID=$(date +%s%N)   # uniek per call (rpc draait in een subshell)
   local body; body=$(jq -nc --arg m "$1" --argjson p "$2" --argjson id "$ID" '{jsonrpc:"2.0",id:$id,method:$m,params:$p}')
   local extra=(); [[ -n "$SESSION" ]] && extra=(-H "Mcp-Session-Id: $SESSION")
-  local resp; resp=$(curl -sS -D "$HDRS" -X POST "$URL" \
+  local resp; resp=$(curl -sS -H @"$AUTH" -D "$HDRS" -X POST "$URL" \
     -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' \
     "${extra[@]}" --data "$body")
   if grep -q '^data: ' <<<"$resp"; then sed -n 's/^data: //p' <<<"$resp" | tail -1   # SSE
@@ -40,7 +43,7 @@ INIT=$(rpc initialize '{"protocolVersion":"2025-06-18","capabilities":{},"client
 SESSION=$(grep -i '^mcp-session-id:' "$HDRS" | awk '{print $2}' | tr -d '\r' || true)
 echo "$INIT" | jq . > "$OUT/00-initialize.json"
 # initialized-notificatie (geen id, geen antwoord verwacht)
-curl -sS -o /dev/null -X POST "$URL" -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' \
+curl -sS -H @"$AUTH" -o /dev/null -X POST "$URL" -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' \
   ${SESSION:+-H "Mcp-Session-Id: $SESSION"} --data '{"jsonrpc":"2.0","method":"notifications/initialized"}' || true
 
 rpc tools/list '{}' | jq . > "$OUT/01-tools-list.json"
