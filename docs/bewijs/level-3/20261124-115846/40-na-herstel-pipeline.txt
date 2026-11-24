@@ -1,0 +1,7 @@
+$ kubectl auth can-i <actie> --as=system:serviceaccount:oracle:ixeth
+create clusterrolebindings     no
+get secrets -A                 no
+patch deployments -n scrolls   yes
+
+$ image ancient-oracle
+n5r3rwyy.c1.gra9.container-registry.ovh.net/realm/ancient-oracle:1.0.1

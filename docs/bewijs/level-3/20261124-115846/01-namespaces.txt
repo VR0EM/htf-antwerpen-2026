@@ -1,0 +1,11 @@
+$ kubectl get ns
+NAME              STATUS   AGE
+ancient           Active   82m
+default           Active   106m
+kube-node-lease   Active   106m
+kube-public       Active   106m
+kube-system       Active   106m
+observability     Active   81m
+oracle            Active   81m
+scrolls           Active   81m
+traefik           Active   82m

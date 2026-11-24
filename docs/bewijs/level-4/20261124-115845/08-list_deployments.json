@@ -1,0 +1,14 @@
+{
+  "jsonrpc": "2.0",
+  "id": 1795517926220818356,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"count\": 4,\n  \"deployments\": [\n    {\n      \"available\": 1,\n      \"images\": [\n        \"quay.io/prometheus/alertmanager:v0.28.1\"\n      ],\n      \"name\": \"alertmanager\",\n      \"namespace\": \"oracle\",\n      \"ready\": 1,\n      \"replicas\": 1,\n      \"updated\": 1\n    },\n    {\n      \"available\": 1,\n      \"images\": [\n        \"alpine/k8s:1.33.13\"\n      ],\n      \"name\": \"grimoire\",\n      \"namespace\": \"oracle\",\n      \"ready\": 1,\n      \"replicas\": 1,\n      \"updated\": 1\n    },\n    {\n      \"available\": 1,\n      \"images\": [\n        \"alpine/k8s:1.33.13\"\n      ],\n      \"name\": \"ixeth\",\n      \"namespace\": \"oracle\",\n      \"ready\": 1,\n      \"replicas\": 1,\n      \"updated\": 1\n    },\n    {\n      \"available\": 1,\n      \"images\": [\n        \"alpine/k8s:1.33.13\"\n      ],\n      \"name\": \"sentinel\",\n      \"namespace\": \"oracle\",\n      \"ready\": 1,\n      \"replicas\": 1,\n      \"updated\": 1\n    }\n  ]\n}"
+      }
+    ],
+    "isError": false
+  },
+  "opgehaald": "2026-11-24T11:58:46+01:00"
+}

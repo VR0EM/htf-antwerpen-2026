@@ -1,0 +1,14 @@
+{
+  "jsonrpc": "2.0",
+  "id": 1795517925501034631,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"count\": 3,\n  \"nodes\": [\n    {\n      \"cpu\": \"1840m\",\n      \"kubelet\": \"v1.35.2\",\n      \"memory\": \"6049600Ki\",\n      \"name\": \"achrona-pool-node-8839b8\",\n      \"pods\": \"110\",\n      \"ready\": true\n    },\n    {\n      \"cpu\": \"1840m\",\n      \"kubelet\": \"v1.35.2\",\n      \"memory\": \"6049600Ki\",\n      \"name\": \"achrona-pool-node-979479\",\n      \"pods\": \"110\",\n      \"ready\": true\n    },\n    {\n      \"cpu\": \"1840m\",\n      \"kubelet\": \"v1.35.2\",\n      \"memory\": \"6049600Ki\",\n      \"name\": \"hotfix-pool-node-82a0b5\",\n      \"pods\": \"110\",\n      \"ready\": true\n    }\n  ]\n}"
+      }
+    ],
+    "isError": false
+  },
+  "opgehaald": "2026-11-24T11:58:45+01:00"
+}

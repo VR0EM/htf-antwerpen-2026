@@ -17,6 +17,13 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 11:59 · VR0EM · L3/L4 na de tweede golf: geverifieerd en bewijs
+- **Wat:** na de pipeline-apply (run 45379340781: core *No changes*, workload 0 add / 2 change / 0 destroy) live gecontroleerd: image `ancient-oracle:1.0.1`, `ixeth-code` zonder `_ensure_vigil`, ClusterRole enkel `""` + `apps`, `can-i`: clusterrolebindings `no`, secrets `no`, deployments patchen in scrolls `yes`. Nieuwe MCP-baseline en audit.
+- **Waarom:** de golf van 11:34 had de corrupte Ixeth en de tijdsbom teruggezet. Een fix telt pas als hij live staat.
+- **Waar:** `docs/bewijs/level-3/20261124-115846/` (o.a. `40-na-herstel-pipeline.txt`), `docs/bewijs/level-4/20261124-115845/`.
+- **Debug:** (1) MCP-tellingen nu 3 nodes en 25 pods (was 2 en 21). Dat is echt: de nodepool groeide, met image 1.0.1 en voor 12:00. (2) Tijdens de API-blokkade de live versie gecontroleerd **via de MCP-server zelf** (`list_deployments` toonde 1.0.0) en via de S3-`LastModified` van de state (core 11:34, workload 11:35, geen GitHub-run op dat moment). (3) Mijn lokale, ongecommitte `workload/.terraform.lock.hcl` blokkeerde `git pull` na #33, dus verwijderd.
+- **Les:** night-shift applyt de originele zip-code opnieuw, dus onze fixes kunnen elk moment weer verdwijnen. De drift-check (elke 30 min, #33) ziet dat als workload-drift, en een merge of herhaalde run zet het terug.
+
 ### 12:00 · wimmevdv · Tweede drift-golf hersteld, pipeline live (#33)
 - **Wat:**
   - Tweede golf van night-shift:
