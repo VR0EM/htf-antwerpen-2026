@@ -1,0 +1,14 @@
+{
+  "jsonrpc": "2.0",
+  "id": 1795513558067092054,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"count\": 9,\n  \"namespaces\": [\n    {\n      \"name\": \"ancient\",\n      \"phase\": \"Active\"\n    },\n    {\n      \"name\": \"default\",\n      \"phase\": \"Active\"\n    },\n    {\n      \"name\": \"kube-node-lease\",\n      \"phase\": \"Active\"\n    },\n    {\n      \"name\": \"kube-public\",\n      \"phase\": \"Active\"\n    },\n    {\n      \"name\": \"kube-system\",\n      \"phase\": \"Active\"\n    },\n    {\n      \"name\": \"observability\",\n      \"phase\": \"Active\"\n    },\n    {\n      \"name\": \"oracle\",\n      \"phase\": \"Active\"\n    },\n    {\n      \"name\": \"scrolls\",\n      \"phase\": \"Active\"\n    },\n    {\n      \"name\": \"traefik\",\n      \"phase\": \"Active\"\n    }\n  ]\n}"
+      }
+    ],
+    "isError": false
+  },
+  "opgehaald": "2026-11-24T10:45:58+01:00"
+}

@@ -1,0 +1,18 @@
+{
+  "jsonrpc": "2.0",
+  "id": 1795513557825757745,
+  "result": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {
+      "tools": {
+        "listChanged": false
+      }
+    },
+    "serverInfo": {
+      "name": "ancient-oracle",
+      "title": "The Ancient Oracle",
+      "version": "1.0.0"
+    },
+    "instructions": "The Ancient Oracle sees the realm's Kubernetes cluster. All tools are read-only. Answers are JSON; quote names exactly as the Oracle gives them."
+  }
+}
