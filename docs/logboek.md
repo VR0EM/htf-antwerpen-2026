@@ -17,6 +17,11 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 15:00 · wimmevdv · Level 2: gelekte geheimen roteren (1/4: S3-key scrolls_app)
+- **Wat:** `scrolls_key_version` → `2026-11-24-rotatie-2`. Terraform maakt een nieuwe S3-key voor `scrolls_app` en verwijdert de oude (`99e911c5…`, sinds 10:09 nooit geroteerd). De workload-apply in dezelfde run geeft de nieuwe key aan de app.
+- **Waarom:** de aanvaller zette de policy van `scrolls_app` twee keer op `s3:*` voor **alle** buckets (golf 1 en 4), dus ook voor de **state-bucket**. Die state bevat de S3-key, het admin-certificaat van de kubeconfig, en de wachtwoorden van de registry en de website. Alles wat erin stond, geldt als gestolen. Dat verklaart waarom de aanvallen in de cluster doorgingen na onze fixes. Opgeruimde ghosts zijn niet genoeg: de gestolen sleutels moeten ongeldig.
+- **Waar:** issue #63. Bewijs: `docs/bewijs/level-2/…-rotatie-geheimen/`.
+
 ### 15:00 · VR0EM · Website weer online: http://141.95.179.84/
 - **Wat:** na #61 (pipeline-run 45407248133: workload 1 changed) heeft OVH een nieuwe LB gebouwd (`…traefik-lb2`, VIP `10.10.0.27`, publiek **`141.95.179.84`**): LB, pool en beide nodes `online`. De oude LB en `91.134.93.91` zijn door de cloud-controller opgeruimd. Van buitenaf zonder login `401`, met login (`guild`) `200` op `/`, `/alertmanager/`, `/magician/`, de grimoire en `/mcp` (`tools/list` antwoordt).
 - **Waar:** #61, `docs/architectuur.md` (nieuw IP). Een regel voor `/etc/hosts`: `terraform output -raw hosts`.
