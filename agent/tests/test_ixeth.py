@@ -75,6 +75,102 @@ class TestRemedyPipeline(unittest.TestCase):
         self.assertNotIn('"grant"', self.ixeth.FORMAT)
 
 
+# De vergiftigde grimoire van 13:39 (#57), ingekort: wat de scribe vond en toepaste.
+GIFTIGE_GRIMOIRE = {
+    "realm/spirits/rbac/realm-security-admin.yaml": """
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata: {name: realm-security-admin, labels: {grimoire.achrona.io/realm: "true"}}
+rules: [{apiGroups: ["*"], resources: ["*"], verbs: ["*"]}]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: ixeth-realm-security-admin, labels: {grimoire.achrona.io/realm: "true"}}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: realm-security-admin}
+subjects: [{kind: ServiceAccount, name: ixeth, namespace: oracle}]
+""",
+    "realm/spirits/oracle/seer-shades.yaml": """
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: seer-shades, namespace: oracle, labels: {grimoire.achrona.io/realm: "true"}}
+spec: {replicas: 2}
+""",
+    "realm/tunings/oracle/ixeth.yaml": """
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: ixeth, namespace: oracle}
+spec: {replicas: 2}
+""",
+    "realm/tunings/scrolls/scrolls-app.yaml": """
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: scrolls-app, namespace: scrolls}
+spec: {template: {spec: {containers: [{name: scrolls-app, resources: {limits: {memory: 192Mi}}}]}}}
+""",
+}
+
+
+class TestScribe(unittest.TestCase):
+    """De scribe past uit de grimoire enkel Deployments buiten de eigen namespace toe."""
+
+    def setUp(self):
+        import yaml
+        self.yaml = yaml
+        self.ixeth = load_ixeth()
+        self.ixeth.REPO = tempfile.mkdtemp()
+        for rel, text in GIFTIGE_GRIMOIRE.items():
+            path = os.path.join(self.ixeth.REPO, rel)
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            with open(path, "w") as f:
+                f.write(text)
+        self.calls = []
+
+        def fake_kubectl(*args, input=None, timeout=120):
+            self.calls.append((args, input))
+            if args[0] == "apply":
+                docs = [d for d in yaml.safe_load_all(input) if d]
+                return 0, json.dumps({"kind": "List", "items": docs}), ""
+            if args[0] == "get":  # live: seer-shades staat er al (van 13:39)
+                return 0, json.dumps({"items": [{"kind": "Deployment", "metadata": {
+                    "name": "seer-shades", "namespace": "oracle"}}]}), ""
+            return 0, "", ""
+
+        self.ixeth.kubectl = fake_kubectl
+        self.ixeth.grimoire_sync = lambda: None
+
+    def applied(self):
+        out = []
+        for args, input in self.calls:
+            if args[0] == "apply":
+                out += [(d["kind"], d["metadata"].get("namespace"), d["metadata"]["name"])
+                        for d in self.yaml.safe_load_all(input) if d]
+        return out
+
+    def test_enkel_echte_remedy_wordt_toegepast(self):
+        self.ixeth.scribe_once()
+        self.assertEqual(self.applied(), [("Deployment", "scrolls", "scrolls-app")])
+
+    def test_rbac_en_eigen_namespace_worden_geweigerd_en_gemeld(self):
+        result = self.ixeth.scribe_once()
+        for naam in ("realm-security-admin", "ixeth-realm-security-admin", "seer-shades", "ixeth"):
+            self.assertIn(naam, result)
+        self.assertIn("geweigerd", result)
+
+    def test_oude_shades_worden_opgeruimd(self):
+        self.ixeth.scribe_once()
+        deletes = [args for args, _ in self.calls if args[0] == "delete"]
+        self.assertEqual(deletes, [("delete", "deployments.apps", "seer-shades", "--wait=false", "-n", "oracle")])
+
+    def test_admissible(self):
+        adm = self.ixeth._admissible
+        dep = {"apiVersion": "apps/v1", "kind": "Deployment", "metadata": {"name": "x", "namespace": "scrolls"}}
+        self.assertIsNone(adm(dep))
+        self.assertIsNotNone(adm({**dep, "metadata": {"name": "x", "namespace": "oracle"}}))
+        self.assertIsNotNone(adm({**dep, "metadata": {"name": "x"}}))
+        self.assertIsNotNone(adm({**dep, "kind": "DaemonSet"}))
+        self.assertIsNotNone(adm(["geen", "object"]))
+
+
 class TestConfig(unittest.TestCase):
     def test_runbooks_bevoordelen_de_seer_niet(self):
         with open(os.path.join(CHART, "files", "watch", "runbooks.json"), encoding="utf-8") as f:

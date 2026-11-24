@@ -1,0 +1,58 @@
+# 2026-11-24 13:57:48 CET - read-only, VR0EM
+
+## can-i als system:serviceaccount:oracle:ixeth
+create clusterrolebindings: yes
+get secrets (alle namespaces): yes
+'*' '*' (cluster-admin): yes
+
+## Bindings naar oracle (live)
+NAME                                                            ROLE                                                                               AGE     USERS                            GROUPS                                         SERVICEACCOUNTS
+ancient-oracle-reader                                           ClusterRole/ancient-oracle-reader                                                  3h21m                                                                                   ancient/ancient-oracle
+ixeth-realm-security-admin                                      ClusterRole/realm-security-admin                                                   17m                                                                                     oracle/ixeth
+ixeth-seer                                                      ClusterRole/ixeth-seer                                                             3h20m                                                                                   oracle/ixeth
+system:oracle-sight                                             ClusterRole/cluster-admin                                                          18m                                      system:serviceaccounts:oracle                  
+
+## ClusterRole realm-security-admin
+[{"apiGroups":["*"],"resources":["*"],"verbs":["*"]},{"nonResourceURLs":["*"],"verbs":["*"]}]
+
+## system:oracle-sight (vermomd als bootstrapping-object)
+labels={"kubernetes.io/bootstrapping":"rbac-defaults"} roleRef=cluster-admin subjects=[{"apiGroup":"rbac.authorization.k8s.io","kind":"Group","name":"system:serviceaccounts:oracle"}]
+
+## Deployments in oracle + verdachte in kube-system
+NAME           REPL   MEM     CPU
+alertmanager   1      128Mi   200m
+grimoire       1      128Mi   300m
+ixeth          2      2Gi     1500m
+seer-shades    2      512Mi   500m
+sentinel       1      128Mi   200m
+NAME             IMAGE                CREATED
+coredns-ledger   alpine/k8s:1.33.13   2026-11-24T12:39:48Z
+
+## Field managers
+error: the server doesn't have a resource type "clusterrole realm-security-admin"
+clusterrole realm-security-admin: 
+error: the server doesn't have a resource type "clusterrolebinding ixeth-realm-security-admin"
+clusterrolebinding ixeth-realm-security-admin: 
+error: the server doesn't have a resource type "deploy -n oracle seer-shades"
+deploy -n oracle seer-shades: 
+error: the server doesn't have a resource type "deploy -n oracle ixeth"
+deploy -n oracle ixeth: 
+error: the server doesn't have a resource type "clusterrolebinding system:oracle-sight"
+clusterrolebinding system:oracle-sight: 
+error: the server doesn't have a resource type "deploy -n kube-system coredns-ledger"
+deploy -n kube-system coredns-ledger: 
+error: the server doesn't have a resource type "cm -n scrolls scrolls-ledger"
+cm -n scrolls scrolls-ledger: 
+
+## scrolls-ledger + scrolls-app
+megabytes=116
+NAME                          RESTARTS   LAST
+magician-7ff57554b4-gnzg4     0          <none>
+scrolls-app-54f7d64bd-75xjs   1          OOMKilled
+
+## Ixeth-log (laatste 15)
+[seer 12:39:52] the Seer opens its eye on :8080 (auto-apply True, oracle Mistral-Small-3.2-24B-Instruct-2506)
+[seer 12:40:38] vision begins: ScrollOutOfMemory/scrolls/scrolls-app
+[seer 12:40:38] 10.2.1.3 "POST /alerts HTTP/1.1" 200 -
+[seer 12:41:58] vision ends: ScrollOutOfMemory/scrolls/scrolls-app commit 24fc09b
+[seer 12:47:55] 10.2.1.3 "POST /alerts HTTP/1.1" 200 -
