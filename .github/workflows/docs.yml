@@ -1,6 +1,10 @@
 # Bouwt het handboek (Zensical, map docs/) en publiceert het op
 # https://vr0em.github.io/htf-antwerpen-2026/ bij elke push naar main.
 # Let op: de site is PUBLIEK, ook al is de repo privé. Nooit secrets in docs/.
+#
+# Twee jobs (zoals het officiële Pages-voorbeeld): build uploadt het artefact, deploy
+# publiceert het. In één job vond deploy-pages het artefact soms niet terug
+# ("No artifacts named github-pages were found").
 name: Handboek (GitHub Pages)
 
 on:
@@ -22,11 +26,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
@@ -38,5 +39,13 @@ jobs:
       - uses: actions/upload-pages-artifact@v4
         with:
           path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - id: deployment
         uses: actions/deploy-pages@v4
