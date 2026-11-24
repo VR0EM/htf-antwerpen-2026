@@ -1,0 +1,19 @@
+# Rotatie-demo service account (2026-11-24T12:34:10Z)
+Token van metrics-reader aangemaakt vóór de rotatie (waarde niet opgenomen).
+
+## Service accounts in observability na PR #55
+- default
+- metrics-collector
+- metrics-reader-r2
+
+## Dezelfde token, na de rotatie
+$ kubectl get nodes   (met de oude token)
+error: You must be logged in to the server (Unauthorized)
+$ kubectl auth whoami (met de oude token)
+error: You must be logged in to the server (Unauthorized)
+
+## Collector draait verder met het nieuwe account
+metrics-reader-r2
+
+## Opgemerkt
+- Om 12:33:30Z (1 min na de rotatie) verscheen een kaal ServiceAccount `metrics-collector` (geen labels, niet van Helm, geen bindings, `can-i * *`: no). Niet door ons aangemaakt. Onschadelijk, maar een Kubernetes-ghost die de drift-check nog niet ziet.
