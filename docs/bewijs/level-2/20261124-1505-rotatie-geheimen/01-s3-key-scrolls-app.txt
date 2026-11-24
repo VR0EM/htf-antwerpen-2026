@@ -2,3 +2,7 @@
 - oude key: 99e911c5...   nieuwe key: e9fb7aa3...   key in de app (secret scrolls-app-credentials): e9fb7aa3...
 - oude key: list bucket scrolls -> HTTP 200 (werkt)
 - nieuwe key: list bucket scrolls -> HTTP 200 (werkt)
+
+# S3: oude key na rotatie
+- 14:58 rotatie (PR #64): OVH-API toont enkel de nieuwe key
+- 15:00, 15:05 en 15:12: oude key 99e911c5... -> list bucket scrolls: HTTP 200 (nog aanvaard)
