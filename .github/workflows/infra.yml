@@ -3,8 +3,9 @@
 #   pull request  -> fmt, validate en plan voor core/ en workload/, plan als PR-comment
 #   push op main  -> apply: eerst core/, dan workload/ (workload leest de state van core)
 #
-# Er is geen state locking in de S3-backend. Daarom lopen alle applies (en de
-# drift-check) in één concurrency-groep: nooit twee tegelijk, en niets wordt afgebroken.
+# Er is geen state locking in de S3-backend. Daarom lopen alle applies in één
+# concurrency-groep: nooit twee tegelijk, en niets wordt afgebroken. De drift-check
+# (drift.yml) heeft een eigen groep: hij leest enkel en start bij drift deze workflow.
 # Manueel `terraform apply` is niet meer de bedoeling: merge naar main.
 name: Infra (Terraform)
 
@@ -73,11 +74,10 @@ jobs:
         id: plan
         run: |
           set +e
-          terraform plan -no-color -detailed-exitcode -out=tfplan > plan.txt 2>&1
+          terraform plan -no-color -detailed-exitcode > plan.txt 2>&1
           code=$?
           set -e
           cat plan.txt
-          echo "exitcode=$code" >> "$GITHUB_OUTPUT"
           # 0 = niets te doen, 2 = wijzigingen, 1 = fout
           [ "$code" -ne 1 ]
 
@@ -138,10 +138,17 @@ jobs:
           # Een wijziging aan de IP-restrictie zet de cluster een paar minuten op
           # REDEPLOYING; een nodepool-update in dezelfde apply faalt dan. Dus: opnieuw
           # plannen en proberen, tot 4 keer, met 90 s ertussen.
+          # Geen `plan | tee`: zonder pipefail verbergt tee een mislukte plan, en dan
+          # zou apply een oud plan van een vorige poging proberen.
           ok=0
           for i in 1 2 3 4; do
-            terraform plan -no-color -out=tfplan | tee plan.txt
-            if terraform apply -no-color tfplan; then ok=1; break; fi
+            rm -f tfplan
+            if terraform plan -no-color -out=tfplan > plan.txt 2>&1; then
+              cat plan.txt
+              if terraform apply -no-color tfplan; then ok=1; break; fi
+            else
+              cat plan.txt
+            fi
             echo "::warning::apply core faalde (poging $i), opnieuw over 90 s"
             sleep 90
           done
@@ -157,8 +164,13 @@ jobs:
           terraform init -backend-config=backend.hcl
           ok=0
           for i in 1 2 3; do
-            terraform plan -no-color -out=tfplan | tee plan.txt
-            if terraform apply -no-color tfplan; then ok=1; break; fi
+            rm -f tfplan
+            if terraform plan -no-color -out=tfplan > plan.txt 2>&1; then
+              cat plan.txt
+              if terraform apply -no-color tfplan; then ok=1; break; fi
+            else
+              cat plan.txt
+            fi
             echo "::warning::apply workload faalde (poging $i), opnieuw over 60 s"
             sleep 60
           done
