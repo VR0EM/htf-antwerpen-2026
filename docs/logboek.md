@@ -17,6 +17,15 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 15:35 · VR0EM · Afronding: alle oude S3-keys ongeldig, L4 om 15:30 exact, L3-restje opgeruimd
+- **Wat:**
+  - #72 live (15:26–15:28): nieuwe gebruiker `achrona-scrolls-app` (`1015263`), de oude is weg. De gestolen key `99e911c5…` geeft **403** (15:29), en `e9fb7aa3…` ook (15:30). Alle oude keys zijn ongeldig.
+  - L4-meting om **15:30**: alle 7 calls exact gelijk aan kubectl (21 = 21 pods). De originele code gaf op dit uur lege lijsten met verzonnen "Guidance" (druk ≈ 0.96).
+  - L3: in de grimoire scrolls-app van 1024Mi terug naar **128Mi** (`c967c44`). De verhogingen waren een gevolg van de opgedreven ledger. Live: 128Mi, 12Mi gebruikt, geen crashes.
+  - Issues #5, #6, #37, #44 afgesloten met eindstatus (overgenomen van wimmevdv). Alleen #63 staat nog open: kubeconfig (4/4).
+- **Beslissing kubeconfig (4/4):** volgens OVH geldt bij een reset *"Certificates will be regenerated, nodes will be reinstalled"*. Vlak voor de pitch betekent dat een volledige onderbreking. Daarom bewust niet nu.
+- **Waar:** `docs/bewijs/level-2/20261124-1522-oude-s3-keys/`, `docs/bewijs/level-4/20261124-153022/`, #63, #8.
+
 ### 15:30 · VR0EM · L2 overgenomen: oude S3-keys, schade aan de bucket, nieuwe identiteit
 - **Context:** wimmevdv doet niets meer. VR0EM neemt #63, #44, #5 en #6 over.
 - **Wat (gevonden):**

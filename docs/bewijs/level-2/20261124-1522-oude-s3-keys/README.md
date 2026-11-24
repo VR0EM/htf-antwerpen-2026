@@ -30,3 +30,5 @@ OVH-API om 15:29: gebruiker `achrona-scrolls-app` is nu `1015263` (aangemaakt 15
 | `01df9ea4…` | 403 | 403 |
 | `750545b1…` | 200 | **403** |
 | `d2ab2e20…` (nieuw, in de app) | - | 200 |
+
+Om **15:30:38**: `e9fb7aa3…` → **403**. Daarmee worden alle oude keys geweigerd. Enkel `d2ab2e20…` (de app) werkt.

@@ -1,0 +1,184 @@
+{
+  "jsonrpc": "2.0",
+  "id": 1795530622209910774,
+  "result": {
+    "tools": [
+      {
+        "name": "list_namespaces",
+        "description": "List the cluster's namespaces and their phase.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": false
+        }
+      },
+      {
+        "name": "list_pods",
+        "description": "List pods with their phase, readiness, restart count and node.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string",
+              "description": "Namespace. Leave out for all namespaces."
+            },
+            "label_selector": {
+              "type": "string",
+              "description": "Kubernetes label selector, e.g. app.kubernetes.io/name=scrolls-app"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": false
+        }
+      },
+      {
+        "name": "get_pod",
+        "description": "Details of one pod: containers, images, resources, state and conditions.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "namespace",
+            "name"
+          ],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": false
+        }
+      },
+      {
+        "name": "list_deployments",
+        "description": "List Deployments with desired, ready, updated and available replicas and their images.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string",
+              "description": "Namespace. Leave out for all namespaces."
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": false
+        }
+      },
+      {
+        "name": "list_services",
+        "description": "List Services with their type, cluster IP and ports.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string",
+              "description": "Namespace. Leave out for all namespaces."
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": false
+        }
+      },
+      {
+        "name": "list_nodes",
+        "description": "List the cluster's nodes: readiness, kubelet version and allocatable resources.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": false
+        }
+      },
+      {
+        "name": "list_events",
+        "description": "Recent events, newest first.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string",
+              "description": "Namespace. Leave out for all namespaces."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 20
+            },
+            "warnings_only": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": false
+        }
+      },
+      {
+        "name": "pod_logs",
+        "description": "The last lines of a pod's log.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "namespace": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "container": {
+              "type": "string",
+              "description": "Needed when the pod has several containers."
+            },
+            "tail": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 500,
+              "default": 50
+            }
+          },
+          "required": [
+            "namespace",
+            "name"
+          ],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": false
+        }
+      }
+    ]
+  }
+}
