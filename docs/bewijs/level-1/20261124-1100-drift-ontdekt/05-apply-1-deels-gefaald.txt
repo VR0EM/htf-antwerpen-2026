@@ -1,0 +1,44 @@
+ovh_cloud_project_user.ghost_debug_admin: Importing... [id=7bbf03963d58494ea845b2c7ff83dad9/1014203]
+ovh_cloud_project_user.ghost_debug_admin: Import complete [id=7bbf03963d58494ea845b2c7ff83dad9/1014203]
+ovh_cloud_project_user_s3_credential.ghost_scrolls_app_extra: Importing... [id=7bbf03963d58494ea845b2c7ff83dad9/1013904/915a9a74d85e42959734fff64ddb2c4e]
+ovh_cloud_project_user_s3_credential.ghost_scrolls_app_extra: Import complete [id=7bbf03963d58494ea845b2c7ff83dad9/1013904/915a9a74d85e42959734fff64ddb2c4e]
+ovh_cloud_project_kube_nodepool.ghost_hotfix: Importing... [id=7bbf03963d58494ea845b2c7ff83dad9/6562b850-fad2-4175-bfbc-0f28c7843168/ef0f8e2f-8343-4b18-bcad-9f369857c004]
+ovh_cloud_project_kube_nodepool.ghost_hotfix: Import complete [id=7bbf03963d58494ea845b2c7ff83dad9/6562b850-fad2-4175-bfbc-0f28c7843168/ef0f8e2f-8343-4b18-bcad-9f369857c004]
+ovh_cloud_project_kube_iprestrictions.this: Importing... [id=7bbf03963d58494ea845b2c7ff83dad9/6562b850-fad2-4175-bfbc-0f28c7843168]
+ovh_cloud_project_kube_iprestrictions.this: Import complete [id=7bbf03963d58494ea845b2c7ff83dad9/6562b850-fad2-4175-bfbc-0f28c7843168]
+ovh_cloud_project_user.ghost_debug_admin: Modifying... [id=1014203]
+ovh_cloud_gateway.this: Modifying... [id=ff740338-f91f-41cd-8e46-cae466bb466d]
+ovh_cloud_storage_object_bucket.scrolls: Modifying... [id=GRA_achrona-7bbf0396-scrolls]
+ovh_cloud_project_user.ghost_debug_admin: Modifications complete after 2s [id=1014203]
+ovh_cloud_gateway.this: Still modifying... [id=ff740338-f91f-41cd-8e46-cae466bb466d, 00m10s elapsed]
+ovh_cloud_gateway.this: Still modifying... [id=ff740338-f91f-41cd-8e46-cae466bb466d, 00m20s elapsed]
+ovh_cloud_gateway.this: Still modifying... [id=ff740338-f91f-41cd-8e46-cae466bb466d, 00m30s elapsed]
+ovh_cloud_gateway.this: Still modifying... [id=ff740338-f91f-41cd-8e46-cae466bb466d, 00m40s elapsed]
+ovh_cloud_gateway.this: Still modifying... [id=ff740338-f91f-41cd-8e46-cae466bb466d, 00m50s elapsed]
+ovh_cloud_gateway.this: Modifications complete after 51s [id=ff740338-f91f-41cd-8e46-cae466bb466d]
+ovh_cloud_project_kube.this: Modifying... [id=6562b850-fad2-4175-bfbc-0f28c7843168]
+ovh_cloud_project_kube.this: Modifications complete after 0s [id=6562b850-fad2-4175-bfbc-0f28c7843168]
+ovh_cloud_project_kube_iprestrictions.this: Modifying... [id=6562b850-fad2-4175-bfbc-0f28c7843168]
+ovh_cloud_project_kube_nodepool.default: Modifying... [id=b680635f-cb61-4a70-8a98-a36a84cffebd]
+ovh_cloud_project_kube_iprestrictions.this: Still modifying... [id=6562b850-fad2-4175-bfbc-0f28c7843168, 00m10s elapsed]
+ovh_cloud_project_kube_iprestrictions.this: Still modifying... [id=6562b850-fad2-4175-bfbc-0f28c7843168, 00m20s elapsed]
+ovh_cloud_project_kube_iprestrictions.this: Still modifying... [id=6562b850-fad2-4175-bfbc-0f28c7843168, 00m30s elapsed]
+ovh_cloud_project_kube_iprestrictions.this: Modifications complete after 37s [id=6562b850-fad2-4175-bfbc-0f28c7843168]
+
+Error: calling Put /cloud/project/7bbf03963d58494ea845b2c7ff83dad9/kube/6562b850-fad2-4175-bfbc-0f28c7843168/nodepool/b680635f-cb61-4a70-8a98-a36a84cffebd with params {<nil> 0x337c4e082519 0x337c4e082530 0x337c4dd64000 0x337c4dd64008 0x337c4dfbe000 0x337c4dce2730}:
+	 OVHcloud API error (status code 400): Client::BadRequest: "[IntegrityError] 400: Cannot node_pool_redeploy NodePool: Service status is REDEPLOYING (request ID: 004d6ec7-9af3-493a-9223-e3c4e13270a0)" (X-OVH-Query-Id: EU.ext-3.6b056473.910791.3ff86a81d6132bb7a337336dec1cea91)
+
+  with ovh_cloud_project_kube_nodepool.default,
+  on kube.tf line 22, in resource "ovh_cloud_project_kube_nodepool" "default":
+  22: resource "ovh_cloud_project_kube_nodepool" "default" {
+
+
+Error: Error calling Put /v2/publicCloud/project/7bbf03963d58494ea845b2c7ff83dad9/storage/object/bucket/GRA_achrona-7bbf0396-scrolls
+
+  with ovh_cloud_storage_object_bucket.scrolls,
+  on storage.tf line 3, in resource "ovh_cloud_storage_object_bucket" "scrolls":
+   3: resource "ovh_cloud_storage_object_bucket" "scrolls" {
+
+OVHcloud API error (status code 400): Client::BadRequest:
+"[targetSpec.objectLock.mode] \"\" does not match the enum" (X-OVH-Query-Id:
+EU.ext-3.6b056440.4087917.cd81afb6fc2594363c993eb48b58e958)

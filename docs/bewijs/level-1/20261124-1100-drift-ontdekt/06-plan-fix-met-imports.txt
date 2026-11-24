@@ -1,0 +1,273 @@
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # ovh_cloud_gateway.this will be updated in-place
+  ~ resource "ovh_cloud_gateway" "this" {
+      ~ checksum         = "0698f8be6059cb3ee4480e69b856accc" -> (known after apply)
+      ~ created_at       = "2026-11-24T09:09:43Z" -> (known after apply)
+      ~ current_state    = {
+          + description      = (known after apply)
+          ~ external_gateway = {
+              ~ enabled = true -> (known after apply)
+              ~ model   = "M" -> (known after apply)
+            } -> (known after apply)
+          ~ external_ip      = "141.94.172.7" -> (known after apply)
+          ~ location         = {
+              + availability_zone = (known after apply)
+              ~ region            = "GRA11" -> (known after apply)
+            } -> (known after apply)
+          ~ name             = "achrona-gateway" -> (known after apply)
+          ~ status           = "ACTIVE" -> (known after apply)
+          ~ subnets          = [
+              - {
+                  - id = "18993f2d-c6bd-4fdc-a1b4-966ba86b6331" -> null
+                },
+            ] -> (known after apply)
+        } -> (known after apply)
+      ~ external_gateway = {
+          ~ model   = "M" -> "S"
+            # (1 unchanged attribute hidden)
+        }
+      ~ id               = "ff740338-f91f-41cd-8e46-cae466bb466d" -> (known after apply)
+        name             = "achrona-gateway"
+      ~ resource_status  = "READY" -> (known after apply)
+      ~ updated_at       = "2026-11-24T10:02:03Z" -> (known after apply)
+        # (3 unchanged attributes hidden)
+    }
+
+  # ovh_cloud_project_kube.this will be updated in-place
+  ~ resource "ovh_cloud_project_kube" "this" {
+        id                          = "6562b850-fad2-4175-bfbc-0f28c7843168"
+        name                        = "achrona-kube"
+      ~ update_policy               = "NEVER_UPDATE" -> "MINIMAL_DOWNTIME"
+        # (17 unchanged attributes hidden)
+
+        # (3 unchanged blocks hidden)
+    }
+
+  # ovh_cloud_project_kube_iprestrictions.this will be updated in-place
+  # (imported from "7bbf03963d58494ea845b2c7ff83dad9/6562b850-fad2-4175-bfbc-0f28c7843168")
+  ~ resource "ovh_cloud_project_kube_iprestrictions" "this" {
+        id           = "6562b850-fad2-4175-bfbc-0f28c7843168"
+      ~ ips          = [
+          - "198.51.100.0/24",
+          + "0.0.0.0/0",
+        ]
+        kube_id      = "6562b850-fad2-4175-bfbc-0f28c7843168"
+        service_name = "7bbf03963d58494ea845b2c7ff83dad9"
+    }
+
+  # ovh_cloud_project_kube_nodepool.default will be updated in-place
+  ~ resource "ovh_cloud_project_kube_nodepool" "default" {
+        id                                           = "b680635f-cb61-4a70-8a98-a36a84cffebd"
+      ~ max_nodes                                    = 5 -> 3
+        name                                         = "achrona-pool"
+        # (21 unchanged attributes hidden)
+
+      - template {
+          - metadata {
+              - annotations = {} -> null
+              - finalizers  = [] -> null
+              - labels      = {
+                  - "environment" = "hack-the-future"
+                  - "managed-by"  = "console"
+                  - "owner"       = "night-shift"
+                  - "team"        = "de-rubberen-badeendjes"
+                } -> null
+            }
+          - spec {
+              - taints        = [] -> null
+              - unschedulable = false -> null
+            }
+        }
+      + template {
+          + metadata {
+              + finalizers = []
+              + labels     = {
+                  + "environment" = "hack-the-future"
+                  + "managed-by"  = "terraform"
+                  + "team"        = "de-rubberen-badeendjes"
+                }
+            }
+          + spec {
+              + taints        = []
+              + unschedulable = false
+            }
+        }
+    }
+
+  # ovh_cloud_project_kube_nodepool.ghost_hotfix will be imported
+    resource "ovh_cloud_project_kube_nodepool" "ghost_hotfix" {
+        anti_affinity                                = false
+        autoscale                                    = false
+        autoscaling_scale_down_unneeded_time_seconds = 600
+        autoscaling_scale_down_unready_time_seconds  = 1200
+        autoscaling_scale_down_utilization_threshold = 0.5
+        availability_zones                           = []
+        available_nodes                              = 1
+        created_at                                   = "2026-11-24T09:57:36Z"
+        current_nodes                                = 1
+        desired_nodes                                = 1
+        flavor                                       = "b3-8"
+        flavor_name                                  = "b3-8"
+        id                                           = "ef0f8e2f-8343-4b18-bcad-9f369857c004"
+        kube_id                                      = "6562b850-fad2-4175-bfbc-0f28c7843168"
+        max_nodes                                    = 1
+        min_nodes                                    = 1
+        monthly_billed                               = false
+        name                                         = "hotfix-pool"
+        project_id                                   = "7bbf03963d58494ea845b2c7ff83dad9"
+        service_name                                 = "7bbf03963d58494ea845b2c7ff83dad9"
+        size_status                                  = "CAPACITY_OK"
+        status                                       = "READY"
+        up_to_date_nodes                             = 1
+        updated_at                                   = "2026-11-24T10:01:35Z"
+    }
+
+  # ovh_cloud_project_user.ghost_debug_admin will be updated in-place
+  # (imported from "7bbf03963d58494ea845b2c7ff83dad9/1014203")
+  ~ resource "ovh_cloud_project_user" "ghost_debug_admin" {
+        creation_date = "2026-11-24T11:02:03.908632+01:00"
+        description   = "debug-admin"
+        id            = "1014203"
+        openstack_rc  = {
+            "OS_AUTH_URL"    = "https://auth.cloud.ovh.net/v3"
+            "OS_TENANT_ID"   = "7bbf03963d58494ea845b2c7ff83dad9"
+            "OS_TENANT_NAME" = "1678429219315549"
+            "OS_USERNAME"    = "user"
+        }
+      + role_names    = [
+          + "administrator",
+        ]
+        roles         = [
+            {
+                description = "Administrator"
+                id          = "eb4baaf9-0e49-4da6-9c6a-7cdbdc54b52c"
+                name        = "administrator"
+                permissions = [
+                    "compute_manage",
+                    "compute_read",
+                    "compute_snapshot_manage",
+                    "image_import",
+                    "image_manage",
+                    "image_read",
+                    "key-manager_manage",
+                    "key-manager_read",
+                    "load-balancer_manage",
+                    "load-balancer_read",
+                    "network_manage",
+                    "network_read",
+                    "network_secgroup_manage",
+                    "network_secgroup_read",
+                    "objectstore_all",
+                    "volume_manage",
+                    "volume_read",
+                    "volume_snapshot_manage",
+                ]
+            },
+        ]
+        service_name  = "7bbf03963d58494ea845b2c7ff83dad9"
+        status        = "ok"
+        username      = "user-HbZ3nW6G3pZe"
+    }
+
+  # ovh_cloud_project_user_s3_credential.ghost_scrolls_app_extra will be imported
+    resource "ovh_cloud_project_user_s3_credential" "ghost_scrolls_app_extra" {
+        access_key_id     = "915a9a74d85e42959734fff64ddb2c4e"
+        id                = "915a9a74d85e42959734fff64ddb2c4e"
+        internal_user_id  = "1013904"
+        secret_access_key = (sensitive value)
+        service_name      = "7bbf03963d58494ea845b2c7ff83dad9"
+        user_id           = "1013904"
+    }
+
+  # ovh_cloud_project_user_s3_policy.scrolls_app will be updated in-place
+  ~ resource "ovh_cloud_project_user_s3_policy" "scrolls_app" {
+        id           = "7bbf03963d58494ea845b2c7ff83dad9/1013904"
+      ~ policy       = jsonencode(
+          ~ {
+              ~ Statement = [
+                  ~ {
+                      ~ Action   = [
+                          - "s3:*",
+                          + "s3:GetObject",
+                          + "s3:PutObject",
+                          + "s3:DeleteObject",
+                          + "s3:ListBucket",
+                          + "s3:GetBucketLocation",
+                          + "s3:ListMultipartUploadParts",
+                          + "s3:ListBucketMultipartUploads",
+                          + "s3:AbortMultipartUpload",
+                        ]
+                      ~ Resource = [
+                          - "arn:aws:s3:::*",
+                          + "arn:aws:s3:::achrona-7bbf0396-scrolls",
+                          + "arn:aws:s3:::achrona-7bbf0396-scrolls/*",
+                        ]
+                      ~ Sid      = "TempFixAllAccess" -> "ScrollsReadWrite"
+                        # (1 unchanged attribute hidden)
+                    },
+                ]
+            }
+        )
+        # (2 unchanged attributes hidden)
+    }
+
+  # ovh_cloud_storage_object_bucket.scrolls will be updated in-place
+  ~ resource "ovh_cloud_storage_object_bucket" "scrolls" {
+      ~ checksum        = "132dbdfc067e1d67ab5ffc975b86852a" -> (known after apply)
+      ~ created_at      = "2026-11-24T09:09:23Z" -> (known after apply)
+      ~ current_state   = {
+          + encryption    = (known after apply)
+          ~ location      = {
+              ~ region = "GRA" -> (known after apply)
+            } -> (known after apply)
+          ~ name          = "achrona-7bbf0396-scrolls" -> (known after apply)
+          ~ object_lock   = {
+              + mode            = (known after apply)
+              ~ retention_days  = 0 -> (known after apply)
+              + retention_years = (known after apply)
+            } -> (known after apply)
+          ~ objects_count = 0 -> (known after apply)
+          ~ objects_size  = 0 -> (known after apply)
+          ~ tags          = {
+              - "environment" = "hack-the-future"
+              - "managed-by"  = "terraform"
+              - "team"        = "de-rubberen-badeendjes"
+            } -> (known after apply)
+          ~ versioning    = {
+              ~ status = "SUSPENDED" -> (known after apply)
+            } -> (known after apply)
+          ~ virtual_host  = "achrona-7bbf0396-scrolls.s3.gra.io.cloud.ovh.net" -> (known after apply)
+        } -> (known after apply)
+      + encryption      = {
+          + algorithm = "AES256"
+        }
+      ~ id              = "GRA_achrona-7bbf0396-scrolls" -> (known after apply)
+        name            = "achrona-7bbf0396-scrolls"
+      ~ resource_status = "READY" -> (known after apply)
+        tags            = {
+            "environment" = "hack-the-future"
+            "managed-by"  = "terraform"
+            "team"        = "de-rubberen-badeendjes"
+        }
+      ~ updated_at      = "2026-11-24T10:16:01Z" -> (known after apply)
+      ~ versioning      = {
+          ~ status = "SUSPENDED" -> "ENABLED"
+        }
+        # (3 unchanged attributes hidden)
+    }
+
+Plan: 4 to import, 0 to add, 7 to change, 0 to destroy.
+
+─────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to:
+C:/Users/vande/AppData/Local/Temp/claude/b76cd8190f1f6e31/39f3a087-56a8-48fe-aadb-e4eb02098f72/scratchpad/core.tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "C:/Users/vande/AppData/Local/Temp/claude/b76cd8190f1f6e31/39f3a087-56a8-48fe-aadb-e4eb02098f72/scratchpad/core.tfplan"

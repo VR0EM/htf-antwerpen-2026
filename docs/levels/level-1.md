@@ -2,9 +2,9 @@
 
 **Eigenaar:** Wimme · **Issue:** #5 · **Code:** `core/`
 
-!!! info "Wimme vult aan"
-    De volledige drift-lijst met bewijs staat (of komt) in `docs/bewijs/level-1/` en `docs/architectuur.md`.
-    Deze pagina is een samenvatting.
+!!! info "Volledig rapport"
+    Tijdlijn, alle 11 afwijkingen met beslissing en bewijs: [drift-rapport](../bewijs/level-1/drift-rapport.md).
+    Uitleg over core/workload en de cluster: [architectuur](../architectuur.md).
 
 ## De opdracht in gewone taal
 
@@ -43,5 +43,5 @@ Niet alles wat met de hand veranderd is, is slecht. Stel jezelf de vraag:
 
 ## Nog te doen (Level 1)
 
-- [ ] Ghosts verwijderen via de code (volgende PR)
+- [x] Drift teruggezet via de code (#20) en ghosts verwijderd (#22): `plan` geeft *No changes*
 - [ ] Pipeline: `terraform fmt -check`, `validate` en `plan` bij elke PR, `apply` alleen vanaf `main`

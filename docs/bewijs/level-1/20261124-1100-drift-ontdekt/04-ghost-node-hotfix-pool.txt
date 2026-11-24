@@ -1,0 +1,10 @@
+# Pods op de ghost-node hotfix-pool (2026-11-24T10:19:50Z)
+NAMESPACE     NAME                                           READY   STATUS    RESTARTS   AGE   IP            NODE                      NOMINATED NODE   READINESS GATES
+kube-system   canal-ssgfn                                    2/2     Running   0          19m   10.10.0.106   hotfix-pool-node-51de08   <none>           <none>
+kube-system   kube-proxy-mxqhb                               1/1     Running   0          19m   10.10.0.106   hotfix-pool-node-51de08   <none>           <none>
+kube-system   ovhcloud-apiserver-proxy-qgjr2                 1/1     Running   0          19m   10.10.0.106   hotfix-pool-node-51de08   <none>           <none>
+kube-system   ovhcloud-konnectivity-agent-64bcc65db4-rk4xr   1/1     Running   0          18m   10.2.2.2      hotfix-pool-node-51de08   <none>           <none>
+
+# Node labels/taints
+{"beta.kubernetes.io/arch":"amd64","beta.kubernetes.io/instance-type":"b3-8","beta.kubernetes.io/os":"linux","failure-domain.beta.kubernetes.io/region":"GRA11","failure-domain.beta.kubernetes.io/zone":"nova","kubernetes.io/arch":"amd64","kubernetes.io/hostname":"hotfix-pool-node-51de08","kubernetes.io/os":"linux","node.k8s.ovh/type":"standard","node.kubernetes.io/instance-type":"b3-8","nodepool":"hotfix-pool","topology.cinder.csi.openstack.org/zone":"nova","topology.kubernetes.io/region":"GRA11","topology.kubernetes.io/zone":"nova"}
+
