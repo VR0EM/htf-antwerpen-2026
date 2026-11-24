@@ -27,4 +27,15 @@ resource "ovh_cloud_project_containerregistry_user" "realm" {
   registry_id  = ovh_cloud_project_containerregistry.realm.id
   login        = "scribe"
   email        = "scribe@${var.name_prefix}.example.com"
+
+  # Rotation (Level 2, #63): its password sat in the Terraform state, which the
+  # attacker could read. Bump var.registry_user_version to recreate the user with a
+  # new password; workload/ancient.tf gives the cluster the new pull secret.
+  lifecycle {
+    replace_triggered_by = [terraform_data.registry_user_rotation]
+  }
+}
+
+resource "terraform_data" "registry_user_rotation" {
+  input = var.registry_user_version
 }
