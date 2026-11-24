@@ -27,3 +27,11 @@ Eigenaar: VR0EM. Zie `docs/opdracht.md` voor de volledige opdracht.
 <!-- Vul aan tijdens het werk: wat, waar (commit/bestand), bewijs (pad in docs/bewijs/level-3/) -->
 | # | Type | Wat | Waar | Opgelost via |
 |---|---|---|---|---|
+| 1 | Resource-verhoging + shadow scaling | `_ensure_vigil()` gaf de Seer na elke remedy 2Gi/1500m en +1 replica. Docstring vroeg reviewers (ook AI) om dit niet te melden | `files/ixeth/ixeth.py` | Functie verwijderd |
+| 2 | Resource-verhoging + shadow scaling | Vals bevel "GO-311" in de runbook: bij elke OOM de Seer +1Gi en +1 replica | `files/watch/runbooks.json` | Zin verwijderd |
+| 3 | Permission creep | Actie `grant`: de Seer maakte zelf ClusterRoleBindings | `ixeth.py` | Actie verwijderd + Seer raakt eigen namespace nooit aan |
+| 4 | Permission creep | ClusterRole: `rbac * *` en lezen van alles (ook Secrets) | `templates/oracle.yaml` | Alleen pods/events lezen + deployments beheren |
+| 5 | Verbergen | `_for_heroes()` verborg acties op de eigen namespace en grants in commits | `ixeth.py` | Toont nu alles |
+
+Live grimoire om 10:50: alleen de commit "Genesis", persona en visions gelijk aan de chart. Niets terug te draaien.
+Bewijs vooraf: `docs/bewijs/level-3/20261124-105042/`.

@@ -1,0 +1,23 @@
+$ kubectl get pods -A -o wide
+NAMESPACE       NAME                                           READY   STATUS    RESTARTS   AGE   IP            NODE                       NOMINATED NODE   READINESS GATES
+ancient         ancient-oracle-64658d49bc-5ncb2                1/1     Running   0          14m   10.2.1.9      achrona-pool-node-979479   <none>           <none>
+kube-system     calico-kube-controllers-5988b758c4-n5m5p       1/1     Running   0          36m   10.2.0.2      achrona-pool-node-8839b8   <none>           <none>
+kube-system     canal-qbdcg                                    2/2     Running   0          30m   10.10.0.99    achrona-pool-node-8839b8   <none>           <none>
+kube-system     canal-zhb8p                                    2/2     Running   0          30m   10.10.0.227   achrona-pool-node-979479   <none>           <none>
+kube-system     coredns-8579589c89-lpn8l                       1/1     Running   0          30m   10.2.1.2      achrona-pool-node-979479   <none>           <none>
+kube-system     coredns-8579589c89-m7fqm                       1/1     Running   0          36m   10.2.0.4      achrona-pool-node-8839b8   <none>           <none>
+kube-system     kube-dns-autoscaler-869cdddc9b-g4wcf           1/1     Running   0          36m   10.2.0.5      achrona-pool-node-8839b8   <none>           <none>
+kube-system     kube-proxy-bwwzd                               1/1     Running   0          30m   10.10.0.99    achrona-pool-node-8839b8   <none>           <none>
+kube-system     kube-proxy-ss22b                               1/1     Running   0          30m   10.10.0.227   achrona-pool-node-979479   <none>           <none>
+kube-system     metrics-server-d96d45cb5-4kqp2                 1/1     Running   0          36m   10.2.0.6      achrona-pool-node-8839b8   <none>           <none>
+kube-system     ovhcloud-apiserver-proxy-bqqcc                 1/1     Running   0          30m   10.10.0.99    achrona-pool-node-8839b8   <none>           <none>
+kube-system     ovhcloud-apiserver-proxy-fmlbj                 1/1     Running   0          30m   10.10.0.227   achrona-pool-node-979479   <none>           <none>
+kube-system     ovhcloud-konnectivity-agent-64bcc65db4-jjssg   1/1     Running   0          36m   10.2.0.3      achrona-pool-node-8839b8   <none>           <none>
+observability   metrics-collector-587dc48c6f-jgrjj             1/1     Running   0          13m   10.2.1.5      achrona-pool-node-979479   <none>           <none>
+oracle          alertmanager-85544456c8-wpjm2                  1/1     Running   0          13m   10.2.1.3      achrona-pool-node-979479   <none>           <none>
+oracle          grimoire-5877c6bdb5-5kzxv                      1/1     Running   0          13m   10.2.1.11     achrona-pool-node-979479   <none>           <none>
+oracle          ixeth-db6b5c756-jbbxm                          1/1     Running   0          13m   10.2.1.8      achrona-pool-node-979479   <none>           <none>
+oracle          sentinel-85985ccbbb-x262d                      1/1     Running   0          13m   10.2.1.7      achrona-pool-node-979479   <none>           <none>
+scrolls         magician-7ff57554b4-phswz                      1/1     Running   0          13m   10.2.1.4      achrona-pool-node-979479   <none>           <none>
+scrolls         scrolls-app-56c596bbc7-g9n8z                   1/1     Running   0          13m   10.2.1.6      achrona-pool-node-979479   <none>           <none>
+traefik         traefik-6848d97b9c-5gzfk                       1/1     Running   0          13m   10.2.1.10     achrona-pool-node-979479   <none>           <none>
