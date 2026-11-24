@@ -9,3 +9,12 @@ build/
 .DS_Store
 .claude/settings.local.json
 Briefing Document FlowFactor - v2026.txt
+
+# Team-IaC (uit de zip van FlowFactor): secrets en lokale Terraform-bestanden
+state-credentials.env
+ovh-credentials.env
+*.env
+deploy.log
+.terraform/
+*.tfstate
+*.tfstate.backup

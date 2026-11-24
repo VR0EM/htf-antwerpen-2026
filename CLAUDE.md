@@ -37,18 +37,36 @@ Benodigdheden: laptop en een Google-account.
 - Regel: **geen handmatige wijzigingen in de console**. Alles loopt via Git en de pipeline.
 - Jurering: pitch, vooruitgang en codekwaliteit. Pitches om 16:00, begin om 15:00 met de voorbereiding.
 
-> **Nog aan te vullen:** toegang (cloud, cluster, repo's), die bij de start wordt uitgedeeld.
+## Toegang en omgeving
+- **Cloud = OVHcloud** (niet GCP). Team: `de-rubberen-badeendjes`. De Terraform-code uit de zip staat in `core/` en `workload/`.
+- De credentials (`state-credentials.env`, `ovh-credentials.env`) staan **niet** in git. Ieder bewaart ze lokaal in de map boven `core/` en `workload/` en deelt ze buiten git.
+- Starten:
+  ```bash
+  cd core && set -a; source ../state-credentials.env; source ../ovh-credentials.env; set +a
+  terraform init -backend-config=backend.hcl && terraform plan
+  cd ../workload && terraform init -backend-config=backend.hcl
+  terraform output url; terraform output -raw password   # ingress, user guild
+  ```
 
 ## Taakverdeling
-| Wie | Levels | Issues | Mappen (voorlopig) |
+| Wie | Levels | Issues | Mappen |
 |---|---|---|---|
-| **wimmevdv** | Level 1 (Terraform-drift, pipelines) + Level 2 (service account, IAM) | #5, #6 | `infra/` (Terraform), `.github/workflows/infra-*.yml` |
-| **VR0EM** (Dali) | Level 3 (incident-agent) + Level 4 (MCP-server, bonus) | #7, #8 | `agent/`, `mcp-server/`, `.github/workflows/agent-*.yml` en `mcp-*.yml` |
+| **wimmevdv** | Level 1 (Terraform-drift, pipelines) + Level 2 (service account, IAM) | #5, #6 | `core/`, alle `workload/*.tf`, `workload/charts/kube-monitoring/templates/scrolls.yaml`, `.github/workflows/` |
+| **VR0EM** (Dali) | Level 3 (incident-agent Ixeth) + Level 4 (Ancient Oracle MCP-server, bonus) | #7, #8 | `workload/charts/kube-monitoring/files/{ixeth,watch,grimoire}/`, `templates/{oracle,watch,grimoire}.yaml`, `workload/images/ancient-oracle/`, `workload/charts/ancient-oracle/`, `agent/`, `mcp-server/` |
 
-Gedeeld: `docs/` (opdracht, contract) en `docs/bewijs/<level>/` (screenshots en output voor de pitch; ieder werkt in zijn eigen submap).
+Gedeeld: `docs/` (opdracht, contract) en `docs/bewijs/<level>/` (ieder in zijn eigen submap).
 
-**Raakvlak:** Level 3 (permission creep) kan IAM-rollen raken die in `infra/` beheerd worden. Raak in dat geval `infra/` niet zelf aan, maar zet een comment op het issue met label `needs-sync`.
-De mappen zijn voorlopig. Als de organisatie eigen repo's aanlevert, passen we dit aan.
+**Raakvlakken (altijd via een issue-comment met `needs-sync`):**
+- `workload/charts/kube-monitoring/Chart.yaml` (`version` ophogen bij elke chartwijziging) en `values.yaml`: allebei mogelijk. Kleine PR's, snel mergen, rebasen voor je pusht.
+- `workload/variables.tf` / `terraform.tfvars` (bv. `ancient_oracle_tag` voor Level 4): VR0EM mag de tag aanpassen, meld het.
+- RBAC van Ixeth (Level 3) zit in de cluster, niet in OVH-IAM. OVH-IAM (`core/iam.tf`) is van wimmevdv.
+
+## ⚠️ terraform apply: één tegelijk
+**Er is geen state locking.** Twee applies tegelijk = kapotte state.
+- Vóór elke `terraform apply` (core of workload): comment "APPLY START core|workload" op je issue, en "APPLY KLAAR" erna.
+- Check eerst de recente comments van de ander. Loopt er een apply? Wachten.
+- Alleen applyen vanaf een up-to-date `main` (of je PR-branch net vóór de merge), nooit met lokale niet-gecommitte wijzigingen.
+- Zodra er een pipeline is (Level 1), past alleen de pipeline nog toe.
 
 ## Protocol: altijd volgen
 
