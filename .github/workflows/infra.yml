@@ -13,12 +13,14 @@ on:
     paths:
       - "core/**"
       - "workload/**"
+      - "ci/**"
       - ".github/workflows/infra.yml"
   push:
     branches: [main]
     paths:
       - "core/**"
       - "workload/**"
+      - "ci/**"
       - ".github/workflows/infra.yml"
   workflow_dispatch:
 
@@ -121,6 +123,18 @@ jobs:
           terraform apply -no-color tfplan
           echo "### core/" >> "$GITHUB_STEP_SUMMARY"
           grep -E '^(Plan:|No changes\.)' plan.txt >> "$GITHUB_STEP_SUMMARY" || true
+
+      # Zelfherstel voor ghosts (akkoord Wimme, #40): wat niet in de state staat, wordt
+      # opgeruimd: node pools, project-users en S3-keys. Instances, buckets, registries
+      # en netwerken worden alleen gemeld: daar kan data in zitten, een mens beslist.
+      - name: Ghosts opruimen
+        run: |
+          terraform -chdir=core show -json > core-state.json
+          set +e
+          python3 ci/ghost-check.py core-state.json core/terraform.tfvars --remediate > ghosts.md
+          set -e
+          cat ghosts.md
+          cat ghosts.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Apply workload
         working-directory: workload

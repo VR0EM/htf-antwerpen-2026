@@ -3,8 +3,9 @@
 # Elke 30 minuten (en op aanvraag):
 #   1. terraform plan -detailed-exitcode op core/ en workload/ -> wat Terraform beheert en afwijkt
 #   2. ci/ghost-check.py -> wat in OVH bestaat maar niet in de state staat (ziet plan niet)
-# Bij drift: een issue met label `drift` (nieuw, of een comment op het open issue) en een rode run.
-# Herstellen gebeurt via een PR (of een herhaalde apply-run van infra.yml), nooit in de console.
+# Bij drift: een issue met label `drift` (nieuw, of een comment op het open issue), een rode run,
+# en zelfherstel: de apply-pipeline (infra.yml) wordt gestart en zet alles terug naar main.
+# Een bewuste wijziging gaat dus via een PR in de code; alles daarbuiten wordt teruggedraaid.
 name: Drift-check
 
 on:
@@ -15,6 +16,7 @@ on:
 permissions:
   contents: read
   issues: write
+  actions: write   # om infra.yml (zelfherstel) te starten
 
 concurrency:
   # Eigen groep: een drift-check is read-only en mag een wachtende apply nooit
@@ -99,4 +101,12 @@ jobs:
           else
             gh issue create --title "Drift gedetecteerd" --label drift --body-file report.md
           fi
+
+      - name: Zelfherstel (start de apply-pipeline op main)
+        if: steps.plan.outputs.drift == '1' || steps.ghosts.outputs.ghosts == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run infra.yml --ref main
+          echo "Zelfherstel gestart: infra.yml op main" >> "$GITHUB_STEP_SUMMARY"
           exit 1

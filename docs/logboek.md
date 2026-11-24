@@ -17,6 +17,20 @@ Sjabloon:
 
 ## 24 november 2026
 
+### 13:00 · wimmevdv · Zelfherstel aan: drift en ghosts worden automatisch teruggedraaid
+- **Wat:**
+  - `drift.yml`: bij drift of ghosts start de drift-check zelf `infra.yml` op `main` (`gh workflow run`, `actions: write`).
+  - `infra.yml`: na de core-apply ruimt een nieuwe stap "Ghosts opruimen" (`ci/ghost-check.py --remediate`) node pools, project-users en S3-keys op die niet in de state staan. Instances, buckets, registries en netwerken worden enkel **gemeld**.
+  - `ci/**` in de path-filters van `infra.yml`.
+- **Waarom:**
+  - De opdracht vraagt pipelines "die de omgeving synchroon houden met Git".
+  - Night-shift komt in golven terug (zie 12:00). Met alleen detectie bleef de cluster tot 30 min dicht, tot iemand ingreep.
+  - Akkoord van Wimme om automatisch te verwijderen (issue #40).
+- **Waar:** PR van issue #40. Drift-issue #37.
+- **Debug:**
+  - Een eerdere poging om automatisch verwijderen aan te zetten werd tegengehouden: automatisch resources vernietigen is een beslissing van een mens. Pas na het akkoord geactiveerd.
+  - Een workflow die met `GITHUB_TOKEN` gestart wordt, triggert normaal geen andere workflows, maar `workflow_dispatch` is daarop een uitzondering. Zo kan `drift.yml` `infra.yml` starten.
+
 ### 12:05 · VR0EM · Beelden voor de presentatie
 - **Wat:** `docs/img/presentatie/`: grafiek van de tijdsbom (matplotlib, uit de testresultaten), Ixeth + Alertmanager na het herstel (headless Chromium via `kubectl port-forward`, zonder wachtwoord), screenshots van het handboek. Overzicht op de pitchpagina. Slogans van de chamber als hints bij L3.
 - **Waarom:** beelden maken de pitch sterker.
