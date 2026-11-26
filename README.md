@@ -3,7 +3,7 @@
 **Hack The Future Antwerpen 2026** · challenge 107 van **FlowFactor** · team **De Rubberen Badeendjes**
 (Dali / [VR0EM](https://github.com/VR0EM) en Wimme / [wimmevdv](https://github.com/wimmevdv))
 
-🏆 **Juryprijs gewonnen** voor deze opdracht!
+> # 🏆 Juryprijs gewonnen voor deze opdracht!
 
 📖 **Handboek:** <https://vr0em.github.io/htf-antwerpen-2026/>  
 📊 **Presentatie:** [Four_Seals_—_how_we_broke_them_(HTF_2026).pptx](docs/presentatie/Four_Seals_—_how_we_broke_them_%28HTF_2026%29.pptx)
