@@ -15,6 +15,16 @@ Sjabloon:
 
 ---
 
+## 26 november 2026
+
+### 11:25 · VR0EM · Drift-check uitgeschakeld, juryprijs en presentatie toegevoegd
+- **Wat:**
+  - `Drift-check` (`.github/workflows/drift.yml`) uitgezet via GitHub Actions, lopende run geannuleerd, en de `schedule` en zelf-herstartende lus (`Volgende ronde`) uit de workflow verwijderd.
+  - In `README.md` (en `docs/pitch.md`) vermeld dat we de **juryprijs** gewonnen hebben voor deze opdracht.
+  - De presentatie (`Four_Seals_—_how_we_broke_them_(HTF_2026).pptx`) toegevoegd onder `docs/presentatie/` en gelinkt vanuit `README.md` en `docs/pitch.md`.
+- **Waarom:** na de hackathon zijn de OVH-credentials ongeldig, waardoor de drift-check elke 4 minuten bleef falen; en voor het archief horen de juryprijs en onze pitch-slides erbij.
+- **Waar:** `.github/workflows/drift.yml`, `README.md`, `docs/pitch.md`, `docs/presentatie/Four_Seals_—_how_we_broke_them_(HTF_2026).pptx`.
+
 ## 24 november 2026
 
 ### 16:30 · VR0EM · Repo klaar om te delen: README en handboek bijgewerkt

@@ -1,7 +1,9 @@
 # Pitch
 
-**Wanneer:** 16:00–18:00 · **Voorbereiden vanaf:** 15:00 · **Jury:** coaches van FlowFactor
-**Beoordeling:** 1. pitch · 2. vooruitgang · 3. kwaliteit van code en scripts
+**Wanneer:** 16:00–18:00 · **Voorbereiden vanaf:** 15:00 · **Jury:** coaches van FlowFactor  
+**Beoordeling:** 1. pitch · 2. vooruitgang · 3. kwaliteit van code en scripts  
+**Resultaat:** 🏆 **Juryprijs gewonnen!**  
+**Slides:** [Four_Seals_—_how_we_broke_them_(HTF_2026).pptx](presentatie/Four_Seals_—_how_we_broke_them_%28HTF_2026%29.pptx)
 
 ## Opbouw (± 5 minuten)
 

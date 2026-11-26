@@ -3,7 +3,10 @@
 **Hack The Future Antwerpen 2026** · challenge 107 van **FlowFactor** · team **De Rubberen Badeendjes**
 (Dali / [VR0EM](https://github.com/VR0EM) en Wimme / [wimmevdv](https://github.com/wimmevdv))
 
-📖 **Handboek:** <https://vr0em.github.io/htf-antwerpen-2026/>
+🏆 **Juryprijs gewonnen** voor deze opdracht!
+
+📖 **Handboek:** <https://vr0em.github.io/htf-antwerpen-2026/>  
+📊 **Presentatie:** [Four_Seals_—_how_we_broke_them_(HTF_2026).pptx](docs/presentatie/Four_Seals_—_how_we_broke_them_%28HTF_2026%29.pptx)
 
 Een cloudomgeving op OVHcloud (Kubernetes, opslag, IAM) was op vier manieren "vervloekt". Wij moesten ze alle vier
 herstellen, met één regel: **geen handmatige wijzigingen in de console, alles via Git en een pipeline.**
@@ -45,10 +48,10 @@ elke ±5 min   ──► drift-check: plan + ghost-checks (OVH én Kubernetes) �
 | `workload/` | Terraform + Helm-charts voor alles óp de cluster: monitoring, de agent Ixeth, de Ancient Oracle (MCP-server), ingress |
 | `workload/images/ancient-oracle/` | Broncode van de MCP-server (zonder tijdsbom) |
 | `ci/` | `ghost-check.py` (OVH tegenover de state) en `k8s-ghost-check.py` (Kubernetes buiten Helm, en Helm-drift) |
-| `.github/workflows/` | `infra.yml` (plan en apply), `drift.yml` (drift-check), `l3-l4-tests.yml` (tests), `docs.yml` (handboek) |
+| `.github/workflows/` | `infra.yml` (plan en apply), `drift.yml` (drift-check, uitgeschakeld na de hackathon), `l3-l4-tests.yml` (tests), `docs.yml` (handboek) |
 | `agent/` | Audit-script en tests voor Level 3 |
 | `mcp-server/` | Meet-, build- en testscripts voor Level 4 |
-| `docs/` | Het handboek, het [logboek](docs/logboek.md) en al het **bewijs** per level in [`docs/bewijs/`](docs/bewijs/) |
+| `docs/` | Het handboek, de [presentatie](docs/presentatie/Four_Seals_—_how_we_broke_them_%28HTF_2026%29.pptx), het [logboek](docs/logboek.md) en al het **bewijs** per level in [`docs/bewijs/`](docs/bewijs/) |
 
 ## Zelf bekijken
 

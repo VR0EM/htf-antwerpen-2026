@@ -8,12 +8,11 @@
 #   3. ci/k8s-ghost-check.py -> objecten in de cluster buiten Helm/Terraform/OVH (#57)
 # Bij drift: een issue met label `drift` (nieuw, of een comment op het open issue), een rode run,
 # en zelfherstel: de apply-pipeline (infra.yml) wordt gestart en zet alles terug naar main.
-# Een bewuste wijziging gaat dus via een PR in de code; alles daarbuiten wordt teruggedraaid.
+# Na afloop van de hackathon uitgeschakeld (geen schedule of herhalingslus meer;
+# ook via GitHub Actions gedeactiveerd omdat de OVH-omgeving niet meer actief is).
 name: Drift-check
 
 on:
-  schedule:
-    - cron: "*/10 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -124,13 +123,3 @@ jobs:
           gh workflow run infra.yml --ref main
           echo "Zelfherstel gestart: infra.yml op main" >> "$GITHUB_STEP_SUMMARY"
           exit 1
-
-      - name: Volgende ronde (tot 18:00)
-        if: ${{ !cancelled() }}
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          if [ "$(TZ=Europe/Brussels date +%H)" -lt 18 ]; then
-            sleep 240
-            gh workflow run drift.yml --ref main
-          fi
