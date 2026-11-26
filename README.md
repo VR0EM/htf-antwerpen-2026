@@ -60,11 +60,6 @@ python3 -m unittest discover -s mcp-server/tests -v # Level 4: klok op 10:30, 13
 
 Terraform toepassen kan alleen met de credentials van de challenge. Die staan bewust **niet** in deze repo.
 
-## Nog open
-
-De kubeconfig van de cluster resetten (laatste stap van de rotatie in Level 2, issue #63). Bij OVH installeert dat
-alle nodes opnieuw, dus dat deden we bewust niet vlak voor de demo.
-
 ---
 
 Met dank aan **FlowFactor** voor de challenge. Gemaakt door Dali, Wimme en Claude.
